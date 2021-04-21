@@ -35,6 +35,9 @@ const Home : FC = () => {
             {/* <Question /> */}
             <div className="my-20"></div>
 
+
+
+
             <div className={
                 `transition-opacity duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
             }>
@@ -47,8 +50,8 @@ const Home : FC = () => {
             <div className={`
                 flex justify-center content-center flex-row space-x-5 
                 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? '-translate-y-0' : '-translate-y-28'}`}>
-                <div className="flex-1 max-w-md justify-right">
-                    <div className="bg-gray-200 rounded-lg px-5 shadow-sm">
+                <div className="flex flex-col flex-1 max-w-md justify-right">
+                    <div className="bg-gray-200 rounded-lg px-5 shadow-md">
                         <HowItWorks 
                             firstName={firstName}
                             lastName={lastName}

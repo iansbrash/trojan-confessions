@@ -48,7 +48,7 @@ const HowItWorks : FC<HowItWorksProps> = ({
     imageUrl
 } : HowItWorksProps) => {
     return (
-        <>
+        <div>
             <div className="font-bold text-4xl text-gray-700">
                 How it works
             </div>
@@ -58,7 +58,7 @@ const HowItWorks : FC<HowItWorksProps> = ({
                 email={email}
                 imageUrl={imageUrl}
             />
-        </>
+        </div>
     )
 }
 

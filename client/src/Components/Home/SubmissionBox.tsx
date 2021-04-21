@@ -10,10 +10,18 @@ import firebase from 'firebase';
 
 const SubmissionBox : FC = () => {
 
-    var database = firebase.database();
+    const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
+    const [inputLength, setInputLength] = useState<number>(0);
 
     const writeUserData = (submission : string, email : string) : void =>{
         console.log('test');
+
+
+        const maxCharLength = 280;
+
+        if (inputLength > maxCharLength){
+            return;
+        }
 
         var subRef = firebase.database().ref('submissions');
         var posterRef = firebase.database().ref('recentPosters');
@@ -38,7 +46,7 @@ const SubmissionBox : FC = () => {
             else {
                 subRef.push().set({
                     submission: submission,
-                    timestamp: Date.now(),
+                    timestamp: new Date().toISOString(),
                     hashedId : email
                 });
 
@@ -51,8 +59,7 @@ const SubmissionBox : FC = () => {
         
     }
 
-    const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
-    const [inputLength, setInputLength] = useState<number>(0);
+    
 
     const handleKeydown = (evt : any) => {
         if (inputSpan !== null){
@@ -93,24 +100,41 @@ const SubmissionBox : FC = () => {
     })
 
     return (
-        <div className="flex flex-1 flex-col max-w-4xl rounded-lg px-6 pb-6">
-            <div className="break-all whitespace-normal flex-1 flex flex-col p-5 bg-gray-200 shadow-md">
-                <span 
-                    ref={inputSpan}
-                    contentEditable={true}
-                    placeholder="I left my camera on in my 300 person lecture while I..." 
-                    className="leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative bg-white rounded text-sm border-0 shadow outline-none focus:outline-none w-full"/>
-                <div className="relative flex flex-row">
-                    <div className={`absolute -top-0.5 left-0 font-bold text-md ${inputLength > 280 ? 'text-red-500' : 'text-gray-800'}`}>
-                        {`${inputLength}/280`}
+        <div className="flex flex-1 flex-col max-w-5xl rounded-lg px-6 pb-6">
+            <div className="break-all whitespace-normal flex-1 flex flex-col space-y-4 p-5 bg-gray-200 shadow-md">
+                <div className="flex flex-1 flex-row space-x-4">
+                    <span 
+                        ref={inputSpan}
+                        contentEditable={true}
+                        placeholder="I left my camera on in my 300 person lecture while I..." 
+                        className="leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 shadow outline-none focus:outline-none w-full"
+                    />
+                    <div className="w-36 bg-black">
+
                     </div>
-                    <div>
-                        <button
-                        className="w-6 h-6 cursor-pointer bg-black"
-                        onClick={() => writeUserData(inputSpan.current.innerHTML, 'test@usc.edu')}
-                        >
-                            
-                        </button>
+                </div>
+                
+                <div className="relative flex flex-row">
+                    <div className="flex-1 flex-row flex space-x-2">
+                        <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
+                            <button className="text-center font-bold text-xl text-white">
+                                Preview
+                            </button>
+                        </div>
+                        <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
+                            <button 
+                                onClick={() => writeUserData(inputSpan.current.innerHTML, 'test@usc.edu')}
+                                className="text-center font-bold text-xl text-white">
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                    <div className={`flex flex-col justify-center content-center px-2 h-8 ${inputLength > 280 ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
+                            <div className={`text-center font-bold text-xl text-white`}>
+                                {`${inputLength}/280`}
+                            </div>
+                        </div>
+                    <div className={`font-bold text-md `}>
                     </div>
                 </div>
             </div>

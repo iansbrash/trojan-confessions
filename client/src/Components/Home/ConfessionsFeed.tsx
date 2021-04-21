@@ -16,7 +16,7 @@ import firebase from 'firebase';
 
 
 interface ConfessionProps {
-    timestamp: number,
+    timestamp: string,
     submission: string,
     hashedId: string
 }
@@ -30,13 +30,12 @@ const Confession : FC<ConfessionProps> = ({
         <>
             <div className="my-4">
                 <div className="leading-7 break-words font-bold text-2xl text-gray-500">
-                    {timestamp}
+                    {new Date(timestamp).toISOString().substring(0, 10)}
                 </div>
                 <div className="leading-6 break-words text-2xl text-gray-500">
                     {submission}
                 </div>
             </div>
-            <Spacer />
         </>
     )
 }
@@ -45,6 +44,16 @@ const Spacer : FC = () => {
     return (
         <div className="my-2 flex">
             <div className="flex-1 mx-2 h-0.5 bg-gray-300">
+
+            </div>
+        </div>
+    )
+}
+
+const SpacerNoLine : FC = () => {
+    return (
+        <div className="my-2 flex">
+            <div className="flex-1 mx-2 h-0.5">
 
             </div>
         </div>
@@ -90,16 +99,20 @@ const ConfessionsFeed : FC = () => {
     // ] 
 
     return (
-        <div className="bg-gray-200 rounded-lg px-5 shadow-sm">
+        <div className="bg-gray-200 rounded-lg px-5 shadow-md">
             <div className="font-bold text-4xl text-gray-700">
                 Live Feed
             </div>
             {
-                confessions.map((confObj : any) => (
-                    <Confession 
-                        submission={confObj.submission} 
-                        timestamp={confObj.timestamp} 
-                        hashedId={confObj.hashedId} />
+                confessions.map((confObj : any, i : number) => (
+                    <>
+                        <Confession 
+                            submission={confObj.submission} 
+                            timestamp={confObj.timestamp} 
+                            hashedId={confObj.hashedId} />
+                            
+                        {i !== confessions.length - 1 ? <Spacer /> : <SpacerNoLine/>}
+                    </>
                 ))
             }
         </div>

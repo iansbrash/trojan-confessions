@@ -7,6 +7,9 @@ import firebase from "firebase";
 // tailwind
 import "tailwindcss/tailwind.css"
 
+// helmet
+import { Helmet } from "react-helmet";
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -17,13 +20,17 @@ import {
 function App() {
 
   return (
-    <Router>
-      <Switch>
-        <Route path="/">
-          <Home />
-        </Route>
-      </Switch>
-    </Router>
+      <Router>
+        <Switch>
+          <Route path="/">
+            <Helmet>
+              <style>{'body { background-color: #F3F4F6; }'}</style>
+            </Helmet>
+            <Home />
+          </Route>
+        </Switch>
+      </Router>
+
   );
 }
 
