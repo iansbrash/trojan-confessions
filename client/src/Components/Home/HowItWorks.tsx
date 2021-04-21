@@ -12,7 +12,7 @@ const SignInWithEmail : FC<HowItWorksProps> = ({
     return (
         <div>
             <div className="break-words text-2xl text-gray-500">
-                Sign in with your <b>@usc.edu</b> gmail
+                Sign in with your <b>@usc.edu</b> email
             </div>
             <div className="py-4 px-2">
                 <div className="flex flex-row p-2 rounded-lg bg-gray-100 shadow-md">
@@ -48,7 +48,7 @@ const HowItWorks : FC<HowItWorksProps> = ({
     imageUrl
 } : HowItWorksProps) => {
     return (
-        <div className="bg-gray-200 rounded-lg px-5 shadow-sm">
+        <>
             <div className="font-bold text-4xl text-gray-700">
                 How it works
             </div>
@@ -58,7 +58,7 @@ const HowItWorks : FC<HowItWorksProps> = ({
                 email={email}
                 imageUrl={imageUrl}
             />
-        </div>
+        </>
     )
 }
 

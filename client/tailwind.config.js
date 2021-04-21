@@ -24,6 +24,30 @@ module.exports = {
       '6xl': '4rem',
      '7xl': '5rem',
      '7.1xl': '5.1rem'
+    },
+    extend: {
+      transitionTimingFunction: {
+       '4sfade': 'cubic-bezier(1.00, 1.00, 1.00, 0.00)',
+      },
+      keyframes: {
+        fadelong: {
+          '0%, 100%': { opacity: 0 },
+          '10%, 90%': { opacity: 1 },
+        },
+        roll: {
+          '0%, 100%': { transform: 'translateX(0) rotate(0deg)' },
+          '50%': { transform: 'translateX(20rem) rotate(385deg)' }
+        },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
+      },
+      animations: {
+        fadelong: 'fadelong 4s ease-in-out 1',
+        roll: 'roll 3s ease-in-out infinite',
+        wiggle: 'wiggle 1s ease-in-out infinite',
+      }
     }
   }
 }

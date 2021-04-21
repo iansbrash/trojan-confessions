@@ -1,7 +1,8 @@
 import React, {
     FC,
     useState,
-    useEffect
+    useEffect,
+    useRef
 } from 'react';
 import GoogleLogin from 'react-google-login';
 import WhiteGoogleLogo from './glogo.png';
@@ -13,10 +14,27 @@ enum loginState {
 };
 
 interface LoginStateVisualizerProps {
-    lstate: loginState
+    lstate: loginState,
+    email: string
 }
 
-const LoginStateVisualizer : FC<LoginStateVisualizerProps> = ({lstate} : LoginStateVisualizerProps) => {
+
+
+const LoginStateVisualizer : FC<LoginStateVisualizerProps> = ({lstate, email} : LoginStateVisualizerProps) => {
+
+    const [notiClassList, setNotiClassList] = useState<string>('wiggle relative m-2 p-2 bg-red-500 rounded-md shadow-md');
+
+    useEffect(() => {
+
+        if (lstate === loginState.Failure){
+            // setNotiClassList('transition-opacity delay-2000 duration-1000 ease-in-out opacity-100 relative m-2 p-2 bg-red-500 rounded-md shadow-md')
+        }
+        else {
+            // setNotiClassList('transition-opacity delay-2000 duration-1000 ease-in-out opacity-0 relative m-2 p-2 bg-red-500 rounded-md shadow-md');
+        }
+    
+    }, [lstate]);
+
     if (lstate === loginState.Default){
         return (
             null
@@ -24,15 +42,20 @@ const LoginStateVisualizer : FC<LoginStateVisualizerProps> = ({lstate} : LoginSt
     }
     else if (lstate === loginState.Success){
         return (
-            <div>
-                success
-            </div>
+            null
         )
     }
     else {
         return (
-            <div>
-                failure
+            <div className={notiClassList}>
+                <div className="z-0 absolute left-0 right-0 -top-2 flex justify-center">
+                    <div className="transform rotate-45 bg-red-500 h-4 w-4">
+
+                    </div>
+                </div>
+                <div className="z-10 break-words text-xl text-white">
+                    Please use an <b>@usc.edu</b> email.
+                </div>
             </div>
         )
     }
@@ -92,7 +115,7 @@ const GmailLogin : FC<ActionsProps> = ({
             setContainsUsc(loginState.Failure);
             setFirstName('');
             setLastName('');
-            setEmail('');
+            setEmail(email);
             setGoogleId('');
             setImageUrl('');
         }
@@ -109,7 +132,7 @@ const GmailLogin : FC<ActionsProps> = ({
                 onFailure={responseGoogle}
                 cookiePolicy={'single_host_origin'}
                 render={renderProps => (
-                    <div className="flex">
+                    <div className="flex pb-4">
                         <button 
                         className="flex-1 m-2 p-2 rounded-md shadow-md bg-red-400"
                         onClick={renderProps.onClick} 
@@ -126,9 +149,13 @@ const GmailLogin : FC<ActionsProps> = ({
                     
                 )}
             />
-            <LoginStateVisualizer lstate={containsUsc}/>
-
-            
+            <div className="relative">
+                <div className="absolute -top-3 left-0 right-0 flex justify-center">
+                    <LoginStateVisualizer 
+                        lstate={containsUsc}
+                        email={email}/>
+                </div>
+            </div> 
         </div>
     )
 }
@@ -155,7 +182,7 @@ const Actions : FC<ActionsProps> = ({
     setImageUrl
 } : ActionsProps) => {
     return (
-        <div className="bg-gray-200 rounded-lg px-5 shadow-sm">
+        <>
             <div className="font-bold text-4xl text-gray-700">
                 Login
             </div>
@@ -170,7 +197,7 @@ const Actions : FC<ActionsProps> = ({
                 setImageUrl={setImageUrl}
             />
             
-        </div>
+        </>
 
     )
 }

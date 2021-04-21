@@ -6,6 +6,8 @@ import HomeHeader from './HomeHeader';
 import WelcomeBanner from './WelcomeBanner';
 import HowItWorks from './HowItWorks'
 import Actions from './Actions'
+import ConfessionsFeed from './ConfessionsFeed';
+import SubmissionBox from './SubmissionBox';
 
 const Question : FC = () => {
     return (
@@ -31,26 +33,34 @@ const Home : FC = () => {
             </div>
             {/* <Question /> */}
             <div className="my-20"></div>
+
+            <div className="flex justify-center">
+                <SubmissionBox />
+            </div>
+            
             <div className="flex justify-center content-center flex-row space-x-5">
                 <div className="flex-1 max-w-md justify-right">
-                    <HowItWorks 
-                        firstName={firstName}
-                        lastName={lastName}
-                        email={email}
-                        imageUrl={imageUrl}
-                    />
+                    <div className="bg-gray-200 rounded-lg px-5 shadow-sm">
+                        <HowItWorks 
+                            firstName={firstName}
+                            lastName={lastName}
+                            email={email}
+                            imageUrl={imageUrl}
+                        />
+                        <Actions 
+                            firstName={firstName}
+                            setFirstName={setFirstName}
+                            lastName={lastName}
+                            setLastName={setLastName}
+                            email={email}
+                            setEmail={setEmail}
+                            imageUrl={imageUrl}
+                            setImageUrl={setImageUrl}
+                            />
+                    </div>
                 </div>
                 <div className="flex-1 max-w-md justify-left">
-                    <Actions 
-                        firstName={firstName}
-                        setFirstName={setFirstName}
-                        lastName={lastName}
-                        setLastName={setLastName}
-                        email={email}
-                        setEmail={setEmail}
-                        imageUrl={imageUrl}
-                        setImageUrl={setImageUrl}
-                        />
+                    <ConfessionsFeed />
                 </div>
             </div>
         </div>
