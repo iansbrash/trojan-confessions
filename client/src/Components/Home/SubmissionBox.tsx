@@ -27,7 +27,10 @@ const SubmissionBox : FC = () => {
             // security
             // and cuz we cant store total email
             // cuz the @ messes it up
-        posterRef.orderByChild("hashedId").equalTo('test').once("value",snapshot => {
+        
+        let userName = Date.now();
+    
+        posterRef.orderByChild("hashedId").equalTo(userName).once("value",snapshot => {
             if (snapshot.exists()){
               const userData = snapshot.val();
               console.log("exists!", userData);
@@ -38,6 +41,10 @@ const SubmissionBox : FC = () => {
                     timestamp: Date.now(),
                     hashedId : email
                 });
+
+                posterRef.push().set({
+                    hashedId: userName
+                })
             }
         });
 

@@ -1,5 +1,7 @@
 import React, {
-    FC
+    FC,
+    useState,
+    useEffect
 } from 'react';
 import firebase from 'firebase';
 
@@ -14,22 +16,24 @@ import firebase from 'firebase';
 
 
 interface ConfessionProps {
-    date: string,
-    confession: string
+    timestamp: number,
+    submission: string,
+    hashedId: string
 }
 
 const Confession : FC<ConfessionProps> = ({
-    date,
-    confession
+    timestamp,
+    submission,
+    hashedId
 } : ConfessionProps) => {
     return (
         <>
             <div className="my-4">
                 <div className="leading-7 break-words font-bold text-2xl text-gray-500">
-                    {date}
+                    {timestamp}
                 </div>
                 <div className="leading-6 break-words text-2xl text-gray-500">
-                    {confession}
+                    {submission}
                 </div>
             </div>
             <Spacer />
@@ -48,6 +52,27 @@ const Spacer : FC = () => {
 }
 
 const ConfessionsFeed : FC = () => {
+
+
+    const [confessions, setConfessions] = useState<object[]>([]);
+
+    
+    useEffect(() => {
+        var recentPostsRef = firebase.database().ref('submissions');
+
+        recentPostsRef.on('value', snapshot => {
+            if (snapshot.exists()){
+                console.log('snapshot exists in ConfFeed!');
+                console.log(snapshot.val());
+
+                setConfessions(Object.values(snapshot.val()));
+            }
+        });
+
+        return (() => {
+            // some cleanup here ?
+        })
+    }, [])
 
     // let tempConfArr = [
     //     {
@@ -70,9 +95,12 @@ const ConfessionsFeed : FC = () => {
                 Live Feed
             </div>
             {
-                // tempConfArr.map(confObj => (
-                //     <Confession {...confObj}/>
-                // ))
+                confessions.map((confObj : any) => (
+                    <Confession 
+                        submission={confObj.submission} 
+                        timestamp={confObj.timestamp} 
+                        hashedId={confObj.hashedId} />
+                ))
             }
         </div>
     )
