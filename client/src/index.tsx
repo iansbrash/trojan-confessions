@@ -3,6 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import firebase from 'firebase';
+
+// Use your config values here.
+firebase.initializeApp({
+  apiKey: "AIzaSyC1FKqaFxaK8EVE5L4qk-do6jveU1gnCek",
+  authDomain: "trojan-confessions-fb.firebaseapp.com",
+  projectId: "trojan-confessions-fb",
+  storageBucket: "trojan-confessions-fb.appspot.com",
+  messagingSenderId: "1028464703772",
+  appId: "1:1028464703772:web:648d7c2ee8c5d7b595e2d9",
+  measurementId: "G-KLEB16W0BE"
+});
 
 ReactDOM.render(
   <React.StrictMode>

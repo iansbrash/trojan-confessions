@@ -1,0 +1,18 @@
+{
+    "submissions": {
+        "one": {
+            "content": "I wanna die",
+            "timestamp": 123123123123,
+            "hashedId": "abskgjco217nzks"
+        },
+        "two": {
+            "content": "I dont wanna die",
+            "timestamp": 912749861249,
+            "hashedId": "sadnsksdfiy0823"
+        }
+    },
+    "recentIds": {
+        "abskgjco217nzks": true,
+        "sadnsksdfiy0823": true
+    }
+}

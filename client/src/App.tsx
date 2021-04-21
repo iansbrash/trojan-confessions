@@ -2,6 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Home from './Components/Home/Home'
+import firebase from "firebase";
 
 // tailwind
 import "tailwindcss/tailwind.css"
@@ -14,6 +15,8 @@ import {
 } from 'react-router-dom';
 
 function App() {
+
+
   return (
     <Router>
       <Switch>

@@ -1,6 +1,16 @@
 import React, {
     FC
 } from 'react';
+import firebase from 'firebase';
+
+// var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
+// starCountRef.on('value', (snapshot) => {
+//   const data = snapshot.val();
+//   updateStarCount(postElement, data);
+// });
+
+// OR read data 'once' with { get }
+
 
 
 interface ConfessionProps {
