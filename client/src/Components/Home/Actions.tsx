@@ -5,7 +5,7 @@ import React, {
     useRef
 } from 'react';
 import GoogleLogin from 'react-google-login';
-import WhiteGoogleLogo from './glogo.png';
+import WhiteGoogleLogo from '../../resources/images/home/glogo.png';
 
 enum loginState {
     Default,
@@ -17,8 +17,6 @@ interface LoginStateVisualizerProps {
     lstate: loginState,
     email: string
 }
-
-
 
 const LoginStateVisualizer : FC<LoginStateVisualizerProps> = ({lstate, email} : LoginStateVisualizerProps) => {
 
@@ -47,9 +45,6 @@ const GmailLogin : FC<ActionsProps> = ({
     setEmail,
     setImageUrl
 } : ActionsProps) => {
-
-    
-
     
     const [containsUsc, setContainsUsc] = useState<loginState>(loginState.Default);
     const [googleId, setGoogleId] = useState<string>('');
@@ -94,8 +89,6 @@ const GmailLogin : FC<ActionsProps> = ({
             setGoogleId('');
             setImageUrl('');
         }
-
-        
     }
 
     return (
@@ -121,7 +114,6 @@ const GmailLogin : FC<ActionsProps> = ({
                             </div>
                         </button>
                     </div>
-                    
                 )}
             />
             <div className="relative">
@@ -157,7 +149,7 @@ const Actions : FC<ActionsProps> = ({
     setImageUrl
 } : ActionsProps) => {
     return (
-        <>
+        <div>
             <div className="font-bold text-4xl text-gray-700">
                 Login
             </div>
@@ -172,7 +164,7 @@ const Actions : FC<ActionsProps> = ({
                 setImageUrl={setImageUrl}
             />
             
-        </>
+        </div>
 
     )
 }

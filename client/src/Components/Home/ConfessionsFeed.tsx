@@ -27,16 +27,14 @@ const Confession : FC<ConfessionProps> = ({
     hashedId
 } : ConfessionProps) => {
     return (
-        <>
-            <div className="my-4">
-                <div className="leading-7 break-words font-bold text-2xl text-gray-500">
-                    {new Date(timestamp).toISOString().substring(0, 10)}
-                </div>
-                <div className="leading-6 break-words text-2xl text-gray-500">
-                    {submission}
-                </div>
+        <div className="my-4">
+            <div className="leading-7 break-all font-bold text-2xl text-gray-500">
+                {new Date(timestamp).toISOString().substring(0, 10)}
             </div>
-        </>
+            <div className="leading-6 break-all text-2xl text-gray-500">
+                {submission}
+            </div>
+        </div>
     )
 }
 
@@ -64,19 +62,29 @@ const ConfessionsFeed : FC = () => {
 
 
     const [confessions, setConfessions] = useState<object[]>([]);
+    const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
 
-    
-    useEffect(() => {
+    const fetchConfessions = async () : Promise<any> => {
+        setLoadingPosts(true)
         var recentPostsRef = firebase.database().ref('submissions');
 
-        recentPostsRef.on('value', snapshot => {
+        await recentPostsRef.limitToLast(10).on('value', snapshot => {
             if (snapshot.exists()){
                 console.log('snapshot exists in ConfFeed!');
                 console.log(snapshot.val());
 
-                setConfessions(Object.values(snapshot.val()));
+                const toSet : any[] = Object.values(snapshot.val()).reverse();
+
+                setConfessions(toSet);
             }
-        });
+            setLoadingPosts(false);
+        })
+
+    }
+
+    useEffect(() => {
+        
+        fetchConfessions();
 
         return (() => {
             // some cleanup here ?
@@ -99,22 +107,36 @@ const ConfessionsFeed : FC = () => {
     // ] 
 
     return (
-        <div className="bg-gray-200 rounded-lg px-5 shadow-md">
+        <div>
             <div className="font-bold text-4xl text-gray-700">
                 Live Feed
             </div>
-            {
-                confessions.map((confObj : any, i : number) => (
-                    <>
-                        <Confession 
-                            submission={confObj.submission} 
-                            timestamp={confObj.timestamp} 
-                            hashedId={confObj.hashedId} />
-                            
-                        {i !== confessions.length - 1 ? <Spacer /> : <SpacerNoLine/>}
-                    </>
-                ))
+            {loadingPosts
+            ? 
+                <>
+                    <div className="animate-spin h-5 w-5 mr-3" >
+                        Loading Posts
+                    </div>
+                </>
+            :
+                null
             }
+            <div>
+                {
+                    confessions.map((confObj : any, i : number) => (
+                        <>
+                            <Confession 
+                                submission={confObj.submission} 
+                                timestamp={confObj.timestamp} 
+                                hashedId={confObj.hashedId} />
+                                
+                            {i !== confessions.length - 1 ? <Spacer /> : <SpacerNoLine/>}
+                        </>
+                    ))
+                }
+            </div>
+            
+            
         </div>
     )
 }

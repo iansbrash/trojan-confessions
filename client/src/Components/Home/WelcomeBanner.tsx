@@ -4,7 +4,7 @@ import React, {
 
 const WelcomeBanner : FC = () => {
     return (
-        <div className="mx-auto flex flex-col justify-center content-center">
+        <div className="mx-auto flex flex-col justify-center content-center my-10">
             <div className="text-left font-bold text-5xl text-gray-700">
                 Welcome to 
             </div>

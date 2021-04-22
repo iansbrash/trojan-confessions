@@ -12,6 +12,7 @@ const SubmissionBox : FC = () => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
     const [inputLength, setInputLength] = useState<number>(0);
+    const [isKeydown, setIsKeydown] = useState<boolean>(false);
 
     const writeUserData = (submission : string, email : string) : void =>{
         console.log('test');
@@ -62,6 +63,7 @@ const SubmissionBox : FC = () => {
     
 
     const handleKeydown = (evt : any) => {
+        setIsKeydown(true);
         if (inputSpan !== null){
 
             const maxLength = 280;
@@ -80,6 +82,7 @@ const SubmissionBox : FC = () => {
     }
 
     const handleKeyup = (evt : any) => {
+        setIsKeydown(false);
         if (inputSpan !== null){
             setInputLength(inputSpan.current.innerHTML.toString().length);
         }
@@ -90,7 +93,6 @@ const SubmissionBox : FC = () => {
             inputSpan.current.addEventListener('keydown', handleKeydown);
             inputSpan.current.addEventListener('keyup', handleKeyup);
         }
-
         return (() => {
             if (inputSpan !== null){
                 inputSpan.current.removeEventListener('keydown', handleKeydown);
@@ -100,15 +102,21 @@ const SubmissionBox : FC = () => {
     })
 
     return (
-        <div className="flex flex-1 flex-col max-w-5xl rounded-lg px-6 pb-6">
+        <div className="flex flex-1 flex-col rounded-lg pb-6">
             <div className="break-all whitespace-normal flex-1 flex flex-col space-y-4 p-5 bg-gray-200 shadow-md">
                 <div className="flex flex-1 flex-row space-x-4">
-                    <span 
-                        ref={inputSpan}
-                        contentEditable={true}
-                        placeholder="I left my camera on in my 300 person lecture while I..." 
-                        className="leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 shadow outline-none focus:outline-none w-full"
-                    />
+                    <div className="relative flex-1 flex">
+                        <span 
+                            ref={inputSpan}
+                            contentEditable={true}
+                            placeholder="I left my camera on in my 300 person lecture while I..." 
+                            className="leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 shadow outline-none focus:outline-none w-full text-left"
+                        />
+                        <div className={`text-2xl ml-3 text-gray-400 absolute top-0 bottom-0 left-0 flex flex-1 items-center`}>
+                            {inputSpan.current.textContent === '' && !isKeydown ? 'I left my Zoom camera on and...' : null}
+                        </div>
+                    </div>
+                        
                     <div className="w-36 bg-black">
 
                     </div>

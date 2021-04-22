@@ -29,10 +29,8 @@ const HomeHeader : FC = () => {
                 </div>
                 <div className="flex flex-row">
                     <HeaderLink title={'Home'}/>
-                    <HeaderLink title={'Instagram'}/>
-                    <HeaderLink title={'Submit'}/>
                     <HeaderLink title={'About'}/>
-                    <HeaderLink title={'Policy'}/>
+                    <HeaderLink title={'Anonomity'}/>
                 </div>
             </div>
         </div>
