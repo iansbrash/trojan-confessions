@@ -5,6 +5,7 @@ import React, {
     useState
 } from 'react';
 import firebase from 'firebase';
+import axios from 'axios';
 
 
 
@@ -14,7 +15,7 @@ const SubmissionBox : FC = () => {
     const [inputLength, setInputLength] = useState<number>(0);
     const [isKeydown, setIsKeydown] = useState<boolean>(false);
 
-    const writeUserData = (submission : string, email : string) : void =>{
+    const writeUserData = async (submission : string, email : string) : Promise<any> =>{
         console.log('test');
 
 
@@ -23,44 +24,38 @@ const SubmissionBox : FC = () => {
         if (inputLength > maxCharLength){
             return;
         }
+        else {
+            const userName = Date.now();
 
-        var subRef = firebase.database().ref('submissions');
-        var posterRef = firebase.database().ref('recentPosters');
+            console.log(`About to send axios.post at // submission: ${submission}, hashedId: ${userName}`)
+            
+            // https://git.heroku.com/afternoon-stream-90210.git/
+            // const res : object = await axios.post('http://localhost:5000/api/confessions/', {
+            //     submission: inputSpan.current.textContent,
+            //     // timestamp: 123,
+            //     hashedId: userName
+            // });
 
-        // firebase.database().ref('recentPosters').push().set({
-        //     hashedId: 'test'
-        // })
-
-
-            // need to find way to hash emails for
-            // security
-            // and cuz we cant store total email
-            // cuz the @ messes it up
-        
-        let userName = Date.now();
-    
-        posterRef.orderByChild("hashedId").equalTo(userName).once("value",snapshot => {
-            if (snapshot.exists()){
-              const userData = snapshot.val();
-              console.log("exists!", userData);
-            }
-            else {
-                subRef.push().set({
-                    submission: submission,
-                    timestamp: new Date().toISOString(),
-                    hashedId : email
-                });
-
-                posterRef.push().set({
-                    hashedId: userName
-                })
-            }
-        });
-
-        
+            var config : object = {
+                method: 'post',
+                url: 'http://localhost:5000/api/confessions/',
+                headers: { 
+                  'submission': inputSpan.current.textContent, 
+                  'hashedId': userName
+                }
+            };
+              
+            axios(config)
+            .then(function (response) {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     }
 
-    
+
 
     const handleKeydown = (evt : any) => {
         setIsKeydown(true);
@@ -103,25 +98,25 @@ const SubmissionBox : FC = () => {
 
     return (
         <div className="flex flex-1 flex-col rounded-lg pb-6">
-            <div className="break-all whitespace-normal flex-1 flex flex-col space-y-4 p-5 bg-gray-200 shadow-md">
+            <div className="break-all whitespace-normal flex-1 flex flex-col space-y-4 p-5 bg-gray-200 shadow-md rounded-md">
                 <div className="flex flex-1 flex-row space-x-4">
                     <div className="relative flex-1 flex">
-                        <span 
+                        <span
                             ref={inputSpan}
                             contentEditable={true}
-                            placeholder="I left my camera on in my 300 person lecture while I..." 
-                            className="leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 shadow outline-none focus:outline-none w-full text-left"
+                            placeholder="I left my camera on in my 300 person lecture while I..."
+                            className="z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
                         />
-                        <div className={`text-2xl ml-3 text-gray-400 absolute top-0 bottom-0 left-0 flex flex-1 items-center`}>
+                        <div className={`z-0 text-2xl ml-3 text-gray-400 absolute top-0 bottom-0 left-0 flex flex-1 items-center`}>
                             {inputSpan.current.textContent === '' && !isKeydown ? 'I left my Zoom camera on and...' : null}
                         </div>
                     </div>
-                        
+
                     <div className="w-36 bg-black">
 
                     </div>
                 </div>
-                
+
                 <div className="relative flex flex-row">
                     <div className="flex-1 flex-row flex space-x-2">
                         <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
@@ -130,7 +125,7 @@ const SubmissionBox : FC = () => {
                             </button>
                         </div>
                         <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
-                            <button 
+                            <button
                                 onClick={() => writeUserData(inputSpan.current.innerHTML, 'test@usc.edu')}
                                 className="text-center font-bold text-xl text-white">
                                 Submit
@@ -146,7 +141,7 @@ const SubmissionBox : FC = () => {
                     </div>
                 </div>
             </div>
-            
+
         </div>
     )
 }

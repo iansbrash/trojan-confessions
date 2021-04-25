@@ -66,7 +66,7 @@ const ConfessionsFeed : FC = () => {
 
     const fetchConfessions = async () : Promise<any> => {
         setLoadingPosts(true)
-        var recentPostsRef = firebase.database().ref('submissions');
+        let recentPostsRef = firebase.database().ref('submissions');
 
         await recentPostsRef.limitToLast(10).on('value', snapshot => {
             if (snapshot.exists()){
@@ -83,7 +83,7 @@ const ConfessionsFeed : FC = () => {
     }
 
     useEffect(() => {
-        
+
         fetchConfessions();
 
         return (() => {
@@ -104,7 +104,7 @@ const ConfessionsFeed : FC = () => {
     //         date: 'january 69',
     //         confession: 'justin childress told me that asian lives do not matter. although i agree, i think he could have been more tactful because i am one fifth asian (i am japaneez)'
     //     }
-    // ] 
+    // ]
 
     return (
         <div>
@@ -112,7 +112,7 @@ const ConfessionsFeed : FC = () => {
                 Live Feed
             </div>
             {loadingPosts
-            ? 
+            ?
                 <>
                     <div className="animate-spin h-5 w-5 mr-3" >
                         Loading Posts
@@ -125,18 +125,18 @@ const ConfessionsFeed : FC = () => {
                 {
                     confessions.map((confObj : any, i : number) => (
                         <>
-                            <Confession 
-                                submission={confObj.submission} 
-                                timestamp={confObj.timestamp} 
+                            <Confession
+                                submission={confObj.submission}
+                                timestamp={confObj.timestamp}
                                 hashedId={confObj.hashedId} />
-                                
+
                             {i !== confessions.length - 1 ? <Spacer /> : <SpacerNoLine/>}
                         </>
                     ))
                 }
             </div>
-            
-            
+
+
         </div>
     )
 }

@@ -6,7 +6,7 @@ const WelcomeBanner : FC = () => {
     return (
         <div className="mx-auto flex flex-col justify-center content-center my-10">
             <div className="text-left font-bold text-5xl text-gray-700">
-                Welcome to 
+                Welcome to
             </div>
             <div className="-my-6 text-left font-bold text-5xl text-gray-800">
                 Trojan Confessions ✌️

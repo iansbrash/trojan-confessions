@@ -16,7 +16,7 @@ const GLogin : FC = () => {
 
 
     const responseGoogle = (res : any) => {
-        const { 
+        const {
             email,
             familyName,
             givenName,
@@ -53,9 +53,9 @@ const GLogin : FC = () => {
                 cookiePolicy={'single_host_origin'}
                 render={renderProps => (
                     <div className="flex pb-4">
-                        <button 
+                        <button
                         className="flex-1 m-2 p-2 rounded-md shadow-md bg-red-400"
-                        onClick={renderProps.onClick} 
+                        onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                         >
                             <div className="flex flex-row h-6 justify-center content-center space-x-2">

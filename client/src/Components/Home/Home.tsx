@@ -48,13 +48,13 @@ const Home : FC = () => {
                     <div className={`flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
                         <div className="flex flex-1 h-12 items-start">
                             <div className="bg-gray-200 rounded-lg px-5 shadow-md">
-                                <HowItWorks 
+                                <HowItWorks
                                     firstName={firstName}
                                     lastName={lastName}
                                     email={email}
                                     imageUrl={imageUrl}
                                 />
-                                <Actions 
+                                <Actions
                                     firstName={firstName}
                                     setFirstName={setFirstName}
                                     lastName={lastName}
@@ -93,7 +93,7 @@ const Home : FC = () => {
                     {/* <SubmissionBox /> */}
 
             {/* <div className={`
-                max-w-2xl bg-black flex flex-col justify-center 
+                max-w-2xl bg-black flex flex-col justify-center
                 space-y-5
             `}>
                 <div className="flex justify-center">
@@ -110,17 +110,17 @@ const Home : FC = () => {
             </div> */}
 
             {/* <div className={`
-                flex justify-center content-center flex-row space-x-5 
+                flex justify-center content-center flex-row space-x-5
                 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? '-translate-y-0' : '-translate-y-28'}`}>
                 <div className="flex flex-col flex-1 max-w-md justify-right">
                     <div className="bg-gray-200 rounded-lg px-5 shadow-md">
-                        <HowItWorks 
+                        <HowItWorks
                             firstName={firstName}
                             lastName={lastName}
                             email={email}
                             imageUrl={imageUrl}
                         />
-                        <Actions 
+                        <Actions
                             firstName={firstName}
                             setFirstName={setFirstName}
                             lastName={lastName}

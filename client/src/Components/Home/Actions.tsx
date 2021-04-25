@@ -45,7 +45,7 @@ const GmailLogin : FC<ActionsProps> = ({
     setEmail,
     setImageUrl
 } : ActionsProps) => {
-    
+
     const [containsUsc, setContainsUsc] = useState<loginState>(loginState.Default);
     const [googleId, setGoogleId] = useState<string>('');
 
@@ -61,7 +61,7 @@ const GmailLogin : FC<ActionsProps> = ({
 
 
     const responseGoogle = (res : any) => {
-        const { 
+        const {
             email,
             familyName,
             givenName,
@@ -101,9 +101,9 @@ const GmailLogin : FC<ActionsProps> = ({
                 cookiePolicy={'single_host_origin'}
                 render={renderProps => (
                     <div className="flex pb-4">
-                        <button 
+                        <button
                         className="flex-1 m-2 p-2 rounded-md shadow-md bg-red-400"
-                        onClick={renderProps.onClick} 
+                        onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                         >
                             <div className="flex flex-row h-6 justify-center content-center space-x-2">
@@ -118,11 +118,11 @@ const GmailLogin : FC<ActionsProps> = ({
             />
             <div className="relative">
                 <div className="absolute -top-3 left-0 right-0 flex justify-center">
-                    <LoginStateVisualizer 
+                    <LoginStateVisualizer
                         lstate={containsUsc}
                         email={email}/>
                 </div>
-            </div> 
+            </div>
         </div>
     )
 }
@@ -153,7 +153,7 @@ const Actions : FC<ActionsProps> = ({
             <div className="font-bold text-4xl text-gray-700">
                 Login
             </div>
-            <GmailLogin 
+            <GmailLogin
                 firstName={firstName}
                 setFirstName={setFirstName}
                 lastName={lastName}
@@ -163,7 +163,7 @@ const Actions : FC<ActionsProps> = ({
                 imageUrl={imageUrl}
                 setImageUrl={setImageUrl}
             />
-            
+
         </div>
 
     )
