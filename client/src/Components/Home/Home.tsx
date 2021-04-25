@@ -24,6 +24,8 @@ const Home : FC = () => {
     const [lastName, setLastName] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [imageUrl, setImageUrl] = useState<string>('');
+    const [id_token, setId_token] = useState<string>('');
+
 
     return (
         <div className="flex flex-1 flex-col">
@@ -41,7 +43,9 @@ const Home : FC = () => {
                             `transition-opacity duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
                         }>
                             <div className="flex justify-center">
-                                <SubmissionBox />
+                                <SubmissionBox
+                                    id_token={id_token}
+                                />
                             </div>
                         </div>
                     </div>
@@ -63,6 +67,8 @@ const Home : FC = () => {
                                     setEmail={setEmail}
                                     imageUrl={imageUrl}
                                     setImageUrl={setImageUrl}
+                                    id_token={id_token}
+                                    setId_token={setId_token}
                                 />
                             </div>
                         </div>

@@ -4,6 +4,8 @@ import express from 'express';
 const router = express.Router();
 import cors from "cors";
 
+const { OAuth2Client } = require('google-auth-library');
+
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase";
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
@@ -16,14 +18,7 @@ import "firebase/analytics";
 import "firebase/auth";
 import "firebase/firestore";
 
-// router.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
-
 router.use(cors());
-
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
@@ -42,38 +37,92 @@ firebase.initializeApp(firebaseConfig);
 
 // Getting all posts
 router.get('/', (req, res) => {
-    // Post.find().then(posts => {
-    //     res.json(posts);
-    // })
-})
+    console.log('========================');
+    console.log(`in GET(/api/confessions/)`);
+    console.log('========================');
+
+    let recentPostsRef = firebase.database().ref('submissions');
+
+    recentPostsRef.limitToLast(10).once('value', snapshot => {
+        if (snapshot.exists()){
+            console.log('snapshot exists in ConfFeed!');
+
+            const toSet : any[] = Object.values(snapshot.val()).reverse();
+
+            return res.send(toSet);
+        }
+        else { 
+            null; 
+        }
+    });
+});
 
 // Adding a new submission
-router.post('/', (req, res) => {
-
+router.post('/', async (req, res) => {
     const { 
         submission,
-        hashedId,
+        hashedid,
         //auth ? JWT ?
     } = req.headers
 
-    console.log(`Submission: ${submission}, hashedId: ${hashedId}`)
+    const id_token = req.headers.id_token;
 
-    console.log('wgot asd')
+    // how are we going to make sure this POST request
+    // is from a USC email ?
+
+    console.log('========================');
+    console.log(`in POST(/api/confessions/)`);
+    console.log(`submission: ${submission}`);
+    console.log(`hashedid: ${hashedid}`);
+    // console.log(`id_token: ${id_token}`);
+    console.log('========================');
 
     const subRef = firebase.database().ref('submissions');
     const posterRef = firebase.database().ref('recentPosters');
-
 
     // need to find way to hash emails for
     // security
     // and cuz we cant store total email
     // cuz the @ messes it up
 
+    // use JWT to auth in request
 
-    // res.set('Access-Control-Allow-Origin', '*');
+    const CLIENT_ID = '672847048149-cqlgs1ultc184pqoqebbtuja0fktiv4j.apps.googleusercontent.com';
+
+    const client = new OAuth2Client(CLIENT_ID);
+
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: id_token,
+            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
+            // Or, if multiple clients access the backend:
+            //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
+        });
+        const payload = ticket.getPayload();
+        const userid = payload['sub'];
+        // If request specified a G Suite domain:
+        // const domain = payload['hd'];
+    }
+
+    var isError = false;
+
+    try {
+        await verify();
+    }
+    catch (e) {
+        isError = true;
+        console.log('in catch: ' + isError)
+    }
+
+    console.log(`Beforea: ${isError}`)
+    if (isError) {
+        console.log('Git an error, gonna sendStatus404')
+        return res.sendStatus(404)
+    };
+
+    console.log(`After: ${isError}`)
 
     const userName = Date.now();
-
 
     posterRef.orderByChild("hashedId").equalTo(userName).once("value",snapshot => {
         if (snapshot.exists()){
@@ -82,7 +131,7 @@ router.post('/', (req, res) => {
 
             // 400 rate limit
             res.statusCode = 429;
-            res.send('Rate Limited: Please Wait Between Submissions');
+            return res.send('Rate Limited: Please Wait Between Submissions');
         }
         else {
             subRef.push().set({
@@ -99,9 +148,9 @@ router.post('/', (req, res) => {
                 hashedId: userName
             });
 
-            res.statusCode = 200;
+            return res.statusCode = 200;
         }
-    });
+    }); 
 });
 
 // Update a post

@@ -40,15 +40,16 @@ const GmailLogin : FC<ActionsProps> = ({
     lastName,
     email,
     imageUrl,
+    id_token,
     setFirstName,
     setLastName,
     setEmail,
-    setImageUrl
+    setImageUrl,
+    setId_token
 } : ActionsProps) => {
 
     const [containsUsc, setContainsUsc] = useState<loginState>(loginState.Default);
     const [googleId, setGoogleId] = useState<string>('');
-
 
     useEffect(() => {
         console.log('useEffect loading')
@@ -67,8 +68,16 @@ const GmailLogin : FC<ActionsProps> = ({
             givenName,
             googleId,
             imageUrl,
-            name
+            name,
         } = res.profileObj;
+
+        const {
+            id_token
+        } = res.tokenObj;
+
+        console.log(res)
+
+        
 
         const containsUniversityEmail = email.includes('@usc.edu');
 
@@ -80,6 +89,7 @@ const GmailLogin : FC<ActionsProps> = ({
             setEmail(email);
             setGoogleId(googleId);
             setImageUrl(imageUrl);
+            setId_token(id_token);
         }
         else {
             setContainsUsc(loginState.Failure);
@@ -88,6 +98,7 @@ const GmailLogin : FC<ActionsProps> = ({
             setEmail(email);
             setGoogleId('');
             setImageUrl('');
+            setId_token('');
         }
     }
 
@@ -132,10 +143,12 @@ interface ActionsProps {
     lastName: string,
     email: string,
     imageUrl: string,
+    id_token: string,
     setFirstName: (fname : string) => void,
     setLastName: (fname : string) => void,
     setEmail: (fname : string) => void,
-    setImageUrl: (fname : string) => void
+    setImageUrl: (fname : string) => void,
+    setId_token: (fname : string) => void
 }
 
 const Actions : FC<ActionsProps> = ({
@@ -143,10 +156,12 @@ const Actions : FC<ActionsProps> = ({
     lastName,
     email,
     imageUrl,
+    id_token,
     setFirstName,
     setLastName,
     setEmail,
-    setImageUrl
+    setImageUrl,
+    setId_token
 } : ActionsProps) => {
     return (
         <div>
@@ -162,6 +177,8 @@ const Actions : FC<ActionsProps> = ({
                 setEmail={setEmail}
                 imageUrl={imageUrl}
                 setImageUrl={setImageUrl}
+                id_token={id_token}
+                setId_token={setId_token}
             />
 
         </div>

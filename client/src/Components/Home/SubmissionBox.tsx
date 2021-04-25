@@ -4,21 +4,22 @@ import React, {
     useEffect,
     useState
 } from 'react';
-import firebase from 'firebase';
 import axios from 'axios';
 
 
+interface SubmissionBoxProps {
+    id_token: string
+}
 
-const SubmissionBox : FC = () => {
+const SubmissionBox : FC<SubmissionBoxProps> = ({
+    id_token
+} : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
     const [inputLength, setInputLength] = useState<number>(0);
     const [isKeydown, setIsKeydown] = useState<boolean>(false);
 
     const writeUserData = async (submission : string, email : string) : Promise<any> =>{
-        console.log('test');
-
-
         const maxCharLength = 280;
 
         if (inputLength > maxCharLength){
@@ -41,18 +42,19 @@ const SubmissionBox : FC = () => {
                 url: 'http://localhost:5000/api/confessions/',
                 headers: { 
                   'submission': inputSpan.current.textContent, 
-                  'hashedId': userName
+                  'hashedId': userName,
+                  'id_token': id_token
                 }
             };
               
-            axios(config)
+            await axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
+                // console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
-                console.log(error);
+                // console.log(error);
             });
-    }
+        }
     }
 
 

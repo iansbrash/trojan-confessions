@@ -4,6 +4,7 @@ import React, {
     useEffect
 } from 'react';
 import firebase from 'firebase';
+import axios from 'axios';
 
 // var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
 // starCountRef.on('value', (snapshot) => {
@@ -60,36 +61,40 @@ const SpacerNoLine : FC = () => {
 
 const ConfessionsFeed : FC = () => {
 
-
     const [confessions, setConfessions] = useState<object[]>([]);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
 
     const fetchConfessions = async () : Promise<any> => {
-        setLoadingPosts(true)
-        let recentPostsRef = firebase.database().ref('submissions');
+        setLoadingPosts(true);
 
-        await recentPostsRef.limitToLast(10).on('value', snapshot => {
-            if (snapshot.exists()){
-                console.log('snapshot exists in ConfFeed!');
-                console.log(snapshot.val());
+        var config : object = {
+            method: 'get',
+            url: 'http://localhost:5000/api/confessions/',
+            headers: { }
+        };
 
-                const toSet : any[] = Object.values(snapshot.val()).reverse();
-
-                setConfessions(toSet);
-            }
-            setLoadingPosts(false);
+        await axios(config)
+        .then(function (response) {
+            console.log(`response: XDD`);
+            console.log(response.data);
+            setConfessions(response.data);
+            // console.log(JSON.stringify(response.data));
         })
+        .catch(function (error) {
+            console.log(error);
+        });
 
+        setLoadingPosts(false);
     }
 
     useEffect(() => {
-
+        console.log(`in useEffect()`)
         fetchConfessions();
 
         return (() => {
             // some cleanup here ?
-        })
-    }, [])
+        });
+    }, []);
 
     // let tempConfArr = [
     //     {
