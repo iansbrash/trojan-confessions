@@ -4,10 +4,12 @@ import React, {
 } from 'react';
 import HomeHeader from './HomeHeader';
 import WelcomeBanner from './WelcomeBanner';
-import HowItWorks from './HowItWorks'
-import Actions from './Actions'
+import HowItWorks from './HowItWorks';
+import Actions from './Actions';
 import ConfessionsFeed from './ConfessionsFeed';
 import SubmissionBox from './SubmissionBox';
+import AddIdentifiers from './AddIdentifiers';
+import Preview from './Preview';
 
 const Question : FC = () => {
     return (
@@ -25,56 +27,100 @@ const Home : FC = () => {
     const [email, setEmail] = useState<string>('');
     const [imageUrl, setImageUrl] = useState<string>('');
     const [id_token, setId_token] = useState<string>('');
+    const [signedDropped, setSignDropped] = useState<boolean>(false);
+    const [previewDropped, setPreviewDropped] = useState<boolean>(false);
+
+    
 
 
     return (
         <div className="flex flex-1 flex-col">
-            <HomeHeader />
-            <div className="flex justify-center content-center">
-                <WelcomeBanner />
+            <div className="z-20">
+                <HomeHeader />
             </div>
-            {/* <Question /> */}
-            <div className="my-4"></div>
-
-            <div>
+            <div className="z-10 bg-gray-100">
+                <div className="flex justify-center content-center">
+                    <WelcomeBanner />
+                </div>
+                {/* <Question /> */}
+                <div className="my-4"></div>
+            </div>
+            <div className="z-0">
                 <div className="flex flex-col max-w-4xl mx-auto">
-                    <div className="text-center flex-1 items-center">
+                    {/* Submission */}
+                    <div className="z-20 text-center flex-1 items-center">
                         <div className={
-                            `transition-opacity duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
+                            `transition duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
                         }>
                             <div className="flex justify-center">
                                 <SubmissionBox
                                     id_token={id_token}
+                                    signDropped={signedDropped}
+                                    setSignDropped={setSignDropped}
+                                    setPreviewDropped={setPreviewDropped}
+                                    previewDropped={previewDropped}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className={`flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
-                        <div className="flex flex-1 h-12 items-start">
-                            <div className="bg-gray-200 rounded-lg px-5 shadow-md">
-                                <HowItWorks
-                                    firstName={firstName}
-                                    lastName={lastName}
-                                    email={email}
-                                    imageUrl={imageUrl}
-                                />
-                                <Actions
-                                    firstName={firstName}
-                                    setFirstName={setFirstName}
-                                    lastName={lastName}
-                                    setLastName={setLastName}
-                                    email={email}
-                                    setEmail={setEmail}
-                                    imageUrl={imageUrl}
-                                    setImageUrl={setImageUrl}
-                                    id_token={id_token}
-                                    setId_token={setId_token}
-                                />
+
+                    {/* Preview */}
+                    {/* <div className={`z-10 text-center flex-1 items-center `}>
+                        <div className={
+                            `transform transition duration-500 ease-in-out 
+                            ${previewDropped ? 'opacity-1 translate-y-0' : 'opacity-0 translate-y-28'}`
+                        }>
+                            <div className="absolute top-0 flex justify-center">
+                                <Preview />
                             </div>
                         </div>
-                        <div className="flex flex-1 h-12 items-start">
-                            <div className="flex-1 bg-gray-200 rounded-lg px-5 shadow-md">
-                                <ConfessionsFeed />
+                    </div> */}
+
+                    {/* Everything Else */}
+                    <div 
+                        className={`transform duration-500 ease-in-out bg-black
+                        ${previewDropped ? 'translate-y-0' : 'translate-y-28'}`}>
+
+                        {/* <div className={`transform duration-500 ease-in-out ${previewDropped ? 'opacity-0' : 'opacity-1'}`}>
+                            <div className="absolute bottom-0">
+                                <div className="flex justify-center">
+                                    <Preview />
+                                </div>
+                            </div>
+                        </div> */}
+
+                        <div className={`flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
+                            <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
+                                <div className={`w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                    <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                                        <AddIdentifiers />
+                                    </div>
+                                </div>
+                                <div className="flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
+                                    <HowItWorks
+                                        firstName={firstName}
+                                        lastName={lastName}
+                                        email={email}
+                                        imageUrl={imageUrl}
+                                    />
+                                    <Actions
+                                        firstName={firstName}
+                                        setFirstName={setFirstName}
+                                        lastName={lastName}
+                                        setLastName={setLastName}
+                                        email={email}
+                                        setEmail={setEmail}
+                                        imageUrl={imageUrl}
+                                        setImageUrl={setImageUrl}
+                                        id_token={id_token}
+                                        setId_token={setId_token}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-1 h-12 items-start">
+                                <div className="flex-1 bg-gray-200 rounded-lg px-5 shadow-md">
+                                    <ConfessionsFeed />
+                                </div>
                             </div>
                         </div>
                     </div>
