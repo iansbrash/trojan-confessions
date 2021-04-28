@@ -80,7 +80,8 @@ interface SubmissionBoxProps {
     signDropped: boolean,
     setSignDropped: (sD : boolean) => void,
     setPreviewDropped: (pD : boolean) => void,
-    previewDropped: boolean
+    previewDropped: boolean,
+    setConfessionInput: (conf : string) => void
 }
 
 const SubmissionBox : FC<SubmissionBoxProps> = ({
@@ -88,7 +89,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     signDropped,
     setSignDropped,
     setPreviewDropped,
-    previewDropped
+    previewDropped,
+    setConfessionInput
 } : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
@@ -176,6 +178,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
         setIsKeydown(false);
         if (inputSpan !== null){
             setInputLength(inputSpan.current.innerHTML.toString().length);
+            setConfessionInput(inputSpan.current.innerHTML.toString());
         }
     }
 

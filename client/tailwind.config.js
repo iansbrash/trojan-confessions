@@ -2,13 +2,16 @@ module.exports = {
   // In your tailwind.config.js file, configure the purge option with the paths to all of your components so Tailwind can tree-shake unused styles in production builds:
   purge: [],
   darkMode: false, // or 'media' or 'class'
-  theme: {
-    extend: {},
-  },
+  // theme: {
+  //   extend: {},
+  // },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/aspect-ratio'),
+    // ...
+  ],
   theme: {
     fontSize: {
      'xs': '.75rem',
@@ -26,6 +29,13 @@ module.exports = {
      '7.1xl': '5.1rem'
     },
     extend: {
+      translate: {
+        '102': '26rem',
+        '103': '27.8rem',
+        '104': '28rem',
+        '105': '29rem',
+        '106': '30rem',
+      },
       transitionTimingFunction: {
        '4sfade': 'cubic-bezier(1.00, 1.00, 1.00, 0.00)',
       },
@@ -47,6 +57,11 @@ module.exports = {
         fadelong: 'fadelong 4s ease-in-out 1',
         roll: 'roll 3s ease-in-out infinite',
         wiggle: 'wiggle 1s ease-in-out infinite',
+      },
+      colors: {
+        tinderblue: {
+          DEFAULT: '#59b9f8'
+        }
       }
     }
   }

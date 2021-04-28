@@ -3,7 +3,14 @@
         "one": {
             "content": "I wanna die",
             "timestamp": 123123123123,
-            "hashedId": "abskgjco217nzks"
+            "hashedId": "abskgjco217nzks",
+            "tags": ["tag1", "tag2", "tag3"],
+            "signature": {
+                "location": "Gateway",
+                "school": "Viterbi",
+                "fraternity": "Sigma Nu",
+                "year": "Freshman"
+            }
         },
         "two": {
             "content": "I dont wanna die",

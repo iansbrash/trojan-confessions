@@ -1,5 +1,6 @@
 import React, {
-    FC
+    FC,
+    useState
 } from 'react';
 
 
@@ -7,14 +8,20 @@ interface SignatureFieldProps {
     placeholder: string
     svg: any,
     datalistArray: string[],
-     
+    setField: (field : string) => void
 }
 
 const SignatureField : FC<SignatureFieldProps> = ({
     placeholder,
     svg,
-    datalistArray
+    datalistArray,
+    setField
 } : SignatureFieldProps) => {
+
+    const handleChange = (e : any) => {
+        setField(e.target.value);
+    }
+
     return (
         <div className="flex flex-row space-x-2">
             <div className="mt-2">
@@ -24,6 +31,7 @@ const SignatureField : FC<SignatureFieldProps> = ({
             list={placeholder}
             placeholder={placeholder}
             className="bg-gray-200 my-2 text-2xl z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 placeholder-gray-400 text-gray-700 relative rounded border-0 outline-none focus:outline-none w-full text-left"    
+            onChange={e => handleChange(e)}
             >
 
             </input>
@@ -95,7 +103,26 @@ const PlusSvg = () => {
     )
 }
 
-const AddIdentifiers : FC = () => {
+interface AddIdentifiersProps {
+    setLocation: (l : string) => void,
+    setSchool: (l : string) => void,
+    setFraternity: (l : string) => void,
+    setYear: (l : string) => void
+}
+
+const AddIdentifiers : FC<AddIdentifiersProps> = ({
+    setLocation,
+    setSchool,
+    setFraternity,
+    setYear
+} : AddIdentifiersProps) => {
+
+
+    const [locationTemp, setLocationTemp] = useState<string>('');
+    const [schoolTemp, setSchoolTemp] = useState<string>('');
+    const [fraternityTemp, setFraternityTemp] = useState<string>('');
+    const [yearTemp, setYearTemp] = useState<string>('');
+
 
     const LocationArray : string[] = [
         'Lorenzo',
@@ -147,6 +174,13 @@ const AddIdentifiers : FC = () => {
         'Alumnus'
     ];
 
+    const signatureAdded = () => {
+        setLocation(locationTemp);
+        setSchool(schoolTemp);
+        setFraternity(fraternityTemp);
+        setYear(yearTemp);
+    }
+
 
 
     return (
@@ -154,7 +188,10 @@ const AddIdentifiers : FC = () => {
             <div className="relative">
                 <div className="absolute top-3 -right-2">
                     <div className="flex flex-col justify-center content-center bg-red-400 rounded-md shadow-md">
-                        <button className="focus:outline-none text-center font-bold text-xl text-white">
+                        <button 
+                            className="focus:outline-none text-center font-bold text-xl text-white"
+                            onClick={() => signatureAdded()}    
+                        >
                             <PlusSvg />
                         </button>
                     </div>
@@ -168,21 +205,25 @@ const AddIdentifiers : FC = () => {
                     placeholder={'Location'} 
                     svg={<LocationSvg/>}
                     datalistArray={LocationArray}
+                    setField={setLocationTemp}
                 />
                 <SignatureField 
                     placeholder={'School'} 
                     svg={<OfficeBuildingSvg/>}
                     datalistArray={SchoolArray}
+                    setField={setSchoolTemp}
                 />
                 <SignatureField 
                     placeholder={'Fraternity'} 
                     svg={<LibrarySvg/>}
                     datalistArray={GreekLifeArray}
+                    setField={setFraternityTemp}
                 />
                 <SignatureField 
                     placeholder={'Year'} 
                     svg={<GradCapSvg/>}
                     datalistArray={GraduationYearArray}
+                    setField={setYearTemp}
                 />
             </div>
         </div>

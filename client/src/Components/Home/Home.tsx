@@ -1,6 +1,7 @@
 import React, {
     FC,
-    useState
+    useState,
+    useEffect
 } from 'react';
 import HomeHeader from './HomeHeader';
 import WelcomeBanner from './WelcomeBanner';
@@ -19,6 +20,37 @@ const Question : FC = () => {
     )
 }
 
+interface TextProps {
+    content: string,
+    hasTail: boolean
+}
+
+const Text : FC<TextProps> = ({
+    content,
+    hasTail
+} : TextProps) => {
+    return (
+        <>
+            {content === '' ? null : 
+                <div className="leading-6 break-words max-w-xs relative rounded-xl text-white text-xl flex-initial bg-blue-400 py-1 px-2 mb-0.5">
+                    {content.trim()}
+                    {
+                        hasTail ? 
+                        <>
+                            <div className="transform translate-x-0.5 absolute bottom-0 -right-2.5 h-5 w-5 bg-blue-400 rounded-full"></div>
+                            <div className="transform translate-x-0.5 absolute bottom-0 -right-3.5 h-4 w-4 bg-gray-900 rounded-full"></div>
+                            <div className="transform translate-x-0.5 absolute bottom-2 -right-3.5 h-4 w-4 bg-gray-900"></div>
+                        </> 
+                            : 
+                        null
+                    }
+
+                </div>
+            }
+        </>
+    )
+}
+
 
 const Home : FC = () => {
 
@@ -29,8 +61,23 @@ const Home : FC = () => {
     const [id_token, setId_token] = useState<string>('');
     const [signedDropped, setSignDropped] = useState<boolean>(false);
     const [previewDropped, setPreviewDropped] = useState<boolean>(false);
+    const [confessionInput, setConfessionInput] = useState<string>('');
 
-    
+    // for AddIdentifiers
+    const [location, setLocation] = useState<string>('');
+    const [school, setSchool] = useState<string>('');
+    const [fraternity, setFraternity] = useState<string>('');
+    const [year, setYear] = useState<string>('');
+
+
+
+    useEffect(() => {
+
+        if (signedDropped){
+            setPreviewDropped(false);
+        }
+
+    }, [signedDropped])
 
 
     return (
@@ -59,43 +106,70 @@ const Home : FC = () => {
                                     setSignDropped={setSignDropped}
                                     setPreviewDropped={setPreviewDropped}
                                     previewDropped={previewDropped}
+                                    setConfessionInput={setConfessionInput}
                                 />
                             </div>
                         </div>
                     </div>
 
-                    {/* Preview */}
-                    {/* <div className={`z-10 text-center flex-1 items-center `}>
-                        <div className={
-                            `transform transition duration-500 ease-in-out 
-                            ${previewDropped ? 'opacity-1 translate-y-0' : 'opacity-0 translate-y-28'}`
-                        }>
-                            <div className="absolute top-0 flex justify-center">
-                                <Preview />
-                            </div>
-                        </div>
-                    </div> */}
-
                     {/* Everything Else */}
-                    <div 
-                        className={`transform duration-500 ease-in-out bg-black
-                        ${previewDropped ? 'translate-y-0' : 'translate-y-28'}`}>
+                    <div className={`flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
+                        <div className={`transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-start`}>
 
-                        {/* <div className={`transform duration-500 ease-in-out ${previewDropped ? 'opacity-0' : 'opacity-1'}`}>
-                            <div className="absolute bottom-0">
-                                <div className="flex justify-center">
-                                    <Preview />
+                            <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                <div className={`transform -translate-y-6 aspect-h-1 aspect-w-1 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                                    {/* <Preview /> */}
+
+                                    {/* Ideas:
+                                        iMessage
+                                        Zoom Chat
+                                        Email to Professor
+                                        Instagram DM
+                                        Snapchat
+                                        Blackboard Post
+                                        Post-it note
+                                        Clash of clans chat
+                                        Spotify Playlist
+                                        Powerpoint / Google Docs
+                                        VSCode
+                                        MOSS Report
+                                        SJACS
+                                        PornHub Theme
+                                        Twitter
+                                        Tinder
+                                        UCLA
+                                        USC
+                                        Local Community College
+                                        uscmissedconfessions
+                                        
+                                    */}
+
+                                    <div className="aspect-w-1 aspect-h-1">
+                                        <div className="flex justify-center items-center">
+                                            <div className="flex flex-col justify-center items-center h-96 w-96 bg-gray-900 rounded-md shadow-md">
+                                                <Text content={confessionInput} hasTail={false}/>
+                                                <Text content={
+                                                    `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`
+                                                } hasTail={true} />
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div> */}
 
-                        <div className={`flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
                             <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
                                 <div className={`w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
                                     <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
-                                        <AddIdentifiers />
+                                        <AddIdentifiers 
+                                            setLocation={setLocation}
+                                            setSchool={setSchool}
+                                            setFraternity={setFraternity}
+                                            setYear={setYear}
+                                        />
                                     </div>
                                 </div>
+                                
+
                                 <div className="flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
                                     <HowItWorks
                                         firstName={firstName}
@@ -117,77 +191,19 @@ const Home : FC = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-1 h-12 items-start">
-                                <div className="flex-1 bg-gray-200 rounded-lg px-5 shadow-md">
-                                    <ConfessionsFeed />
-                                </div>
+                        </div>
+                        <div className="flex flex-1 h-12 items-start">
+                            <div className="flex-1 bg-gray-200 rounded-lg px-5 shadow-md">
+                                <ConfessionsFeed />
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            {/* Enables gap between Live Feed and bottom of window */}
             <div className="my-16"></div>
-
-
-
-            {/* <div className={
-                `transition-opacity duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
-            }>
-                <div className="flex justify-center">
-                    <SubmissionBox />
-                </div>
-            </div> */}
-            {/* <div className="mx-auto max-w-3xl bg-black flex flex-1 flex-col">
-                <SubmissionBox />
-            </div> */}
-
-                    {/* <SubmissionBox /> */}
-
-            {/* <div className={`
-                max-w-2xl bg-black flex flex-col justify-center
-                space-y-5
-            `}>
-                <div className="flex justify-center">
-                    <SubmissionBox />
-                </div>
-
-            </div> */}
-            {/* <div className={
-                `bg-black flex flex-col justify-items-center justify-center`
-            }>
-                <div className="flex-1 align-middle flex items-center justify-center max-w-5xl">
-                    <SubmissionBox />
-                </div>
-            </div> */}
-
-            {/* <div className={`
-                flex justify-center content-center flex-row space-x-5
-                transform duration-500 ease-in-out ${email.includes('@usc.edu') ? '-translate-y-0' : '-translate-y-28'}`}>
-                <div className="flex flex-col flex-1 max-w-md justify-right">
-                    <div className="bg-gray-200 rounded-lg px-5 shadow-md">
-                        <HowItWorks
-                            firstName={firstName}
-                            lastName={lastName}
-                            email={email}
-                            imageUrl={imageUrl}
-                        />
-                        <Actions
-                            firstName={firstName}
-                            setFirstName={setFirstName}
-                            lastName={lastName}
-                            setLastName={setLastName}
-                            email={email}
-                            setEmail={setEmail}
-                            imageUrl={imageUrl}
-                            setImageUrl={setImageUrl}
-                            />
-                    </div>
-                </div>
-                <div className="flex-1 max-w-md justify-left">
-                    <ConfessionsFeed />
-                </div>
-            </div> */}
+            
         </div>
     )
 }
