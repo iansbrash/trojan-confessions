@@ -3,6 +3,8 @@ import express from "express";
 
 import confessions from './routes/api/confessions';
 import preview from './routes/api/preview';
+import login from './routes/api/login';
+
 
 // app
 const app = express();
@@ -45,6 +47,9 @@ app.use('/api/confessions', confessions);
 
 // router 2
 app.use('/api/preview', preview);
+
+// router 3
+app.use('/api/login', login);
 
 
 

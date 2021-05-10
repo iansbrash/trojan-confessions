@@ -4,6 +4,10 @@ import express from 'express';
 const router = express.Router();
 import cors from "cors";
 
+// lets us use process.env variables
+require('dotenv').config();
+
+
 const { OAuth2Client } = require('google-auth-library');
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
@@ -110,7 +114,7 @@ router.post('/', async (req, res) => {
 
     // use JWT to auth in request
 
-    const CLIENT_ID = '672847048149-cqlgs1ultc184pqoqebbtuja0fktiv4j.apps.googleusercontent.com';
+    const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
     const client = new OAuth2Client(CLIENT_ID);
 
