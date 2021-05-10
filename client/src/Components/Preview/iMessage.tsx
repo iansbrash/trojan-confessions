@@ -16,7 +16,7 @@ const Text : FC<TextProps> = ({
     return (
         <>
             {content === '' ? null : 
-                <div className="leading-6 break-words max-w-xs relative rounded-xl text-white text-xl flex-initial bg-blue-400 py-1 px-2 mb-0.5">
+                <div className="leading-6 mr-4 break-words max-w-xs relative rounded-xl text-white text-xl flex-initial bg-blue-400 py-1 px-2 mb-0.5">
                     {content.trim()}
                     {
                         hasTail ? 
@@ -49,7 +49,7 @@ const IMessage : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-center items-center h-96 w-96 bg-gray-900 rounded-md shadow-md">
+            <div className="flex flex-col justify-center items-end h-96 w-96 bg-gray-900 shadow-md">
                 <Text content={confessionInput} hasTail={false}/>
                 <Text content={
                     `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`

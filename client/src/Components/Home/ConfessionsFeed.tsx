@@ -3,7 +3,6 @@ import React, {
     useState,
     useEffect
 } from 'react';
-import firebase from 'firebase';
 import axios from 'axios';
 
 // var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
@@ -19,14 +18,54 @@ import axios from 'axios';
 interface ConfessionProps {
     timestamp: string,
     submission: string,
-    hashedId: string
+    hashedId: string,
+    signature: SignatureProps,
+    tags: string[]
+}
+
+interface SignatureProps {
+    location: string,
+    school: string,
+    fraternity: string,
+    year: string
+}
+
+interface FeedTagProps {
+    text: string,
+    color: string
+}
+
+const FeedTag : FC<FeedTagProps> = ({
+    text,
+    color
+} : FeedTagProps) => {
+    return (
+        <div className="p-0.5 transform transition duration-400 ease-in-out hover:scale-105">
+            <button className={`focus:outline-none ${color} transition duration-400 ease-in-out shadow-md hover:shadow-lg rounded-md`}>
+                <div className="text-white font-bold text-md mx-2 my-0.5 text-center">
+                    {text}
+                </div>
+            </button>
+        </div>
+        
+    )
 }
 
 const Confession : FC<ConfessionProps> = ({
     timestamp,
     submission,
-    hashedId
+    hashedId,
+    signature,
+    tags
 } : ConfessionProps) => {
+
+    const {
+        location,
+        school,
+        fraternity,
+        year
+    } = signature;
+
     return (
         <div className="my-4">
             <div className="leading-7 break-all font-bold text-2xl text-gray-500">
@@ -34,6 +73,15 @@ const Confession : FC<ConfessionProps> = ({
             </div>
             <div className="leading-6 break-all text-2xl text-gray-500">
                 {submission}
+            </div>
+            <div className="flex flex-row flex-wrap mt-2 -mx-2">
+                <FeedTag color={'bg-red-800'} text={location}/>
+                <FeedTag color={'bg-red-700'} text={school}/>
+                <FeedTag color={'bg-red-600'} text={fraternity}/>
+                <FeedTag color={'bg-red-500'} text={year}/>
+                {
+                    tags.map(tag => <FeedTag color={'bg-red-400'} text={`#${tag}`}/> )
+                }
             </div>
         </div>
     )
@@ -131,9 +179,12 @@ const ConfessionsFeed : FC = () => {
                     confessions.map((confObj : any, i : number) => (
                         <>
                             <Confession
-                                submission={confObj.submission}
+                                submission={confObj.content}
                                 timestamp={confObj.timestamp}
-                                hashedId={confObj.hashedId} />
+                                hashedId={confObj.hashedId}
+                                signature={confObj.signature} 
+                                tags={confObj.tags.split(',')}
+                            />
 
                             {i !== confessions.length - 1 ? <Spacer /> : <SpacerNoLine/>}
                         </>

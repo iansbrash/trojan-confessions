@@ -22,14 +22,25 @@ router.use(cors());
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
+// const firebaseConfig = {
+//     apiKey: "AIzaSyC1FKqaFxaK8EVE5L4qk-do6jveU1gnCek",
+//     authDomain: "trojan-confessions-fb.firebaseapp.com",
+//     projectId: "trojan-confessions-fb",
+//     storageBucket: "trojan-confessions-fb.appspot.com",
+//     messagingSenderId: "1028464703772",
+//     appId: "1:1028464703772:web:648d7c2ee8c5d7b595e2d9",
+//     measurementId: "G-KLEB16W0BE"
+// };
+
 const firebaseConfig = {
-    apiKey: "AIzaSyC1FKqaFxaK8EVE5L4qk-do6jveU1gnCek",
-    authDomain: "trojan-confessions-fb.firebaseapp.com",
-    projectId: "trojan-confessions-fb",
-    storageBucket: "trojan-confessions-fb.appspot.com",
-    messagingSenderId: "1028464703772",
-    appId: "1:1028464703772:web:648d7c2ee8c5d7b595e2d9",
-    measurementId: "G-KLEB16W0BE"
+    apiKey: "AIzaSyCYfLfdevWj0KH2M7uGObIZN2vqh-5S5qE",
+    authDomain: "trojan-confessions-449cf.firebaseapp.com",
+    databaseURL: "https://trojan-confessions-449cf-default-rtdb.firebaseio.com",
+    projectId: "trojan-confessions-449cf",
+    storageBucket: "trojan-confessions-449cf.appspot.com",
+    messagingSenderId: "348759087285",
+    appId: "1:348759087285:web:74630ddb7287bf65e9c6fc",
+    measurementId: "G-LYKT725YKZ"
 };
 
 // Initialize Firebase
@@ -52,7 +63,8 @@ router.get('/', (req, res) => {
             return res.send(toSet);
         }
         else { 
-            null; 
+            // null; 
+            return res.status(404);
         }
     });
 });
@@ -60,19 +72,30 @@ router.get('/', (req, res) => {
 // Adding a new submission
 router.post('/', async (req, res) => {
     const { 
-        submission,
+        content,
+        // timestamp, Probably don't want this 
+        // -- we can calculate server-side instead
         hashedid,
+        tags,
+        theme,
+        // signature
         //auth ? JWT ?
+        location,
+        school,
+        fraternity,
+        year
     } = req.headers
 
     const id_token = req.headers.id_token;
+
+    // console.log(signature);
 
     // how are we going to make sure this POST request
     // is from a USC email ?
 
     console.log('========================');
     console.log(`in POST(/api/confessions/)`);
-    console.log(`submission: ${submission}`);
+    console.log(`content: ${content}`);
     console.log(`hashedid: ${hashedid}`);
     // console.log(`id_token: ${id_token}`);
     console.log('========================');
@@ -117,7 +140,7 @@ router.post('/', async (req, res) => {
 
     console.log(`Beforea: ${isError}`)
     if (isError) {
-        console.log('Git an error, gonna sendStatus404')
+        console.log('Got an error, gonna sendStatus404')
         return res.sendStatus(404)
     };
 
@@ -135,18 +158,30 @@ router.post('/', async (req, res) => {
             return res.send('Rate Limited: Please Wait Between Submissions');
         }
         else {
+
+            const hashedId = new Date().toISOString();
+
             subRef.push().set({
-                submission,
+                content: content,
                 timestamp: new Date().toISOString(),
 
                 // to change
-                hashedId : userName
+                // hashedId : userName,
+                hashedId: hashedid,
+                tags: tags,
+                theme: theme,
+                signature: {
+                    location,
+                    school,
+                    fraternity,
+                    year
+                }
             });
 
             posterRef.push().set({
 
                 // to change
-                hashedId: userName
+                hashedId: hashedId
             });
 
             return res.statusCode = 200;

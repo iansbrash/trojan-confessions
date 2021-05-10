@@ -2,9 +2,11 @@
     "submissions": {
         "one": {
             "content": "I wanna die",
-            "timestamp": 123123123123,
-            "hashedId": "abskgjco217nzks",
+            "timestamp": "probably dont want this calc ser-side",
+            "hashedid": "abskgjco217nzks",
             "tags": ["tag1", "tag2", "tag3"],
+            "theme": "imessage",
+            "id_token": "asdasdad124asd",
             "signature": {
                 "location": "Gateway",
                 "school": "Viterbi",

@@ -7,8 +7,12 @@ import IMessage from './iMessage';
 import Zoom from './Zoom';
 import Email from './Email';
 import Tinder from './Tinder';
+import Twitter from './Twitter';
 
 import * as htmlToImage from 'html-to-image';
+import axios from 'axios';
+
+import firebase from "firebase";
 
 interface ThemeButtonProps {
     theme: string,
@@ -44,20 +48,36 @@ const Preview : FC = () => {
         });
     }
 
+    const testFunction = () => {
+
+        // const helloWorld = firebase.functions().httpsCallable('helloWord');
+        // helloWorld()
+        // .then((result) => {
+        //     // Read result of the Cloud Function.
+        //     var sanitizedMessage = result.data.text;
+        //     console.log(sanitizedMessage);
+        // });
+        axios.post("https://localhost:5001/trojan-confessions-449cf/us-central1/helloWorld", (res : object) => {
+            console.log(res);
+        });
+    }   
+
 
     const themesArray = [
         'iMessage',
         'Zoom',
         'Email',
-        'Tinder'
+        'Tinder',
+        'Twitter'
     ]
 
-    const tempConfession = "I stole some sped kids keychain after they bait-and-switched me with some bug spray. I also had sexual relations with Andy Cruz's succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.";
+    // const tempConfession = "I stole some sped kids keychain after they bait-and-switched me with some bug spray. I also had sexual relations with Andy Cruz's succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.";
+    const tempConfession = "I stole some kids keychain after they stole my alcohol. I also had sexual relations with a succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.";
     const tempLocation = "Lorenzo";
     const tempSchool = "Viterbi";
     const tempFraternity = "Ligma Nu";
     const tempYear = "Freshman";
-    const tempTags = ["FuckCovid", "JustinIsHot"]
+    const tempTags = ["FuckCovid", "JustinIsHot"];
 
 
     const themesElementArray = [
@@ -92,6 +112,14 @@ const Preview : FC = () => {
             fraternity={tempFraternity}
             year={tempYear}
             tags={tempTags}
+        />,
+        <Twitter 
+            confessionInput={tempConfession}
+            location={tempLocation}
+            school={tempSchool}
+            fraternity={tempFraternity}
+            year={tempYear}
+            tags={tempTags}
         />
 
     ]
@@ -108,6 +136,14 @@ const Preview : FC = () => {
                 }
                 <div className="bg-red-600 rounded-md shadow-md">
                     <button 
+                    onClick={() => testFunction()}
+                    className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
+                        Test Functions
+                    </button>
+                </div>
+                <div className="bg-red-600 rounded-md shadow-md">
+                    <button 
+                    id="download"
                     onClick={() => SaveImage()}
                     className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
                         Download
@@ -117,7 +153,7 @@ const Preview : FC = () => {
 
             {/* Theme */}
             <div className="w-96">
-                <div id="theme" className={`aspect-h-1 aspect-w-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                <div id="theme" className={`aspect-h-1 aspect-w-1 bg-gray-200 px-5 shadow-md`}>
                     {themesElementArray[currentTheme]}
                 </div>
             </div>

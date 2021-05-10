@@ -75,13 +75,36 @@ const AddTags : FC<AddTagsProps> = ({
     )
 }
 
+/** More shit we need to pass down:
+ *  userName (we need to hash it),
+ *  tags, theme,
+ *  signature: { location, school, frat, year }
+ */
+
+interface SignatureProps {
+    location: string,
+    school: string,
+    fraternity: string,
+    year: string
+}
+
 interface SubmissionBoxProps {
     id_token: string,
     signDropped: boolean,
     setSignDropped: (sD : boolean) => void,
     setPreviewDropped: (pD : boolean) => void,
     previewDropped: boolean,
-    setConfessionInput: (conf : string) => void
+    setConfessionInput: (conf : string) => void,
+    username: string,
+    signature: SignatureProps
+}
+
+enum Themes {
+    imessage = "imessage",
+    zoom = "zoom",
+    email = "email",
+    tinder = "tinder",
+    twitter = "twitter",
 }
 
 const SubmissionBox : FC<SubmissionBoxProps> = ({
@@ -90,12 +113,15 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     setSignDropped,
     setPreviewDropped,
     previewDropped,
-    setConfessionInput
+    setConfessionInput,
+    username,
+    signature
 } : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
     const [inputLength, setInputLength] = useState<number>(0);
     const [isKeydown, setIsKeydown] = useState<boolean>(false);
+    const [theme, setTheme] = useState<Themes>(Themes.imessage);
 
     /** Idea: Semi-Anonymous Submissions
      *  i.e. 
@@ -104,7 +130,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
      *      -Sigma Nu '23 Brother
      */
 
-    const [hashtags, setHashtags] = useState<string[]>([]);
+    const [tags, setTags] = useState<string[]>([]);
 
     const toggleSignDropped = () => {
         setSignDropped(!signDropped);
@@ -133,13 +159,22 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             //     hashedId: userName
             // });
 
+            console.log(`Themes[theme]: ${Themes[theme]}`)
+
             var config : object = {
                 method: 'post',
                 url: 'http://localhost:5000/api/confessions/',
                 headers: { 
-                  'submission': inputSpan.current.textContent, 
-                  'hashedId': userName,
-                  'id_token': id_token
+                    'content': inputSpan.current.textContent, 
+                    'hashedid': userName,
+                    'tags': tags,
+                    'theme': Themes[theme],
+                    'id_token': id_token,
+                    // 'signature': signature
+                    'location': signature.location,
+                    'school': signature.school,
+                    'fraternity': signature.fraternity,
+                    'year': signature.year
                 }
             };
               
@@ -228,11 +263,11 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 {/* Tags */}
                 <div className="flex flex-row justify-between space-x-2">
                     <AddTags 
-                        hashtags={hashtags}
-                        setHashtags={setHashtags}
+                        hashtags={tags}
+                        setHashtags={setTags}
                     />
                     <div className="flex flex-wrap space-x-2">
-                        {hashtags.map(tag => <Tag tag={tag}/>)}
+                        {tags.map(tag => <Tag tag={tag}/>)}
                     </div>
                 </div>
 
@@ -251,6 +286,13 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                                 onClick={() => togglePreviewDropped()}
                                 className="focus:outline-none text-center font-bold text-xl text-white">
                                 Preview
+                            </button>
+                        </div>
+                        <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
+                            <button 
+                                onClick={() => null}
+                                className="focus:outline-none text-center font-bold text-xl text-white">
+                                Theme
                             </button>
                         </div>
                         <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">

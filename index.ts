@@ -2,7 +2,7 @@ import express from "express";
 // import cors from "cors";
 
 import confessions from './routes/api/confessions';
-
+import preview from './routes/api/preview';
 
 // app
 const app = express();
@@ -43,6 +43,8 @@ app.use(function(req, res, next) {
 // router
 app.use('/api/confessions', confessions);
 
+// router 2
+app.use('/api/preview', preview);
 
 
 

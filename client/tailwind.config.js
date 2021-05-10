@@ -36,6 +36,9 @@ module.exports = {
         '105': '29rem',
         '106': '30rem',
       },
+      height: {
+        '0.25': '0.0625rem'
+      },
       transitionTimingFunction: {
        '4sfade': 'cubic-bezier(1.00, 1.00, 1.00, 0.00)',
       },
@@ -61,6 +64,12 @@ module.exports = {
       colors: {
         tinderblue: {
           DEFAULT: '#59b9f8'
+        },
+        twitterblue: {
+          DEFAULT: '#243447'
+        },
+        twitterlogoblue: {
+          DEFAULT: '#1DA1F2'
         }
       }
     }

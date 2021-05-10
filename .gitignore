@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# firebase
+.firebaserc
+
+# log files
+**/*.log
+
+# sensitive constants
+/puppeteer/constants.js

@@ -113,7 +113,7 @@ const GmailLogin : FC<ActionsProps> = ({
                 render={renderProps => (
                     <div className="flex pb-4">
                         <button
-                        className="flex-1 m-2 p-2 rounded-md shadow-md bg-red-400"
+                        className="focus:outline-none flex-1 m-2 p-2 rounded-md shadow-md bg-red-400"
                         onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                         >
