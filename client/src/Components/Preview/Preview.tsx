@@ -12,8 +12,6 @@ import Twitter from './Twitter';
 import * as htmlToImage from 'html-to-image';
 import axios from 'axios';
 
-import firebase from "firebase";
-
 interface ThemeButtonProps {
     theme: string,
     themeIndex: number,

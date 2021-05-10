@@ -1,21 +1,23 @@
 import React, {
     FC
 } from 'react';
+import { Link } from 'react-router-dom';
 
 
 interface HeaderLinkProps {
     title: string,
-    path?: string,
+    path: string,
 }
 
 const HeaderLink : FC<HeaderLinkProps> = ({title, path} : HeaderLinkProps) => {
     return (
         <div className="flex mx-1">
-            <div className="cursor-pointer flex px-2 justify-center content-center flex-1 transition duration-400 ease-in-out shadow-none hover:shadow-lg rounded-md">
+            <Link className="cursor-pointer flex px-2 justify-center content-center flex-1 transition duration-400 ease-in-out shadow-none hover:shadow-lg rounded-md"
+            to={path}>
                 <div className="my-auto text-center text-white text-xl">
                     {title}
                 </div>
-            </div>
+            </Link>
         </div>
     )
 }
@@ -28,10 +30,10 @@ const HomeHeader : FC = () => {
                     <Logo />
                 </div>
                 <div className="flex flex-row">
-                    <HeaderLink title={'Home'}/>
-                    <HeaderLink title={'Confessions'}/>
-                    <HeaderLink title={'Anonomity'}/>
-                    <HeaderLink title={'About'}/>
+                    <HeaderLink title={'Home'} path="/"/>
+                    <HeaderLink title={'Confessions'} path="/confessions/"/>
+                    <HeaderLink title={'Anonomity'} path="/anonimity/"/>
+                    <HeaderLink title={'About'} path="/about/"/>
                 </div>
             </div>
         </div>
@@ -41,9 +43,10 @@ const HomeHeader : FC = () => {
 const Logo : FC = () => {
     return (
         <div className="h-10 flex">
-            <div className="flex-1 bg-red-500 rounded-md shadow-md">
+            <Link className="flex-1 bg-red-500 rounded-md shadow-md"
+            to="/admin/login/">
 
-            </div>
+            </Link>
         </div>
     )
 }

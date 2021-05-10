@@ -9,6 +9,8 @@ router.use(cors());
 
 router.get('/', (req, res) => {
 
+    // why do we use querys here?
+    // no idea ...
     const {
         theme,
         confession,
@@ -18,6 +20,13 @@ router.get('/', (req, res) => {
         year
     } = req.query;
 
+    console.log('========================');
+    console.log(`in GET(/api/preview/)`);
+    console.log(`theme: ${theme}`)
+    console.log('========================');
+
+
+    // there has to be a better way to do this
     switch (theme) {
         case "imessage":
             res.send(`

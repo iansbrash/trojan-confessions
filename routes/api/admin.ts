@@ -4,6 +4,9 @@ import express from 'express';
 const router = express.Router();
 import cors from "cors";
 import jwt from 'jsonwebtoken';
+import firebase from "firebase";
+
+import authenticateJWT from '../../middleware/jwtauth';
 
 
 import axios from 'axios';
@@ -19,9 +22,12 @@ const generateAccessToken = (username : string) => {
     return jwt.sign({id: username}, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 }
 
-router.post('/', async (req, res) => {
+router.post('/login/', async (req, res) => {
 
-    console.log('in post');
+    console.log(`=========================`)
+    console.log(`in POST /api/admin/login/`);
+    console.log(`=========================`)
+
 
     const {
         id_token
@@ -80,6 +86,11 @@ router.post('/', async (req, res) => {
 
 
 router.post('/auth/', (req, res) => {
+
+    console.log(`=========================`)
+    console.log(`in POST /api/admin/auth/`);
+    console.log(`=========================`)
+
     const {
         jwt_token
     } = req.headers;
@@ -94,11 +105,41 @@ router.post('/auth/', (req, res) => {
         console.log(err)
 
         if (err) return res.sendStatus(403)
-
-        // req.user = user
     })
 
     return res.sendStatus(200);
+})
+
+
+
+// approved and toPost firebase catagories
+router.get('/submissions/', authenticateJWT, (req, res) => {
+
+
+    // gets from /submissons/
+    // requires auth
+
+    console.log(`I made it to auth!!!!!!`);
+
+    console.log('========================');
+    console.log(`in GET(/api/confessions/)`);
+    console.log('========================');
+
+    let recentPostsRef = firebase.database().ref('submissions');
+
+    recentPostsRef.limitToLast(10).once('value', snapshot => {
+        if (snapshot.exists()){
+            console.log('snapshot exists in ConfFeed!');
+
+            const toSet : any[] = Object.values(snapshot.val()).reverse();
+
+            return res.send(toSet);
+        }
+        else { 
+            // null; 
+            return res.status(404);
+        }
+    });
 })
 
 

@@ -5,13 +5,7 @@ import React, {
 } from 'react';
 import axios from 'axios';
 
-// var starCountRef = firebase.database().ref('posts/' + postId + '/starCount');
-// starCountRef.on('value', (snapshot) => {
-//   const data = snapshot.val();
-//   updateStarCount(postElement, data);
-// });
-
-// OR read data 'once' with { get }
+import LoadingIndicator from './LoadingIndicator';
 
 
 
@@ -166,11 +160,9 @@ const ConfessionsFeed : FC = () => {
             </div>
             {loadingPosts
             ?
-                <>
-                    <div className="animate-spin h-5 w-5 mr-3" >
-                        Loading Posts
-                    </div>
-                </>
+                <div className="flex justify-center my-4">
+                    <LoadingIndicator size={12}/>
+                </div>
             :
                 null
             }

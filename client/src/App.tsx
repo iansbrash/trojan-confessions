@@ -11,6 +11,7 @@ import Home from './Components/Home/Home'
 import Login from './Components/AdminLogin/Login';
 import Preview from './Components/Preview/Preview';
 import Dashboard from './Components/AdminLogin/Dashboard';
+import LoadingIndicator from './Components/Home/LoadingIndicator';
 
 // tailwind
 import "tailwindcss/tailwind.css"
@@ -24,60 +25,11 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
-import axios, { AxiosPromise, AxiosResponse } from 'axios';
+import axios from 'axios';
 import { useCookies } from 'react-cookie';
 
-// @ts-ignore
-const authContext = createContext<any>();
 
-const fakeAuth = {
-  isAuthenticated: false,
-  signin(cb : () => void) {
-    fakeAuth.isAuthenticated = true;
-    setTimeout(cb, 100); // fake async
-  },
-  signout(cb : () => void) {
-    fakeAuth.isAuthenticated = false;
-    setTimeout(cb, 100);
-  }
-};
 
-function ProvideAuth({ children } : any) {
-  const auth = useProvideAuth();
-  return (
-    <authContext.Provider value={auth}>
-      {children}
-    </authContext.Provider>
-  );
-}
-
-function useAuth() {
-  return useContext(authContext);
-}
-
-function useProvideAuth() {
-  const [user, setUser] = useState<string>(null!);
-
-  const signin = () => {
-    return fakeAuth.signin(() => {
-      setUser("user");
-      // cb();
-    });
-  };
-
-  const signout = () => {
-    return fakeAuth.signout(() => {
-      setUser(null!);
-      // cb();
-    });
-  };
-
-  return {
-    user,
-    signin,
-    signout
-  };
-}
 
 const PrivateRoute : FC<any> = ({ children, ...rest } : any) => {
 
@@ -91,7 +43,7 @@ const PrivateRoute : FC<any> = ({ children, ...rest } : any) => {
       try {
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:5000/api/login/auth/',
+          url: 'http://localhost:5000/api/admin/auth/',
           headers: {
             jwt_token: cookies['jwt_token']
           }
@@ -115,7 +67,12 @@ const PrivateRoute : FC<any> = ({ children, ...rest } : any) => {
 
   return (
     <>
-    {loading ? <div className="text-2xl font-bold">LOADING!!!!</div> :  <Route
+    {loading 
+    ? 
+      <div className="w-screen h-screen bg-gray-200 flex justify-center items-center">
+        <LoadingIndicator size={32}/>
+      </div> 
+    :  <Route
         {...rest}
         render={({ location }) =>
           isAuthed ? (
@@ -136,8 +93,6 @@ const PrivateRoute : FC<any> = ({ children, ...rest } : any) => {
 
 function App() {
 
-  // const fakeAuth = {isAuthenticated: true};
-  
 
   return (
       <Router>

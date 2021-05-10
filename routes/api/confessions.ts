@@ -15,14 +15,10 @@ import firebase from "firebase";
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
-// If you enabled Analytics in your project, add the Firebase SDK for Analytics
-import "firebase/analytics";
 
-// Add the Firebase products that you want to use
-import "firebase/auth";
-import "firebase/firestore";
 
 router.use(cors());
+
 
 // TODO: Replace the following with your app's Firebase project configuration
 // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
@@ -36,19 +32,6 @@ router.use(cors());
 //     measurementId: "G-KLEB16W0BE"
 // };
 
-const firebaseConfig = {
-    apiKey: "AIzaSyCYfLfdevWj0KH2M7uGObIZN2vqh-5S5qE",
-    authDomain: "trojan-confessions-449cf.firebaseapp.com",
-    databaseURL: "https://trojan-confessions-449cf-default-rtdb.firebaseio.com",
-    projectId: "trojan-confessions-449cf",
-    storageBucket: "trojan-confessions-449cf.appspot.com",
-    messagingSenderId: "348759087285",
-    appId: "1:348759087285:web:74630ddb7287bf65e9c6fc",
-    measurementId: "G-LYKT725YKZ"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 
 // Getting all posts
 router.get('/', (req, res) => {

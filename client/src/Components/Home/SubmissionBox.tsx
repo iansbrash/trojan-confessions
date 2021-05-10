@@ -218,12 +218,12 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
     useEffect(() => {
-        if (inputSpan !== null){
+        if (inputSpan.current !== null){
             inputSpan.current.addEventListener('keydown', handleKeydown);
             inputSpan.current.addEventListener('keyup', handleKeyup);
         }
         return (() => {
-            if (inputSpan !== null){
+            if (inputSpan.current !== null){
                 inputSpan.current.removeEventListener('keydown', handleKeydown);
                 inputSpan.current.removeEventListener('keyup', handleKeyup);
             }

@@ -3,7 +3,8 @@ import express from "express";
 
 import confessions from './routes/api/confessions';
 import preview from './routes/api/preview';
-import login from './routes/api/login';
+import admin from './routes/api/admin';
+import firebase from "firebase";
 
 
 // app
@@ -17,6 +18,21 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
 }); 
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCYfLfdevWj0KH2M7uGObIZN2vqh-5S5qE",
+    authDomain: "trojan-confessions-449cf.firebaseapp.com",
+    databaseURL: "https://trojan-confessions-449cf-default-rtdb.firebaseio.com",
+    projectId: "trojan-confessions-449cf",
+    storageBucket: "trojan-confessions-449cf.appspot.com",
+    messagingSenderId: "348759087285",
+    appId: "1:348759087285:web:74630ddb7287bf65e9c6fc",
+    measurementId: "G-LYKT725YKZ"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
 // // Add headers
 // app.use(function (req, res, next) {
@@ -49,7 +65,7 @@ app.use('/api/confessions', confessions);
 app.use('/api/preview', preview);
 
 // router 3
-app.use('/api/login', login);
+app.use('/api/admin', admin);
 
 
 
@@ -58,9 +74,9 @@ app.use('/api/login', login);
 const PORT = process.env.PORT || 5000;
 
 
-app.get("/", (req, res) => {
-    res.send("Hello world Fuck thjis!");
-});
+// app.get("/", (req, res) => {
+//     res.send("Hello world Fuck thjis!");
+// });
 
 // app.get("/api/", (req, res) => {
 //     res.send("Hello world!");

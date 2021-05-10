@@ -76,7 +76,7 @@ const Login : FC = () => {
 
         const res = await axios({
             method: 'post',
-            url: `http://localhost:5000/api/login/`,
+            url: `http://localhost:5000/api/admin/login/`,
             headers: {
                 id_token: tokenObj
             }
@@ -96,6 +96,16 @@ const Login : FC = () => {
         }
     }
 
+    // const testMiddleware = async () => {
+    //     const res = await axios({
+    //         method: 'get',
+    //         url: `http://localhost:5000/api/admin/submissions/`,
+    //         headers: {
+    //             jwt_token: cookies['jwt_token']
+    //         }
+    //     })
+    // }
+
     return (
         <div className="flex flex-col h-screen w-screen justify-start">
             <HomeHeader />
@@ -112,6 +122,16 @@ const Login : FC = () => {
                         Login
                     </div>
                 </button>
+
+                {/* <button 
+                className="w-20 bg-red-500 py-0.5 rounded-md shadow-md focus:outline-none"
+                onClick={() => testMiddleware()}
+                >
+                    <div className="font-bold text-xl text-white">
+                        Test Middleware
+                    </div>
+                </button> */}
+
             </div>
             {
                 isAuthed ? 
