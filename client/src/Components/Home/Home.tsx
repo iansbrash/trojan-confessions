@@ -10,8 +10,8 @@ import Actions from './Actions';
 import ConfessionsFeed from './ConfessionsFeed';
 import SubmissionBox from './SubmissionBox';
 import AddIdentifiers from './AddIdentifiers';
-import Preview from './Preview';
 import axios from 'axios';
+import ThemeRenderer from '../AdminLogin/ThemeRenderer';
 
 const Question : FC = () => {
     return (
@@ -52,6 +52,13 @@ const Text : FC<TextProps> = ({
     )
 }
 
+enum Themes {
+    imessage = "imessage",
+    zoom = "zoom",
+    email = "email",
+    tinder = "tinder",
+    twitter = "twitter",
+}
 
 const Home : FC = () => {
 
@@ -63,6 +70,9 @@ const Home : FC = () => {
     const [signedDropped, setSignDropped] = useState<boolean>(false);
     const [previewDropped, setPreviewDropped] = useState<boolean>(false);
     const [confessionInput, setConfessionInput] = useState<string>('');
+    const [tags, setTags] = useState<string[]>([]);
+    const [theme, setTheme] = useState<Themes>(Themes.imessage);
+
 
     // for AddIdentifiers
     const [location, setLocation] = useState<string>('');
@@ -80,22 +90,22 @@ const Home : FC = () => {
 
     }, [signedDropped])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const theme = 'imessage';
+    //     const theme = 'imessage';
 
-        const toe = async () => {
-            const res = await axios.get(`http://localhost:5000/api/preview/?theme=${theme}&confession=${confessionInput}&location=${location}&school=${school}&fraternity=${fraternity}&year=${year}`);
-            console.log(res);
-            if (res){
-                document.getElementById('toPreview')!.innerHTML = res.data;
-            }
+    //     const toe = async () => {
+    //         const res = await axios.get(`http://localhost:5000/api/preview/?theme=${theme}&confession=${confessionInput}&location=${location}&school=${school}&fraternity=${fraternity}&year=${year}`);
+    //         console.log(res);
+    //         if (res){
+    //             document.getElementById('toPreview')!.innerHTML = res.data;
+    //         }
             
-        }
-        if (previewDropped){
-            toe();
-        }
-    }, [previewDropped]);
+    //     }
+    //     if (previewDropped){
+    //         toe();
+    //     }
+    // }, [previewDropped]);
 
 
     return (
@@ -134,6 +144,10 @@ const Home : FC = () => {
                                             year: year
                                         }
                                     }
+                                    tags={tags}
+                                    setTags={setTags}
+                                    theme={theme}
+                                    setTheme={setTheme}
                                 />
                             </div>
                         </div>
@@ -175,9 +189,20 @@ const Home : FC = () => {
 
                                     <div className="aspect-w-1 aspect-h-1">
                                         <div className="flex justify-center items-center">
-                                            <div id="toPreview">
+                                            {/* <div id="toPreview">
 
-                                            </div>
+                                            </div> */}
+                                            <ThemeRenderer 
+                                            theme={Themes[theme]}
+                                            themeprops={{
+                                                confessionInput: confessionInput,
+                                                location: location,
+                                                school: school,
+                                                fraternity: fraternity,
+                                                year: year,
+                                                tags: tags
+                                            }}
+                                            />
                                             {/* <div className="flex flex-col justify-center items-center h-96 w-96 bg-gray-900 rounded-md shadow-md">
                                                 <Text content={confessionInput} hasTail={false}/>
                                                 <Text content={

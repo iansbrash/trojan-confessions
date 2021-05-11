@@ -33,6 +33,11 @@ const FeedTag : FC<FeedTagProps> = ({
     text,
     color
 } : FeedTagProps) => {
+
+    if (text === ''){
+        return null;
+    }
+
     return (
         <div className="p-0.5 transform transition duration-400 ease-in-out hover:scale-105">
             <button className={`focus:outline-none ${color} transition duration-400 ease-in-out shadow-md hover:shadow-lg rounded-md`}>

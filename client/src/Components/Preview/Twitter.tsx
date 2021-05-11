@@ -101,9 +101,13 @@ const Twitter : FC<ThemeProps> = ({
                 </div>
 
                 {/* Tweet */}
-                <div className="m-4 text-gray-100 text-lg">
-                    {confessionInput}
+                <div className="flex justify-start flex-row w-full">
+                    <div className="m-4 text-gray-100 text-lg">
+                        {confessionInput}
+                    </div>
                 </div>
+
+                
 
                 {/* Timestamp, twitter for ________ */}
                 <div className="flex flex-row justify-start w-full items-center">

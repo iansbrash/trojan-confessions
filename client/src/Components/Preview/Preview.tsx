@@ -36,6 +36,19 @@ const ThemeButton : FC<ThemeButtonProps> = ({
 
 const Preview : FC = () => {
 
+
+    const confessionArray = [
+        "I stole some kids keychain after they stole my alcohol. I also had sexual relations with a succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.",
+        "I stole some kids keychain after they stole my alcohol. I also had sexual relations with a succulent plant.",
+        "I stole some kids keychain after they stole my alcohol."
+    ];
+
+    const locationArray = ["University Gateway", "Lorenzo", ""];
+    const schoolArray = ["School of Pharmacy", "Marshall", ""];
+    const fraternityArray = ["Theta Kappa Epsilon", "Sigma Nu", ""];
+    const yearArray = ["Sophomore", "Senior", ""];
+    const tagsArray = [["FuckCovid", "JustinIsHot"], ["Demons"], []];
+
     const SaveImage = () => {
         htmlToImage.toJpeg(document.getElementById('theme')!, { quality: 0.95 })
         .then(function (dataUrl) {
@@ -45,6 +58,12 @@ const Preview : FC = () => {
             link.click();
         });
     }
+
+    const toggleSize = () => {
+        setSizeIndex((sizeIndex + 1) % confessionArray.length)
+    }
+
+
 
     const testFunction = () => {
 
@@ -69,55 +88,52 @@ const Preview : FC = () => {
         'Twitter'
     ]
 
+    const [sizeIndex, setSizeIndex] = useState<number>(0);
+
     // const tempConfession = "I stole some sped kids keychain after they bait-and-switched me with some bug spray. I also had sexual relations with Andy Cruz's succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.";
-    const tempConfession = "I stole some kids keychain after they stole my alcohol. I also had sexual relations with a succulent plant. On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.";
-    const tempLocation = "Lorenzo";
-    const tempSchool = "Viterbi";
-    const tempFraternity = "Ligma Nu";
-    const tempYear = "Freshman";
-    const tempTags = ["FuckCovid", "JustinIsHot"];
+    
 
 
     const themesElementArray = [
         <IMessage 
-            confessionInput={tempConfession}
-            location={tempLocation}
-            school={tempSchool}
-            fraternity={tempFraternity}
-            year={tempYear}
-            tags={tempTags}
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />,
         <Zoom 
-            confessionInput={tempConfession}
-            location={tempLocation}
-            school={tempSchool}
-            fraternity={tempFraternity}
-            year={tempYear}
-            tags={tempTags}
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />,
         <Email 
-            confessionInput={tempConfession}
-            location={tempLocation}
-            school={tempSchool}
-            fraternity={tempFraternity}
-            year={tempYear}
-            tags={tempTags}
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />,
         <Tinder 
-            confessionInput={tempConfession}
-            location={tempLocation}
-            school={tempSchool}
-            fraternity={tempFraternity}
-            year={tempYear}
-            tags={tempTags}
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />,
         <Twitter 
-            confessionInput={tempConfession}
-            location={tempLocation}
-            school={tempSchool}
-            fraternity={tempFraternity}
-            year={tempYear}
-            tags={tempTags}
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />
 
     ]
@@ -132,6 +148,13 @@ const Preview : FC = () => {
                 {
                     themesArray.map((t, i) => <ThemeButton theme={t} themeIndex={i} setTheme={setCurrentTheme}/>)
                 }
+                <div className="bg-red-600 rounded-md shadow-md">
+                    <button 
+                    onClick={() => toggleSize()}
+                    className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
+                        Toggle Size
+                    </button>
+                </div>
                 <div className="bg-red-600 rounded-md shadow-md">
                     <button 
                     onClick={() => testFunction()}

@@ -96,7 +96,11 @@ interface SubmissionBoxProps {
     previewDropped: boolean,
     setConfessionInput: (conf : string) => void,
     username: string,
-    signature: SignatureProps
+    signature: SignatureProps,
+    tags: string[],
+    setTags: (x : string[]) => void,
+    theme: Themes,
+    setTheme: (x : Themes) => void
 }
 
 enum Themes {
@@ -115,13 +119,17 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     previewDropped,
     setConfessionInput,
     username,
-    signature
+    signature,
+    tags,
+    setTags,
+    theme,
+    setTheme
 } : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
     const [inputLength, setInputLength] = useState<number>(0);
     const [isKeydown, setIsKeydown] = useState<boolean>(false);
-    const [theme, setTheme] = useState<Themes>(Themes.imessage);
+    const [themesIndex, setThemesIndex] = useState<number>(0);
 
     /** Idea: Semi-Anonymous Submissions
      *  i.e. 
@@ -130,7 +138,6 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
      *      -Sigma Nu '23 Brother
      */
 
-    const [tags, setTags] = useState<string[]>([]);
 
     const toggleSignDropped = () => {
         setSignDropped(!signDropped);
@@ -138,6 +145,26 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
 
     const togglePreviewDropped = () => {
         setPreviewDropped(!previewDropped);
+    }
+
+    const toggleTheme = () => {
+        const themesArray : Themes[] = [
+            Themes.imessage,
+            Themes.zoom,
+            Themes.email,
+            Themes.tinder,
+            Themes.twitter
+        ]
+
+        if (themesIndex === themesArray.length - 1){
+            setThemesIndex(0);
+        }
+        else {
+            setThemesIndex(themesIndex + 1);
+        }
+
+        setTheme(themesArray[themesIndex]);
+        console.log(`Toggled theme to: ${Themes[theme]}`)
     }
 
 
@@ -290,7 +317,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                         </div>
                         <div className="flex flex-col justify-center content-center px-2 h-8 bg-red-400 rounded-md shadow-md">
                             <button 
-                                onClick={() => null}
+                                onClick={() => toggleTheme()}
                                 className="focus:outline-none text-center font-bold text-xl text-white">
                                 Theme
                             </button>
