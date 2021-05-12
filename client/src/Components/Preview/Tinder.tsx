@@ -1,5 +1,7 @@
 import React, {
-    FC
+    FC,
+    useEffect,
+    useState
 } from 'react';
 import ThemeProps from './ThemeProps';
 
@@ -35,10 +37,49 @@ const ChevronDown = () => {
     )
 }
 
+const TinderHeader : FC = () => {
+    return (
+        <div className="z-10 h-16 shadow-md w-full flex flex-row justify-between items-center">
+            <div className="ml-2 w-7 text-gray-300">
+                <ChevronDown />
+            </div>
+
+            {/* Icon + Name */}
+            <div className="flex flex-col justify-center items-center">
+                <div className="mt-1 rounded-full h-9 w-9 bg-gray-300">
+                    <img className="object-cover rounded-full h-9 w-9" src={'https://www.president.usc.edu/wp-content/uploads/2021/01/Carol-Folt-USC-President-784x1024.jpg'}/>
+                </div>
+                <div className="-mt-0.5 text-xs text-gray-400">
+                    Carol
+                </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="w-9 h-16 bg-pink relative">
+                <div className="space-x-2 absolute right-4 top-0 bottom-0 flex flex-row justify-center items-center">
+                    {/* Camera */}
+                    <div className="text-blue-500">
+                        <Camera />
+                    </div>
+
+                    {/* Shield */}
+                    <div className="text-blue-500">
+                        <Shield />
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 const TinderText : FC<TinderTextProps & TinderTextPropsTwo> = ({
     text,
     needsCorner
 } : (TinderTextProps & TinderTextPropsTwo)) => {
+
+
+    if (text === '') return null;
+
     return (
         <div className="flex-row flex">
             <div className="w-28">
@@ -46,24 +87,35 @@ const TinderText : FC<TinderTextProps & TinderTextPropsTwo> = ({
             </div>
 
             <div className="w-full flex flex-row justify-end relative">
-                <div className="z-10 relative">
+                <div className="z-30 relative">
                     <div className="z-10 bg-tinderblue rounded-3xl mr-3 py-2">
-                        <div className="leading-6 mx-3 text-white text-lg text-left">
+                        <div className="break-all leading-6 mx-3 text-white text-lg text-left">
                             {text}
                         </div>
                     </div>
                     
                 </div>
+                {/* Seems to be a block on the rightmost side that makes it not round */}
                 <div className="z-0 absolute bottom-0 right-0 bg-tinderblue rounded-md h-10 w-10 mr-3 py-2">
                    
                 </div>
+                {needsCorner ? null : 
+                <>
+                    <div className="z-10 absolute bottom-5 bg-white  h-5 w-10 mr-3 py-2">
+                   
+                   </div>
+                   <div className="z-10 absolute bottom-0 right-5 bg-white  h-5 w-10 mr-3 py-2">
+                      
+                   </div>
+                </>}
                 {
                     needsCorner ?
                         <>
-                            <div className="z-0 absolute top-0 right-0 bg-tinderblue rounded-md h-10 w-10 mr-3 py-2">
+                            <div className="z-0 absolute bottom-0 right-0 bg-tinderblue rounded-md h-10 w-10 mr-3 py-2">
                             </div>
                         </>
-                    : null
+                    : 
+                        null
                 }
             </div>
         </div>
@@ -78,48 +130,35 @@ const Tinder : FC<ThemeProps> = ({
     year,
     tags
 } : ThemeProps) => {
+
+    const [textHeight, setTextHeight] = useState<number>(0);
+
+
+    useEffect(() => {
+        if (document.getElementById('text')){
+            const height : number = document.getElementById('text')!.clientHeight;
+
+            setTextHeight(height);
+            //276 should be the max
+        }
+
+        return () => {
+            // cleanup
+        }
+    }, [confessionInput, location, school, fraternity, year]);
+
     return (
         <div className="flex justify-center items-center">
             <div className="flex flex-col justify-start items-center h-96 w-96 bg-white rounded-md shadow-md">
                 {/* Header */}
-                <div className="z-10 h-16 shadow-md w-full flex flex-row justify-between items-center">
-                    <div className="ml-2 w-7 text-gray-300">
-                        <ChevronDown />
-                    </div>
-
-                    {/* Icon + Name */}
-                    <div className="flex flex-col justify-center items-center">
-                        <div className="mt-1 rounded-full h-9 w-9 bg-gray-300">
-                            <img className="rounded-full h-9 w-9" src={'https://www.president.usc.edu/wp-content/uploads/2021/01/Carol-Folt-USC-President-784x1024.jpg'}/>
-                        </div>
-                        <div className="-mt-0.5 text-xs text-gray-400">
-                            Carol
-                        </div>
-                    </div>
-
-                    {/* Buttons */}
-                    <div className="w-9">
-                        <div className="space-x-2 absolute right-4 top-0 h-16 flex flex-row justify-center items-center">
-                            {/* Camera */}
-                            <div className="text-blue-500">
-                                <Camera />
-                            </div>
-
-                            {/* Shield */}
-                            <div className="text-blue-500">
-                                <Shield />
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
+                { textHeight > 276 ? null : <TinderHeader /> }
 
                 {/* You Matched With */}
                 <div className="text-xs text-gray-400 my-2">
                     {`YOU MATCHED WITH CAROL ON ${`4/8/21`}`}
                 </div>
 
-                <div className="flex flex-col justify-start items-end bg-white w-full">
+                <div id="text" className="flex flex-col justify-start items-end bg-white w-full">
                     <TinderText 
                         text={confessionInput}
                         needsCorner={false}
