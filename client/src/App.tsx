@@ -12,6 +12,7 @@ import Login from './Components/AdminLogin/Login';
 import Preview from './Components/Preview/Preview';
 import Dashboard from './Components/AdminLogin/Dashboard';
 import LoadingIndicator from './Components/Home/LoadingIndicator';
+import Confessions from './Components/Confessions/Confessions';
 
 // tailwind
 import "tailwindcss/tailwind.css"
@@ -98,6 +99,7 @@ function App() {
       <Router>
         <Switch>
 
+          {/* /admin/login */}
           <Route path="/admin/login">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>
@@ -105,6 +107,7 @@ function App() {
             <Login />
           </Route>
 
+          {/* /admin/dashboard */}
           <PrivateRoute path="/admin/dashboard">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>
@@ -112,6 +115,15 @@ function App() {
             <Dashboard />
           </PrivateRoute>
 
+          {/* /confessions */}
+          <Route path="/confessions">
+            <Helmet>
+              <style>{'body { background-color: #F3F4F6; }'}</style>
+            </Helmet>
+            <Confessions />
+          </Route>
+
+          {/* /preview */}
           <Route path="/preview">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>
@@ -119,6 +131,7 @@ function App() {
             <Preview />
           </Route>
 
+          {/* / */}
           <Route path="/">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>

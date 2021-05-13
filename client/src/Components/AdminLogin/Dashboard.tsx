@@ -151,6 +151,18 @@ const ApprovalBlock : FC<any> = ({
 
 
     const approveSubmission = async () => {
+
+        const newSub = submissions.filter(
+            (obj : any) => {
+                // console.log(`obj.key: ${obj.key}, subObj.key: ${subObj.key}`)
+                return obj.key !== subObj.key;
+            }
+        )
+
+        setSubmissions(
+            newSub
+        )
+        
         const res = await axios({
             method: 'post',
             url: 'http://localhost:5000/api/admin/approve',
