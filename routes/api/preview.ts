@@ -55,13 +55,7 @@ router.get('/', (req, res) => {
             //code block
     }
 
-    return;
-
-    // res.sendFile
-
-
-
-    // return res.send('ok!');
+    return res.status(200);
 });
 
 

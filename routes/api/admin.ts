@@ -47,7 +47,7 @@ router.post('/login/', async (req, res) => {
 
     // make sure email matches first
     if (tokenEmail != 'brash@usc.edu'){
-        return res.status(404);
+        return res.sendStatus(404);
     }
 
     // verify token's authenticity
@@ -136,7 +136,32 @@ router.get('/submissions/', authenticateJWT, (req, res) => {
         }
         else { 
             // null; 
-            return res.status(404);
+            return res.status(404).send('na');
+        }
+    });
+})
+
+// approved and toPost firebase catagories
+router.get('/toPost/', authenticateJWT, (req, res) => {
+    // gets from /submissons/
+    // requires auth
+    console.log('========================');
+    console.log(`in GET(/api/admin/toPost)`);
+    console.log('========================');
+
+    let toPostRef = firebase.database().ref('toPost');
+
+    toPostRef.limitToLast(10).once('value', snapshot => {
+        if (snapshot.exists()){
+            console.log('snapshot exists in ConfFeed!');
+
+            const toSet : any[] = Object.values(snapshot.val()).reverse();
+
+            return res.send(toSet);
+        }
+        else { 
+            // null; 
+            return res.status(404).send('yee');
         }
     });
 })
@@ -211,23 +236,41 @@ router.post('/approve/', authenticateJWT, (req, res) => {
     firebase.database().ref('submissions/' + key).remove();
     // submissionsRef.child(key).remove();
 
+    return res.status(200).send('yee');
+})
 
 
-    // submissionsRef.orderByChild('timestamp').equalTo(timestamp).once("value", snapshot => {
-    //     if (snapshot.exists()){
-    //         console.log('exists!')
-    //         console.log(snapshot.val());
+router.delete('/submissions/', authenticateJWT, (req, res) => {
+    const {
+        jwt_token,
+        key
+    } = req.headers;
 
-    //         snapshot.ref.update(null);
-    //     }
-    //     else {
-    //         console.log('doesnt exist nomo');
-    //     }
-    // });
+    console.log('========================');
+    console.log(`in DELETE(/api/admin/submissions/)`);
+    console.log(`key: ${key}`)
+    console.log('========================');
 
+    firebase.database().ref('submissions/' + key).remove()
 
+    return res.status(200).send('GOOD!');
+});
 
-    return res.status(200);
+router.patch('/submissions/', authenticateJWT, (req, res) => {
+    const {
+        content,
+        key
+    } = req.headers;
+
+    console.log('========================');
+    console.log(`in PATCH(/api/admin/submissions/)`);
+    console.log(`key: ${key}`)
+    console.log(`content: ${content}`)
+    console.log('========================');
+
+    firebase.database().ref('submissions/' + key).update({content: content});
+
+    return res.status(200).send('yee'); 
 })
 
 

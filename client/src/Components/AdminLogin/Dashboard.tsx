@@ -64,13 +64,93 @@ const AdminSubmission : FC<AdminSubmissionProps> = ({
     )
 }
 
+const Check = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+    )
+}
+
+const Edit = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+    )
+}
+
+const Delete = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        </svg>
+    )
+}
+
 const ApprovalBlock : FC<any> = ({
-    subObj
+    subObj,
+    submissions,
+    setSubmissions
 } : any) => {
 
     const [cookies, setCookie] = useCookies(['jwt_token']);
+    const [edit, setEdit] = useState<boolean>(false);
+    const [currentContent, setCurrentContent] = useState<string>(subObj.content);
+    const [editingCurrentContent, setEditingCurrentContent] = useState<string>(subObj.content)
 
-    const approveSubmission = async (subObj : any) => {
+
+    const toggleEdit = () => {
+        setEdit(!edit);
+    }
+
+    const deleteSubmission = async () => {
+
+        console.log(`delete pressed with subObj.key=${subObj.key}`)
+
+        const newSub = submissions.filter(
+            (obj : any) => {
+                // console.log(`obj.key: ${obj.key}, subObj.key: ${subObj.key}`)
+                return obj.key !== subObj.key;
+            }
+        )
+
+        setSubmissions(
+            newSub
+        )
+
+        console.log('gets here!!')
+        
+        axios({
+            method: 'delete',
+            url: 'http://localhost:5000/api/admin/submissions/',
+            headers: {
+                jwt_token: cookies['jwt_token'],
+                key: subObj.key
+            }
+        })
+
+        return;
+    }
+
+    const editSubmission = async () => {
+        setCurrentContent(editingCurrentContent);
+        setEdit(false);
+
+
+        const res = await axios({
+            method: 'patch',
+            url: 'http://localhost:5000/api/admin/submissions/',
+            headers: {
+                jwt_token: cookies['jwt_token'],
+                key: subObj.key,
+                content: editingCurrentContent
+            }
+        })
+    }
+
+
+    const approveSubmission = async () => {
         const res = await axios({
             method: 'post',
             url: 'http://localhost:5000/api/admin/approve',
@@ -93,25 +173,55 @@ const ApprovalBlock : FC<any> = ({
     }
 
     return (
-        <div className="flex flex-row h-96">
-            <div className="h-full w-12 mr-4 flex flex-col space-y-4">
-                <button className="bg-red-400 w-12 h-12 rounded-md shadow-md"
-                onClick={() => approveSubmission(subObj)}>
-
-                </button>
-                <button className="bg-red-400 w-12 h-12 rounded-md shadow-md">
-
-                </button>
+        <div className="flex flex-col">
+            <div className="flex flex-row h-96">
+                <div className="h-full w-12 mr-4 flex flex-col space-y-4">
+                    <button className="text-white flex justify-center items-center bg-red-400 w-12 h-12 rounded-md shadow-md"
+                    onClick={() => approveSubmission()}>
+                        <Check />
+                    </button>
+                    <button className="text-white flex justify-center items-center bg-red-400 w-12 h-12 rounded-md shadow-md"
+                    onClick={() => toggleEdit()}>
+                        <Edit />
+                    </button>   
+                    <button className="text-white flex justify-center items-center bg-red-400 w-12 h-12 rounded-md shadow-md"
+                    onClick={() => deleteSubmission()}>
+                        <Delete />
+                    </button>
+                </div>
+                <AdminSubmission 
+                    content={currentContent}
+                    hashedId={subObj.hashedId}
+                    tags={subObj.tags.split(',')}
+                    theme={subObj.theme}
+                    timestamp={subObj.timestamp}
+                    signature={subObj.signature}
+                />
             </div>
-            <AdminSubmission 
-                content={subObj.content}
-                hashedId={subObj.hashedId}
-                tags={subObj.tags.split(',')}
-                theme={subObj.theme}
-                timestamp={subObj.timestamp}
-                signature={subObj.signature}
-            />
+            {
+                edit 
+                ?
+                    <>
+                        <div className="border- mt-5 flex flex-row">
+                            <button className="mr-4 h-12 w-12 bg-red-400 focus:border-none rounded-md shadow-md text-white text-xl font-bold"
+                            onClick={() => editSubmission()}
+                            >
+                                Edit
+                            </button>
+                            <div className="w-96 h-12">
+                                <textarea 
+                                value={editingCurrentContent}
+                                onChange={(e) => setEditingCurrentContent(e.target.value)}
+                                className="focus:outline-none resize-none h-20 w-96"/>
+                            </div>
+                        </div>
+                        
+                    </>
+                :
+                    null
+            }
         </div>
+        
     )
 }
 
@@ -121,6 +231,7 @@ const Dashboard : FC = () => {
     const [isAuthed, setIsAuthed] = useState<boolean>(true);
     const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const [submissions, setSubmissions] = useState<object[]>([]);
+    const [toPost, setToPost] = useState<object[]>([]);
 
     const logout = () => {
         if (cookies['jwt_token']){
@@ -135,9 +246,9 @@ const Dashboard : FC = () => {
     useEffect(() => {
 
         (async () : Promise<any> => {
-            setLoadingPosts(true);
+            // setLoadingPosts(true);
     
-            var config : object = {
+            var configSubmissions : object = {
                 method: 'get',
                 url: 'http://localhost:5000/api/admin/submissions/',
                 headers: {
@@ -145,18 +256,37 @@ const Dashboard : FC = () => {
                 }
             };
     
-            await axios(config)
+            await axios(configSubmissions)
             .then(function (response) {
-                console.log(`response: XDD`);
-                console.log(response.data);
                 setSubmissions(response.data);
-                // console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
             });
+
+            
     
-            setLoadingPosts(false);
+            // setLoadingPosts(false);
+        })();
+
+        (async () => {
+
+            var configToPost : object = {
+                method: 'get',
+                url: 'http://localhost:5000/api/admin/toPost/',
+                headers: {
+                    jwt_token: cookies['jwt_token']
+                }
+            };
+
+            await axios(configToPost)
+            .then(function (response) {
+                setToPost(response.data);
+                console.log(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         })();
 
     }, [])
@@ -181,17 +311,49 @@ const Dashboard : FC = () => {
                     </div>
                 </div>
 
-                {/* ConfessionsFeed of uncomfirmed submissions */}
-                <div className="flex-col justify-center items-center bg-gray100">
-                    {
-                        submissions.map((subObj : any) =>
-                            <>
-                                <ApprovalBlock subObj={subObj}/>
-                                <div className="h-5"></div>
-                            </>
-                        )
-                    }
+                <div className="flex flex-row space-x-12">
+                    {/* toPost Feed */}
+                    <div className="flex flex-col">
+                        <div className="w-96 mb-4 bg-red-400 rounded-md shadow-md text-white text-center text-4xl font-bold">
+                            toPost
+                        </div>
+                        {
+                            toPost.map((subObj : any) =>
+                                <div key={subObj.key}>
+                                    <AdminSubmission 
+                                        content={subObj.content}
+                                        hashedId={subObj.hashedId}
+                                        tags={subObj.tags.split(',')}
+                                        theme={subObj.theme}
+                                        timestamp={subObj.timestamp}
+                                        signature={subObj.signature}
+                                    />
+                                    <div className="h-5"></div>
+                                </div>
+                            )
+                        }
+                    </div>
+
+                    {/* ConfessionsFeed of uncomfirmed submissions */}
+                    <div className="flex-col justify-center items-center bg-gray100">
+                        <div className="ml-16 w-96 mb-4 bg-red-400 rounded-md shadow-md text-white text-center text-4xl font-bold">
+                            Submissions
+                        </div>
+                        {
+                            submissions.map((subObj : any) =>
+                                <div key={subObj.key}>
+                                    <ApprovalBlock 
+                                        subObj={subObj}
+                                        submissions={submissions}
+                                        setSubmissions={setSubmissions}
+                                    />
+                                    {/* <div className="h-5"></div> */}
+                                </div>
+                            )
+                        }
+                    </div>
                 </div>
+                
 
             </div>
 

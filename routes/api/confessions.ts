@@ -47,13 +47,15 @@ router.get('/', (req, res) => {
 
             const toSet : any[] = Object.values(snapshot.val()).reverse();
 
-            return res.send(toSet);
+            return res.status(200).send(toSet);
         }
         else { 
             // null; 
             return res.status(404);
         }
     });
+
+    console.log('WHY AM I HERE');
 });
 
 // Adding a new submission
@@ -175,35 +177,12 @@ router.post('/', async (req, res) => {
                 hashedId: hashedId
             });
 
-            return res.statusCode = 200;
+            return res.status(200).send('post yes')
         }
     }); 
-});
+    
 
-// Update a post
-router.post('/:_id', (req, res) => {
-
-    // const filter = { _id: req.params._id }
-    // const { title, content, author } = req.body;
-    // const update = { title, content, author }
-
-    // Post.findOneAndUpdate( 
-    //     filter,
-    //     update,
-    //     (doc) => {
-    //         res.json(doc);
-    //     }
-    // )
-});
-
-// Delete a post
-router.delete('/:_id', (req, res) => {
-    // Post.findByIdAndDelete( { _id: req.params._id },
-    //     (err, docs) => {
-    //         if (err) console.log(err)
-    //         else console.log("deleted : ", docs, req.params._id)
-    //     });
-    // res.json({_id: req.params._id})
+    return res.status(200);
 });
 
 export default router;
