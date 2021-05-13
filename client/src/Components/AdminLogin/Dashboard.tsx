@@ -64,6 +64,57 @@ const AdminSubmission : FC<AdminSubmissionProps> = ({
     )
 }
 
+const ApprovalBlock : FC<any> = ({
+    subObj
+} : any) => {
+
+    const [cookies, setCookie] = useCookies(['jwt_token']);
+
+    const approveSubmission = async (subObj : any) => {
+        const res = await axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/admin/approve',
+            headers: {
+                'jwt_token': cookies['jwt_token'],
+                'content': subObj.content, 
+                'hashedid': subObj.userName,
+                'tags': subObj.tags,
+                'theme': subObj.theme,
+                'timestamp': subObj.timestamp,
+                // 'id_token': id_token,
+                // 'signature': signature
+                'location': subObj.signature.location,
+                'school': subObj.signature.school,
+                'fraternity': subObj.signature.fraternity,
+                'year': subObj.signature.year,
+                'key': subObj.key
+            }
+        });
+    }
+
+    return (
+        <div className="flex flex-row h-96">
+            <div className="h-full w-12 mr-4 flex flex-col space-y-4">
+                <button className="bg-red-400 w-12 h-12 rounded-md shadow-md"
+                onClick={() => approveSubmission(subObj)}>
+
+                </button>
+                <button className="bg-red-400 w-12 h-12 rounded-md shadow-md">
+
+                </button>
+            </div>
+            <AdminSubmission 
+                content={subObj.content}
+                hashedId={subObj.hashedId}
+                tags={subObj.tags.split(',')}
+                theme={subObj.theme}
+                timestamp={subObj.timestamp}
+                signature={subObj.signature}
+            />
+        </div>
+    )
+}
+
 const Dashboard : FC = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_token']);
@@ -135,14 +186,7 @@ const Dashboard : FC = () => {
                     {
                         submissions.map((subObj : any) =>
                             <>
-                                <AdminSubmission 
-                                    content={subObj.content}
-                                    hashedId={subObj.hashedId}
-                                    tags={subObj.tags.split(',')}
-                                    theme={subObj.theme}
-                                    timestamp={subObj.timestamp}
-                                    signature={subObj.signature}
-                                />
+                                <ApprovalBlock subObj={subObj}/>
                                 <div className="h-5"></div>
                             </>
                         )

@@ -99,7 +99,13 @@ const TinderText : FC<TinderTextProps & TinderTextPropsTwo> = ({
                 <div className="z-0 absolute bottom-0 right-0 bg-tinderblue rounded-md h-10 w-10 mr-3 py-2">
                    
                 </div>
-                {needsCorner ? null : 
+                {needsCorner ? 
+                <>
+                    <div className="z-0 absolute top-0 right-0 bg-tinderblue rounded-md h-10 w-10 mr-3 py-2">
+                   
+                   </div>
+                </>
+                : 
                 <>
                     <div className="z-10 absolute bottom-5 bg-white  h-5 w-10 mr-3 py-2">
                    

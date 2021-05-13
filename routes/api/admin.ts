@@ -119,10 +119,9 @@ router.get('/submissions/', authenticateJWT, (req, res) => {
     // gets from /submissons/
     // requires auth
 
-    console.log(`I made it to auth!!!!!!`);
 
     console.log('========================');
-    console.log(`in GET(/api/confessions/)`);
+    console.log(`in GET(/api/admin/submissions)`);
     console.log('========================');
 
     let recentPostsRef = firebase.database().ref('submissions');
@@ -140,6 +139,95 @@ router.get('/submissions/', authenticateJWT, (req, res) => {
             return res.status(404);
         }
     });
+})
+
+
+router.post('/approve/', authenticateJWT, (req, res) => {
+    const { 
+        content,
+        // timestamp, Probably don't want this 
+        // -- we can calculate server-side instead
+        hashedid,
+        tags,
+        theme,
+        location,
+        school,
+        fraternity,
+        year,
+    } = req.headers;
+
+    const timestamp : any = req.headers.timestamp;
+    const key : any = req.headers.key;
+
+    console.log('========================');
+    console.log(`in GET(/api/admin/approve/)`);
+    console.log(`key: ${key}`)
+    console.log('========================');
+
+    
+
+    const approvedRef = firebase.database().ref('approved');
+    const toPostRef = firebase.database().ref('toPost');
+    const submissionsRef = firebase.database().ref('toPost');
+
+
+    // const hashedId = new Date().toISOString();
+
+    approvedRef.push().set({
+        content: content,
+        timestamp: timestamp,
+
+        // to change
+        // hashedId : userName,
+        hashedId: hashedid,
+        tags: tags,
+        theme: theme,
+        signature: {
+            location,
+            school,
+            fraternity,
+            year
+        }
+    });
+
+    toPostRef.push().set({
+        content: content,
+        timestamp: timestamp,
+
+        // to change
+        // hashedId : userName,
+        hashedId: hashedid,
+        tags: tags,
+        theme: theme,
+        signature: {
+            location,
+            school,
+            fraternity,
+            year
+        }
+    });
+
+    console.log('about to try remove');
+    firebase.database().ref('submissions/' + key).remove();
+    // submissionsRef.child(key).remove();
+
+
+
+    // submissionsRef.orderByChild('timestamp').equalTo(timestamp).once("value", snapshot => {
+    //     if (snapshot.exists()){
+    //         console.log('exists!')
+    //         console.log(snapshot.val());
+
+    //         snapshot.ref.update(null);
+    //     }
+    //     else {
+    //         console.log('doesnt exist nomo');
+    //     }
+    // });
+
+
+
+    return res.status(200);
 })
 
 

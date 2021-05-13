@@ -151,8 +151,8 @@ const TweetComment : FC<TweetCommentProps>= ({
     return (
         <div className="w-full flex flex-row justify-start mt-2">
             {/* Icon */}
-            <div className="h-14 w-14 ml-4 mr-2">
-                <div className="h-14 w-14 rounded-full bg-white">
+            <div className="mt-1 h-12 w-12 ml-4 mr-2">
+                <div className="h-12 w-12 rounded-full bg-white">
 
                 </div>
             </div>
@@ -277,8 +277,8 @@ const Twitter : FC<ThemeProps> = ({
                 <div className="flex flex-row items-start justify-start w-full">
                     <div className="flex flex-row items-start justify-start w-full">
                         {/* Avi */}
-                        <div className="h-14 w-14 ml-4 mr-2">
-                            <div className="h-14 w-14 rounded-full bg-white">
+                        <div className="mt-1 h-12 w-12 ml-4 mr-2">
+                            <div className="h-12 w-12 rounded-full bg-white">
 
                             </div>
                         </div>

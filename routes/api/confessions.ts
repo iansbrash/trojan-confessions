@@ -39,9 +39,9 @@ router.get('/', (req, res) => {
     console.log(`in GET(/api/confessions/)`);
     console.log('========================');
 
-    let recentPostsRef = firebase.database().ref('submissions');
+    let approvedRef = firebase.database().ref('approved');
 
-    recentPostsRef.limitToLast(10).once('value', snapshot => {
+    approvedRef.limitToLast(10).once('value', snapshot => {
         if (snapshot.exists()){
             console.log('snapshot exists in ConfFeed!');
 
@@ -148,7 +148,10 @@ router.post('/', async (req, res) => {
 
             const hashedId = new Date().toISOString();
 
-            subRef.push().set({
+            const newKey = subRef.push().key;
+
+            
+            subRef.child(newKey).set({
                 content: content,
                 timestamp: new Date().toISOString(),
 
@@ -162,7 +165,8 @@ router.post('/', async (req, res) => {
                     school,
                     fraternity,
                     year
-                }
+                },
+                key: newKey
             });
 
             posterRef.push().set({
