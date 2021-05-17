@@ -80,7 +80,7 @@ const Confession : FC<ConfessionProps> = ({
                 <FeedTag color={'bg-red-600'} text={fraternity}/>
                 <FeedTag color={'bg-red-500'} text={year}/>
                 {
-                    tags.map(tag => <FeedTag color={'bg-red-400'} text={`#${tag}`}/> )
+                    tags.map(tag => <FeedTag color={'bg-red-400'} text={tag === '' ? '' : `#${tag}`} /> )
                 }
             </div>
         </div>
@@ -129,20 +129,40 @@ const Confessions : FC = () => {
 
                 {/* Actual confessions */}
                 <div className="gap-4 grid grid-cols-2 flex flex-col">
-                    {
-                        confessions.map((subObj : any) => 
-                            // <div className="w-full">
-                                <Confession 
-                                    content={subObj.content}
-                                    hashedId={subObj.hashedId}
-                                    signature={subObj.signature}
-                                    tags={subObj.tags.split(',')}
-                                    theme={subObj.theme}
-                                    timestamp={subObj.timestamp}
-                                />
-                            // </div>
-                        )
-                    }
+                    <div className="flex flex-col space-y-4">
+                        {
+                            confessions.map((subObj : any, i : number) => i % 2 !== 0 ? null :
+                                // <div className="w-full">
+                                    <Confession 
+                                        content={subObj.content}
+                                        hashedId={subObj.hashedId}
+                                        signature={subObj.signature}
+                                        tags={subObj.tags.split(',')}
+                                        theme={subObj.theme}
+                                        timestamp={subObj.timestamp}
+                                    />
+                                // </div>
+                            )
+                        }
+                    </div>
+                    <div className="flex flex-col space-y-4">
+                        {
+                            confessions.map((subObj : any, i : number) => i % 2 === 0 ? null :
+                                // <div className="w-full">
+                                <>
+                                    <Confession 
+                                        content={subObj.content}
+                                        hashedId={subObj.hashedId}
+                                        signature={subObj.signature}
+                                        tags={subObj.tags.split(',')}
+                                        theme={subObj.theme}
+                                        timestamp={subObj.timestamp}
+                                    />
+                                </>
+                                // </div>
+                            )
+                        }
+                    </div>
                 </div>
                 
             </div>

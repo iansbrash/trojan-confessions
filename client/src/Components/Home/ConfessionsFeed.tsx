@@ -79,7 +79,7 @@ const Confession : FC<ConfessionProps> = ({
                 <FeedTag color={'bg-red-600'} text={fraternity}/>
                 <FeedTag color={'bg-red-500'} text={year}/>
                 {
-                    tags.map(tag => <FeedTag color={'bg-red-400'} text={`#${tag}`}/> )
+                    tags.map(tag => <FeedTag color={'bg-red-400'} text={tag === '' ? '' : `#${tag}`}/> )
                 }
             </div>
         </div>
