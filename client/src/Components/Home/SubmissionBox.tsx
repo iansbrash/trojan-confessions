@@ -100,7 +100,8 @@ interface SubmissionBoxProps {
     tags: string[],
     setTags: (x : string[]) => void,
     theme: Themes,
-    setTheme: (x : Themes) => void
+    setTheme: (x : Themes) => void,
+    setSubmitted: (s : boolean) => void
 }
 
 enum Themes {
@@ -123,7 +124,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     tags,
     setTags,
     theme,
-    setTheme
+    setTheme,
+    setSubmitted
 } : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
@@ -178,13 +180,6 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             const userName = Date.now();
 
             console.log(`About to send axios.post at // submission: ${submission}, hashedId: ${userName}`)
-            
-            // https://git.heroku.com/afternoon-stream-90210.git/
-            // const res : object = await axios.post('http://localhost:5000/api/confessions/', {
-            //     submission: inputSpan.current.textContent,
-            //     // timestamp: 123,
-            //     hashedId: userName
-            // });
 
             console.log(`Themes[theme]: ${Themes[theme]}`)
 
@@ -204,14 +199,11 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                     'year': signature.year
                 }
             };
+
+            // Propogates upwards and resets everything
+            setSubmitted(true);
               
-            await axios(config)
-            .then(function (response) {
-                // console.log(JSON.stringify(response.data));
-            })
-            .catch(function (error) {
-                // console.log(error);
-            });
+            const res = await axios(config);
         }
     }
 

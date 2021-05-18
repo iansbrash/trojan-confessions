@@ -10,8 +10,8 @@ import Actions from './Actions';
 import ConfessionsFeed from './ConfessionsFeed';
 import SubmissionBox from './SubmissionBox';
 import AddIdentifiers from './AddIdentifiers';
-import axios from 'axios';
 import ThemeRenderer from '../AdminLogin/ThemeRenderer';
+import SuccessPopup from './SuccessPopup';
 
 const Question : FC = () => {
     return (
@@ -80,6 +80,29 @@ const Home : FC = () => {
     const [fraternity, setFraternity] = useState<string>('');
     const [year, setYear] = useState<string>('');
 
+    // Submissions Complete and Form Reset
+    const [submitted, setSubmitted] = useState<boolean>(false);
+
+    useEffect(() => {
+
+        // Identifiers
+        setLocation('');
+        setSchool('');
+        setFraternity('');
+        setYear('');
+
+        // Other shit
+        setConfessionInput('');
+        setTags([]);
+        setSignDropped(false);
+        setPreviewDropped(false);
+        setTheme(Themes.imessage);
+
+        return () => {
+
+        }
+
+    }, [submitted])
 
 
     useEffect(() => {
@@ -109,7 +132,16 @@ const Home : FC = () => {
 
 
     return (
-        <div className="flex flex-1 flex-col">
+        <div className="relative flex flex-1 flex-col">
+            {
+                // submitted ? 
+                    <SuccessPopup 
+                    submitted={submitted}
+                    setSubmitted={setSubmitted} />
+                // /> : null
+
+            }
+            
             <div className="z-20">
                 <HomeHeader />
             </div>
@@ -148,6 +180,7 @@ const Home : FC = () => {
                                     setTags={setTags}
                                     theme={theme}
                                     setTheme={setTheme}
+                                    setSubmitted={setSubmitted}
                                 />
                             </div>
                         </div>
@@ -250,7 +283,7 @@ const Home : FC = () => {
                             </div>
                         </div>
                         <div className="flex flex-1 h-12 items-start">
-                            <div className="flex-1 bg-gray-200 rounded-lg px-5 shadow-md">
+                            <div className={`${submitted ? 'hidden' : ''} flex-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                 <ConfessionsFeed />
                             </div>
                         </div>

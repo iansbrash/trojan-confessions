@@ -78,14 +78,6 @@ const loginLatelySocial = async () => {
         data : data
     };
 
-    // axios(config)
-    // .then(function (response) {
-    // console.log(JSON.stringify(response.data));
-    // })
-    // .catch(function (error) {
-    // console.log(error);
-    // });
-
     const res = await axios(config);
 
     console.log(res.headers["set-cookie"])
@@ -104,26 +96,29 @@ const loginLatelySocial = async () => {
 
 const makeLatelySocialPost = async () => {
 
+    // cookies contains:
+    // token, general_sessions, mid
     const cookies = await loginLatelySocial();
 
-    const caption = 'post from makePost.js';
-
+    // usctrojanconfessions
     const account = '180e251757aaeb5093cf7c38ce1c5c7a';
 
-    console.log('Starting makeLatelySocialPost');
+    /** CAROSEL POST SPECIFICATIONS */
+    const caption = 'post from makePost.js';
 
     const media = [
         'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224712Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9174d7dc9483a8b224636f7eb961d2c806db1e142b67bd3f61c9a753dbb6139c',
         'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224718Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9fe3423083020cc696ef8f11590f01576643d3663af62c906bce008009aa0071'
     ]
+    /** CAROSEL POST SPECIFICATIONS */
+
+    console.log('Starting makeLatelySocialPost');
 
     var data = qs.stringify({
         'account[]': account,
         'caption': caption,
         'carouselUserTagData': '',
         'comment': '',
-        // 'media[]': 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224712Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9174d7dc9483a8b224636f7eb961d2c806db1e142b67bd3f61c9a753dbb6139c',
-        // 'media[]': 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224718Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9fe3423083020cc696ef8f11590f01576643d3663af62c906bce008009aa0071',
         'media': media,
         'repeat_end': '17/05/2021 05:46 PM',
         'repeat_every': '0',
@@ -135,19 +130,6 @@ const makeLatelySocialPost = async () => {
         'userTagData': '',
         'videoUserTag': '' 
     });
-
-    const bodyFormData = new FormData();
-
-    
-
-    media.forEach((item) => {
-        bodyFormData.append('product_id_list[]', item);
-    });
-
-    const data2 = {
-        ...data,
-        ...media
-    }
 
     var config = {
         method: 'post',
@@ -166,6 +148,8 @@ const makeLatelySocialPost = async () => {
     };
 
     const res = await axios(config);
+
+
 
     console.log(res);
 
