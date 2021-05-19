@@ -32,7 +32,7 @@ const HomeHeader : FC = () => {
                 <div className="flex flex-row">
                     <HeaderLink title={'Home'} path="/"/>
                     <HeaderLink title={'Confessions'} path="/confessions/"/>
-                    <HeaderLink title={'Anonomity'} path="/anonimity/"/>
+                    <HeaderLink title={'Anonymity'} path="/anonymity/"/>
                     <HeaderLink title={'About'} path="/about/"/>
                 </div>
             </div>

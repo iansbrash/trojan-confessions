@@ -31,3 +31,10 @@ yarn-error.log*
 
 # sensitive constants
 /puppeteer/constants.js
+
+# dumb shit
+/puppeteer/example.js
+/puppeteer/ex1.js
+/puppeteer/latelysocial.js
+/puppeteer/screenshot.png
+/puppeteer/theme.png

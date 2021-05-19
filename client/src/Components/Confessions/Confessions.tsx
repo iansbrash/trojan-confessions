@@ -120,7 +120,12 @@ const Confessions : FC = () => {
             <HomeHeader />
 
             {
-                loading ? <LoadingIndicator size={20}/> : null
+                loading ? 
+                <div className="mt-10 w-screen flex justify-center items-center">
+                    <LoadingIndicator size={20}/>
+                </div>
+                
+                : null
             }
 
             <div className="mt-4 w-screen flex flex-col justify-center items-center">

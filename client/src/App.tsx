@@ -13,9 +13,12 @@ import Preview from './Components/Preview/Preview';
 import Dashboard from './Components/AdminLogin/Dashboard';
 import LoadingIndicator from './Components/Home/LoadingIndicator';
 import Confessions from './Components/Confessions/Confessions';
+import Anonymity from './Components/Anonymity/Anonymity';
+import About from './Components/About/About';
+
 
 // tailwind
-import "tailwindcss/tailwind.css"
+import "tailwindcss/tailwind.css";
 
 // helmet
 import { Helmet } from "react-helmet";
@@ -114,6 +117,22 @@ function App() {
             </Helmet>
             <Dashboard />
           </PrivateRoute>
+
+          {/* /anonymity */}
+          <Route path="/anonymity">
+            <Helmet>
+              <style>{'body { background-color: #F3F4F6; }'}</style>
+            </Helmet>
+            <Anonymity />
+          </Route>
+
+          {/* /about */}
+          <Route path="/about">
+            <Helmet>
+              <style>{'body { background-color: #F3F4F6; }'}</style>
+            </Helmet>
+            <About />
+          </Route>
 
           {/* /confessions */}
           <Route path="/confessions">

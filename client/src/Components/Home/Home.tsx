@@ -113,34 +113,13 @@ const Home : FC = () => {
 
     }, [signedDropped])
 
-    // useEffect(() => {
-
-    //     const theme = 'imessage';
-
-    //     const toe = async () => {
-    //         const res = await axios.get(`http://localhost:5000/api/preview/?theme=${theme}&confession=${confessionInput}&location=${location}&school=${school}&fraternity=${fraternity}&year=${year}`);
-    //         console.log(res);
-    //         if (res){
-    //             document.getElementById('toPreview')!.innerHTML = res.data;
-    //         }
-            
-    //     }
-    //     if (previewDropped){
-    //         toe();
-    //     }
-    // }, [previewDropped]);
-
 
     return (
         <div className="relative flex flex-1 flex-col">
-            {
-                // submitted ? 
-                    <SuccessPopup 
-                    submitted={submitted}
-                    setSubmitted={setSubmitted} />
-                // /> : null
 
-            }
+            <SuccessPopup 
+            submitted={submitted}
+            setSubmitted={setSubmitted} />
             
             <div className="z-20">
                 <HomeHeader />
@@ -155,7 +134,7 @@ const Home : FC = () => {
             <div className="z-0">
                 <div className="flex flex-col max-w-4xl mx-auto">
                     {/* Submission */}
-                    <div className="z-20 text-center flex-1 items-center">
+                    <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} z-20 text-center flex-1 items-center`}>
                         <div className={
                             `transition duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
                         }>
@@ -248,7 +227,7 @@ const Home : FC = () => {
                             </div>
 
                             <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
-                                <div className={`w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
                                     <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                         <AddIdentifiers 
                                             setLocation={setLocation}

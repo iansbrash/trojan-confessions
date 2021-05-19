@@ -115,18 +115,13 @@ router.post('/auth/', (req, res) => {
 // approved and toPost firebase catagories
 router.get('/submissions/', authenticateJWT, (req, res) => {
 
-
-    // gets from /submissons/
-    // requires auth
-
-
     console.log('========================');
     console.log(`in GET(/api/admin/submissions)`);
     console.log('========================');
 
     let recentPostsRef = firebase.database().ref('submissions');
 
-    recentPostsRef.limitToLast(10).once('value', snapshot => {
+    recentPostsRef.limitToLast(20).once('value', snapshot => {
         if (snapshot.exists()){
             console.log('snapshot exists in ConfFeed!');
 

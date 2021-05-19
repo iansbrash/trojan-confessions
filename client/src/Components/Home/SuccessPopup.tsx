@@ -22,15 +22,18 @@ const SuccessPopup : FC<SuccessPopupProps> = ({
 
     return (
         <div className={`z-40 transform transition duration-800 ease-in-out ${submitted ? 'opacity-1 pointer-events-auto' : 'opacity-0 pointer-events-none'} absolute top-0 h-screen left-0 right-0 bg-white flex justify-center items-center flex-row`}>
-            <button className="focus:outline-none bg-red-400 rounded-full shadow-md font-bold text-white text-xl"
-            onClick={() => setSubmitted(false)}
-            >
-                <Check />
-            </button>
-            <button className="focus:outline-none ml-4 font-bold text-4xl text-black"
-            >
-                Success!
-            </button>
+            <div className="animate-bounce flex justify-center items-center flex-row">
+                <button className="focus:outline-none bg-red-400 rounded-full shadow-md font-bold text-white text-xl"
+                onClick={() => setSubmitted(false)}
+                >
+                    <Check />
+                </button>
+                <button className="focus:outline-none ml-4 font-bold text-4xl text-black"
+                >
+                    Success!
+                </button>
+            </div>
+            
 
         </div>
     )

@@ -104,11 +104,11 @@ const makeLatelySocialPost = async () => {
     const account = '180e251757aaeb5093cf7c38ce1c5c7a';
 
     /** CAROSEL POST SPECIFICATIONS */
-    const caption = 'post from makePost.js';
-
+    const caption = 'fuck blake';
     const media = [
         'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224712Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9174d7dc9483a8b224636f7eb961d2c806db1e142b67bd3f61c9a753dbb6139c',
-        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224718Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9fe3423083020cc696ef8f11590f01576643d3663af62c906bce008009aa0071'
+        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224718Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9fe3423083020cc696ef8f11590f01576643d3663af62c906bce008009aa0071',
+        'https://i.imgur.com/zRQGgNx.jpg'
     ]
     /** CAROSEL POST SPECIFICATIONS */
 
@@ -148,6 +148,9 @@ const makeLatelySocialPost = async () => {
     };
 
     const res = await axios(config);
+
+    // make sure that res.data !=== 'error'
+    // and that it === 'success'
 
 
 

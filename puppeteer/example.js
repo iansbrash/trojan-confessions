@@ -65,7 +65,7 @@ const INSTAGRAM_URL = 'https://instagram.com';
     // console.log(base64);
 
     await browser.close();
-})//();
+});//();
 
 
 async function run(base64Array) {
@@ -161,17 +161,21 @@ async function run(base64Array) {
           page.click("[aria-label='New Post']")
         ]);
         // await fileChooser.accept([argv.image]);
-        await fileChooser.accept('theme.png');
+        await fileChooser.accept('puppeteer/theme.png');
         await delay(2500);
       }
       catch( error ) {
         // The chrome version may not support file picker interaction
         console.debug('could not use file picker');
       }
-      await input.uploadFile('theme.png');
-      await delay(2500);
+      // await input.uploadFile('puppeteer/theme.png');
+      // await delay(2500);
   
       console.debug('waiting for next');
+
+
+
+      return;
   
       // Wait for the next button
       await page.waitForXPath("//button[contains(text(),'Next')]");
