@@ -136,11 +136,11 @@ const TweetComment : FC<TweetCommentProps>= ({
 
     const rand3 = Math.random();
 
-    const [isMin, setIsMin] = useState<boolean>(
+    const [isMin] = useState<boolean>(
         rand > 0.5 ? true : false
     );
 
-    const [timeNumber, setTimeNumber] = useState<number>(
+    const [timeNumber] = useState<number>(
         rand > 0.5 ? (
             Math.round(Math.random() * 58) + 1
         ) : (

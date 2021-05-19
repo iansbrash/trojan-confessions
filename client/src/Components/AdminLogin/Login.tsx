@@ -49,7 +49,7 @@ const GLogin : FC<GLoginProps> = ({
                                 <div className="text-lg font-bold text-white">
                                     Login With Google
                                 </div>
-                                <img className="object-contain self-auto" src={WhiteGoogleLogo}/>
+                                <img alt="" className="object-contain self-auto" src={WhiteGoogleLogo}/>
                             </div>
                         </button>
                     </div>
@@ -86,7 +86,8 @@ const Login : FC = () => {
 
         if (res.status === 200){
             setCookie('jwt_token', res.data, {
-                sameSite: true
+                sameSite: true,
+                path: '/'
             })
             console.log('just set da cookie)');
             setIsAuthed(true);

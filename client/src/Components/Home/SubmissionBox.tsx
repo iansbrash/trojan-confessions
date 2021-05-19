@@ -203,7 +203,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             // Propogates upwards and resets everything
             setSubmitted(true);
               
-            const res = await axios(config);
+            await axios(config);
         }
     }
 
@@ -237,16 +237,18 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
     useEffect(() => {
+        let is = inputSpan.current;
+
         if (inputSpan.current !== null){
             inputSpan.current.addEventListener('keydown', handleKeydown);
             inputSpan.current.addEventListener('keyup', handleKeyup);
         }
-        return (() => {
-            if (inputSpan.current !== null){
-                inputSpan.current.removeEventListener('keydown', handleKeydown);
-                inputSpan.current.removeEventListener('keyup', handleKeyup);
+        return () => {
+            if (is !== null){
+                is.removeEventListener('keydown', handleKeydown);
+                is.removeEventListener('keyup', handleKeyup);
             }
-        })
+        }
     })
 
     return (

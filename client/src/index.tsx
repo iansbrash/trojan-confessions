@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import firebase from 'firebase';
-import { CookiesProvider } from 'react-cookie';
 
 // Use your config values here.
 firebase.initializeApp({

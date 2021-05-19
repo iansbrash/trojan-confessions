@@ -1,4 +1,3 @@
-import { ReactComponent } from '*.svg';
 import React, {
     FC,
     useState

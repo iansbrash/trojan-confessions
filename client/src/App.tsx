@@ -5,8 +5,6 @@ import React, {
   createContext,
   useContext
 } from 'react';
-import logo from './logo.svg';
-import './App.css';
 import Home from './Components/Home/Home'
 import Login from './Components/AdminLogin/Login';
 import Preview from './Components/Preview/Preview';
@@ -15,6 +13,7 @@ import LoadingIndicator from './Components/Home/LoadingIndicator';
 import Confessions from './Components/Confessions/Confessions';
 import Anonymity from './Components/Anonymity/Anonymity';
 import About from './Components/About/About';
+import IMessageRoute from './Components/Preview/IndividualRoutes/IMessageRoute';
 
 
 // tailwind
@@ -140,6 +139,11 @@ function App() {
               <style>{'body { background-color: #F3F4F6; }'}</style>
             </Helmet>
             <Confessions />
+          </Route>
+
+          {/* /preview/imessage */}
+          <Route path="/preview">
+            <IMessageRoute />
           </Route>
 
           {/* /preview */}

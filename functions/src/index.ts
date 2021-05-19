@@ -25,36 +25,6 @@ import * as functions from "firebase-functions";
  *  7. Set delay of 30 minutes between function invocation
  */
 
-
-
-
-// export const onToPostCreate = functions.database.ref(
-//     '/toPost'
-// ).onCreate((snapshot, context) => {
-//     // const postId = context.params.postId;
-//     // console.log(`new postId: ${postId}`);
-//     console.log('shit is getting trigged 1');
-//     return snapshot.ref.update({test: 'xddd'})
-
-//     // const data = snapshot.val();
-
-
-// });
-
-// export const onToPostCreate2 = functions.database.ref(
-//     '/toPost/'
-// ).onCreate((snapshot, context) => {
-//     // const postId = context.params.postId;
-//     // console.log(`new postId: ${postId}`);
-//     console.log('shit is getting trigged 2');
-//     return snapshot.ref.update({test: 'xddd'})
-
-//     // const data = snapshot.val();
-
-
-// });
-
-
 // was triggered
 export const onToPostCreate3 = functions.database.ref(
     '/toPost/{toPostId}'
@@ -86,82 +56,4 @@ export const onToPostCreate3 = functions.database.ref(
     }
 
     return;
-    
-    // if (snapshot.exists()){
-    //     console.log(snapshot);
-    //     console.log(`Number: ${snapshot.getRef().getParent()}`)
-
-    // }
-    
-
-    // return snapshot.ref.update({test: 'xddd'})
-
-
-    // const data = snapshot.val();
-
-    // return event.data.ref.parent.once("value", (snapshot) => {
-    //     const count = snapshot.numChildren();
-    //     return event.data.ref.update({ count });
-    //   });
-
-
 });
-
-
-// was triggered
-// export const onToPostCreate4 = functions.database.ref(
-//     '/toPost/{toPostId}'
-// ).onCreate((snapshot, context) => {
-//     // const postId = context.params.postId;
-//     // console.log(`new postId: ${postId}`);
-//     console.log('shit is getting trigged 4');
-//     return snapshot.ref.update({test: 'xddd'})
-
-//     // const data = snapshot.val();
-
-
-// });
-
-
-// was triggered
-// export const onToPostCreate5 = functions.database.ref(
-//     '/toPost/{toPostId}/'
-// ).onCreate((snapshot, context) => {
-//     // const postId = context.params.postId;
-//     // console.log(`new postId: ${postId}`);
-//     console.log('shit is getting trigged 5');
-
-//     // const data = snapshot.val();
-//     return snapshot.ref.update({test: 'xddd'})
-
-
-
-// });
-
-// export const onToPostCreate6 = functions.database.ref(
-//     '/'
-// ).onCreate((snapshot, context) => {
-//     // const postId = context.params.postId;
-//     // console.log(`new postId: ${postId}`);
-//     console.log('shit is getting trigged 6');
-
-//     return snapshot.ref.update({test: 'xddd'})
-
-//     // const data = snapshot.val();
-
-
-// });
-
-
-
-// exports.app = functions.https.onRequest(app);
-
-
-
-// Start writing Firebase Functions
-// https://firebase.google.com/docs/functions/typescript
-
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//   functions.logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });

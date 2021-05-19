@@ -21,7 +21,7 @@ interface ZoomTextProps {
     message: string
 }
 
-const ZoomTextProps : FC<ZoomTextProps> = ({
+const ZoomText : FC<ZoomTextProps> = ({
     message
 } : ZoomTextProps) => {
     return (
@@ -61,8 +61,8 @@ const Zoom : FC<ThemeProps> = ({
                             <span className="text-blue-400">Everyone</span>
                             :
                         </div>
-                        <ZoomTextProps message={confessionInput}/>
-                        <ZoomTextProps message={`-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`}/>
+                        <ZoomText message={confessionInput}/>
+                        <ZoomText message={`-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`}/>
                     </div>
                 </div>
 

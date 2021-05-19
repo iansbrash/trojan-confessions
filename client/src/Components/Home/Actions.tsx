@@ -2,7 +2,6 @@ import React, {
     FC,
     useState,
     useEffect,
-    useRef
 } from 'react';
 import GoogleLogin from 'react-google-login';
 import WhiteGoogleLogo from '../../resources/images/home/glogo.png';
@@ -49,7 +48,8 @@ const GmailLogin : FC<ActionsProps> = ({
 } : ActionsProps) => {
 
     const [containsUsc, setContainsUsc] = useState<loginState>(loginState.Default);
-    const [googleId, setGoogleId] = useState<string>('');
+    
+    const [, setGoogleId] = useState<string>('');
 
     useEffect(() => {
         console.log('useEffect loading')
@@ -68,7 +68,7 @@ const GmailLogin : FC<ActionsProps> = ({
             givenName,
             googleId,
             imageUrl,
-            name,
+            // name,
         } = res.profileObj;
 
         const {
@@ -121,7 +121,7 @@ const GmailLogin : FC<ActionsProps> = ({
                                 <div className="text-lg font-bold text-white">
                                     Login With Google
                                 </div>
-                                <img className="object-contain self-auto" src={WhiteGoogleLogo}/>
+                                <img alt="" className="object-contain self-auto" src={WhiteGoogleLogo}/>
                             </div>
                         </button>
                     </div>

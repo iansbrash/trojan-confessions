@@ -94,7 +94,7 @@ const ApprovalBlock : FC<any> = ({
     setSubmissions
 } : any) => {
 
-    const [cookies, setCookie] = useCookies(['jwt_token']);
+    const [cookies] = useCookies(['jwt_token']);
     const [edit, setEdit] = useState<boolean>(false);
     const [currentContent, setCurrentContent] = useState<string>(subObj.content);
     const [editingCurrentContent, setEditingCurrentContent] = useState<string>(subObj.content)
@@ -241,13 +241,17 @@ const Dashboard : FC = () => {
 
     const [cookies, setCookie, removeCookie] = useCookies(['jwt_token']);
     const [isAuthed, setIsAuthed] = useState<boolean>(true);
-    const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
+    // const [loadingPosts, setLoadingPosts] = useState<boolean>(false);
     const [submissions, setSubmissions] = useState<object[]>([]);
     const [toPost, setToPost] = useState<object[]>([]);
 
     const logout = () => {
         if (cookies['jwt_token']){
-            removeCookie('jwt_token');
+
+            console.log('REMOVE JWT')
+            removeCookie('jwt_token', {
+                path: '/'
+            });
             setIsAuthed(false);
         }
         else {
@@ -301,7 +305,7 @@ const Dashboard : FC = () => {
             });
         })();
 
-    }, [])
+    }, [cookies])
 
 
 

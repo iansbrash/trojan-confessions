@@ -47,7 +47,7 @@ const TinderHeader : FC = () => {
             {/* Icon + Name */}
             <div className="flex flex-col justify-center items-center">
                 <div className="mt-1 rounded-full h-9 w-9 bg-gray-300">
-                    <img className="object-cover rounded-full h-9 w-9" src={'https://www.president.usc.edu/wp-content/uploads/2021/01/Carol-Folt-USC-President-784x1024.jpg'}/>
+                    <img alt="" className="object-cover rounded-full h-9 w-9" src={'https://www.president.usc.edu/wp-content/uploads/2021/01/Carol-Folt-USC-President-784x1024.jpg'}/>
                 </div>
                 <div className="-mt-0.5 text-xs text-gray-400">
                     Carol

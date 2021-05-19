@@ -13,45 +13,6 @@ import AddIdentifiers from './AddIdentifiers';
 import ThemeRenderer from '../AdminLogin/ThemeRenderer';
 import SuccessPopup from './SuccessPopup';
 
-const Question : FC = () => {
-    return (
-        <div className="text-xl text-gray-700">
-            Want to submit a confession about your USC experience?
-        </div>
-    )
-}
-
-interface TextProps {
-    content: string,
-    hasTail: boolean
-}
-
-const Text : FC<TextProps> = ({
-    content,
-    hasTail
-} : TextProps) => {
-    return (
-        <>
-            {content === '' ? null : 
-                <div className="leading-6 break-words max-w-xs relative rounded-xl text-white text-xl flex-initial bg-blue-400 py-1 px-2 mb-0.5">
-                    {content.trim()}
-                    {
-                        hasTail ? 
-                        <>
-                            <div className="transform translate-x-0.5 absolute bottom-0 -right-2.5 h-5 w-5 bg-blue-400 rounded-full"></div>
-                            <div className="transform translate-x-0.5 absolute bottom-0 -right-3.5 h-4 w-4 bg-gray-900 rounded-full"></div>
-                            <div className="transform translate-x-0.5 absolute bottom-2 -right-3.5 h-4 w-4 bg-gray-900"></div>
-                        </> 
-                            : 
-                        null
-                    }
-
-                </div>
-            }
-        </>
-    )
-}
-
 enum Themes {
     imessage = "imessage",
     zoom = "zoom",

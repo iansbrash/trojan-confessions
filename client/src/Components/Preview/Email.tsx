@@ -34,7 +34,7 @@ const Email : FC<ThemeProps> = ({
                     {/* Icon */}
                     <div className="flex justify-center items-center h-20 w-20">
                         <div className="h-16 w-16 rounded-full">
-                            <img className="rounded-full" src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png"/>
+                            <img alt="" className="rounded-full" src="https://i.pinimg.com/originals/0c/3b/3a/0c3b3adb1a7530892e55ef36d3be6cb8.png"/>
                         </div>
                     </div>
 

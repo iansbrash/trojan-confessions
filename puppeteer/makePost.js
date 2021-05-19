@@ -11,7 +11,6 @@
 // import axios from 'axios';
 var axios = require('axios');
 var qs = require('qs');
-var FormData = require('form-data');
 
 
 // returns a req object... or the only important parts

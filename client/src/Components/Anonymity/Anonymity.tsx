@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import HomeHeader from '../Home/HomeHeader';
 
-const Anonymity = () => {
+const Anonymity : FC = () => {
     return (
         <div className="w-screen">
             <HomeHeader />
