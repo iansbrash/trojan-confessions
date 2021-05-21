@@ -94,7 +94,7 @@ const ApprovalBlock : FC<any> = ({
     setSubmissions
 } : any) => {
 
-    const [cookies] = useCookies(['jwt_token']);
+    const [cookies, setCookie] = useCookies(['jwt_token']);
     const [edit, setEdit] = useState<boolean>(false);
     const [currentContent, setCurrentContent] = useState<string>(subObj.content);
     const [editingCurrentContent, setEditingCurrentContent] = useState<string>(subObj.content)

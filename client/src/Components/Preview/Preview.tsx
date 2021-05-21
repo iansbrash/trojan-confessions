@@ -54,6 +54,7 @@ const Preview : FC = () => {
             var link = document.createElement('a');
             link.download = 'my-image-name.jpeg';
             link.href = dataUrl;
+            console.log(dataUrl);
             link.click();
         });
     }

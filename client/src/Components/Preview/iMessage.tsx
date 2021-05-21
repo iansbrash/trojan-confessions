@@ -17,7 +17,7 @@ const Text : FC<TextProps> = ({
         <>
             {content === '' ? null : 
                 <div className="leading-6 mr-4 break-words max-w-xs relative rounded-xl text-white text-xl flex-initial bg-blue-400 py-1 px-2 mb-0.5">
-                    {content.trim()}
+                    {content ? content.trim() : null}
                     {
                         hasTail ? 
                         <>

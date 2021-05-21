@@ -142,7 +142,7 @@ function App() {
           </Route>
 
           {/* /preview/imessage */}
-          <Route path="/preview">
+          <Route path="/preview/imessage">
             <IMessageRoute />
           </Route>
 

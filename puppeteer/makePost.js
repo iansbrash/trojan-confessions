@@ -11,6 +11,13 @@
 // import axios from 'axios';
 var axios = require('axios');
 var qs = require('qs');
+var constants = require( './constants.js' );
+const puppeteer = require('puppeteer');
+
+var latelysocialUsername = constants.latelysocialUsername;
+var latelysocialPassword = constants.latelysocialPassword;
+var latelysocialAccountId = constants.latelysocialAccountId;
+var imgurClientId = constants.imgurClientId;
 
 
 // returns a req object... or the only important parts
@@ -56,8 +63,8 @@ const loginLatelySocial = async () => {
     console.log(cookies);
 
     var data = qs.stringify({
-        'email': 'usctrojanconfessions@gmail.com',
-        'password': 'R95DcAWV!LmvX6Q',
+        'email': latelysocialUsername,
+        'password': latelysocialPassword,
         'remember': 'on',
         'token': cookies.token 
     });
@@ -100,7 +107,6 @@ const makeLatelySocialPost = async () => {
     const cookies = await loginLatelySocial();
 
     // usctrojanconfessions
-    const account = '180e251757aaeb5093cf7c38ce1c5c7a';
 
     /** CAROSEL POST SPECIFICATIONS */
     const caption = 'fuck blake';
@@ -114,7 +120,7 @@ const makeLatelySocialPost = async () => {
     console.log('Starting makeLatelySocialPost');
 
     var data = qs.stringify({
-        'account[]': account,
+        'account[]': latelysocialAccountId,
         'caption': caption,
         'carouselUserTagData': '',
         'comment': '',
@@ -161,5 +167,97 @@ const makeLatelySocialPost = async () => {
     return;
 }
 
-makeLatelySocialPost();
+// substr 26 for base64 form htmltoimage
+// https://stackoverflow.com/questions/49131516/how-to-copy-text-from-browser-clipboard-using-puppeteer-in-nodejs
+
+const getBase64Array = async () => {
+    let options = {
+        headless: false
+      };
+    
+    
+        const browser = await puppeteer.launch(options);
+        const page = await browser.newPage();
+    
+    
+        let imageArray = [];
+    
+        await page.goto('http://localhost:3000/preview/imessage?confessionInput=asd&location=tusc&school=viterbi&fraternity=sigmaballs&year=freshman&tags[]=one&tags[]=2');
+    
+    
+        // const element = await page.$("#b64");
+        // const text = await page.evaluate(element => element.textContent, element);
+        
+
+        // const element = await page.$("#b64");
+
+        await page.waitForSelector('#b64');
+
+        const element = await page.$("#b64");
+
+
+        const text = await (await element.getProperty('textContent')).jsonValue();
+        console.log(text);
+    
+    
+        // await page.waitForSelector('#b64');
+        // // const element = await page.$('#b64');
+
+        // var copyText = document.querySelector('#b64');
+        // copyText.select();
+        // // document.execCommand("Copy");
+        // // return copyText.value;
+        // console.log(copyText.value);
+
+        // element.select();
+        // document.execCommand("Copy");
+
+        // console.log(element.value)
+    
+    
+        // await element.screenshot({
+        //   path: 'puppeteer/theme.png',
+        //   // type: "png"
+        // });
+    
+        // const base64 = await element.screenshot({
+        //     encoding: "base64"
+        // });
+    
+        // console.log(base64);
+    
+        await browser.close();
+};//();
+
+const postToImgur = async (base64Array) => {
+
+   for (let i = 0; i < base64Array.length; i++){
+        const response = await axios.post('https://api.imgur.com/3/upload', 
+        {
+            //image is in base64 format
+            image: base64Array[i],
+            type: 'base64', 
+            //name: 'API Test',
+            //title: 'Plz',
+            //description: 'Pocket Closet'
+        },
+        {
+            headers: {
+                Authorization: `Client-ID ${imgurClientId}`
+        }
+
+        });
+        // console.log(response)
+        console.log("HERE's the link (hopefully)");
+        console.log(response.data.data.link) // this works!!!!
+   }
+
+    
+}
+
+
+
+// makeLatelySocialPost();
+
+getBase64Array();
  
