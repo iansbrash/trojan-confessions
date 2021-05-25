@@ -11,8 +11,20 @@
 // import axios from 'axios';
 var axios = require('axios');
 var qs = require('qs');
+var FormData = require('form-data');
 var constants = require( './constants.js' );
+var imagebase64 = require('./imagebase64');
 const puppeteer = require('puppeteer');
+
+const { Readable } = require("stream")
+
+const readable = Readable.from(["input string"])
+
+var samplebase64 = imagebase64.samplebase64;
+
+var stringtostream = require('string-to-stream')
+// var intoStream = require('into-stream');
+// import intoStream from 'into-stream';
 
 var latelysocialUsername = constants.latelysocialUsername;
 var latelysocialPassword = constants.latelysocialPassword;
@@ -100,7 +112,7 @@ const loginLatelySocial = async () => {
     return cookies2;
 }
 
-const makeLatelySocialPost = async () => {
+const makeLatelySocialPost = async (imgurUrlArray, caption) => {
 
     // cookies contains:
     // token, general_sessions, mid
@@ -109,23 +121,43 @@ const makeLatelySocialPost = async () => {
     // usctrojanconfessions
 
     /** CAROSEL POST SPECIFICATIONS */
-    const caption = 'fuck blake';
+    // const caption = 'tessssst';
+    
     const media = [
-        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224712Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9174d7dc9483a8b224636f7eb961d2c806db1e142b67bd3f61c9a753dbb6139c',
-        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAI2NJXER2W4C4FYVA%2F20210517%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20210517T224718Z&X-Amz-SignedHeaders=host&X-Amz-Expires=1200&X-Amz-Signature=9fe3423083020cc696ef8f11590f01576643d3663af62c906bce008009aa0071',
-        'https://i.imgur.com/zRQGgNx.jpg'
+        // 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png',
+        // 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png',
+        // 'https://i.imgur.com/zRQGgNx.jpg',
+        // 'https://i.imgur.com/lsgicGv.jpeg',
+        // 'https://i.imgur.com/mPnRn0g.png'
+        // below is created by us thru reqs
+        'https://dymwzetew9d5u.cloudfront.net/user182278/16219582433279.png'
+
     ]
+
+    let media2 = [
+        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png'
+    ]
+
+    for (let i = 0; i < imgurUrlArray.length; i++){
+        media2.push(imgurUrlArray[i]);
+    }
+    const media = imgurUrlArray;
     /** CAROSEL POST SPECIFICATIONS */
+
+    console.log('in mLSP...')
+    console.log(imgurUrlArray);
 
     console.log('Starting makeLatelySocialPost');
 
     var data = qs.stringify({
         'account[]': latelysocialAccountId,
-        'caption': caption,
+        'caption': caption ? caption : 'NEED TO CHANGE THIS',
         'carouselUserTagData': '',
         'comment': '',
         'media': media,
-        'repeat_end': '17/05/2021 05:46 PM',
+        // 'media[]': 'https://i.imgur.com/aszWQ1L.png',
+        // 'media[]': 'https://i.imgur.com/P970j0r.png',
+        // 'repeat_end': '17/05/2021 05:46 PM',
         'repeat_every': '0',
         'thumbnailTimestamp': '',
         'title': '',
@@ -170,94 +202,242 @@ const makeLatelySocialPost = async () => {
 // substr 26 for base64 form htmltoimage
 // https://stackoverflow.com/questions/49131516/how-to-copy-text-from-browser-clipboard-using-puppeteer-in-nodejs
 
-const getBase64Array = async () => {
+
+/**
+ * {
+ *      content: "asd",
+ *      hashedId: "asd",
+ *      tags: "test,test2,test3",
+ *      theme: "imessage",
+ *      timestamp: "2021-05-19T...",
+ *      signature: {
+ *          fraternity: "",
+ *          location: "",
+ *          school: "",
+ *          year: ""
+ *      }
+ * }
+ */
+const getBase64Array = async (toPostArray) => {
+    // headless: false for debugging
     let options = {
         headless: false
-      };
-    
-    
-        const browser = await puppeteer.launch(options);
-        const page = await browser.newPage();
-    
-    
-        let imageArray = [];
-    
-        await page.goto('http://localhost:3000/preview/imessage?confessionInput=asd&location=tusc&school=viterbi&fraternity=sigmaballs&year=freshman&tags[]=one&tags[]=2');
-    
-    
-        // const element = await page.$("#b64");
-        // const text = await page.evaluate(element => element.textContent, element);
-        
+    };
 
-        // const element = await page.$("#b64");
+    // populate with 10 strings of abse64
+    let base64Array = [];
+
+    
+    const browser = await puppeteer.launch(options);
+    const page = await browser.newPage();
+
+    // should iterate 10 times regardless
+    for (let i = 0; i < toPostArray.length; i++){
+        const {
+            content,
+            hashedId,
+            tags,
+            theme,
+            timestamp,
+            signature
+        } = toPostArray[i]
+
+        console.log(`
+            content: ${content}, 
+            hashedId: ${hashedId},
+            tags: ${tags},
+            theme: ${theme},
+            timestamp: ${timestamp}
+        `)
+
+        await page.goto(`http://localhost:3000/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
+        `);
+        //&tags[]=one&tags[]=2
 
         await page.waitForSelector('#b64');
-
         const element = await page.$("#b64");
 
 
+
         const text = await (await element.getProperty('textContent')).jsonValue();
-        console.log(text);
-    
-    
-        // await page.waitForSelector('#b64');
-        // // const element = await page.$('#b64');
 
-        // var copyText = document.querySelector('#b64');
-        // copyText.select();
-        // // document.execCommand("Copy");
-        // // return copyText.value;
-        // console.log(copyText.value);
+        base64Array.push(text);
+    }
 
-        // element.select();
-        // document.execCommand("Copy");
+    
+    // console.log(text);
 
-        // console.log(element.value)
-    
-    
-        // await element.screenshot({
-        //   path: 'puppeteer/theme.png',
-        //   // type: "png"
-        // });
-    
-        // const base64 = await element.screenshot({
-        //     encoding: "base64"
-        // });
-    
-        // console.log(base64);
-    
-        await browser.close();
-};//();
+    await browser.close();
+
+    return base64Array;
+};
 
 const postToImgur = async (base64Array) => {
 
-   for (let i = 0; i < base64Array.length; i++){
-        const response = await axios.post('https://api.imgur.com/3/upload', 
-        {
-            //image is in base64 format
-            image: base64Array[i],
-            type: 'base64', 
-            //name: 'API Test',
-            //title: 'Plz',
-            //description: 'Pocket Closet'
-        },
-        {
-            headers: {
-                Authorization: `Client-ID ${imgurClientId}`
+    let imgurUrlArray = [];
+
+    for (let i = 0; i < base64Array.length; i++){
+        try {
+            var data = new FormData();
+
+            //23 for jpeg 22 for png
+            data.append('image', base64Array[i].substring(22));
+            data.append('type', 'base64');
+
+            const res = await axios({
+                method: 'post',
+                url: 'https://api.imgur.com/3/upload',
+                headers: {
+                    Authorization: `Client-ID ${imgurClientId}`,
+                    ...data.getHeaders()
+                },
+                data: data
+            });
+
+            console.log("HERE's the link (hopefully)");
+            console.log(res.data.data.link) // this works!!!!
+
+            imgurUrlArray.push(res.data.data.link);
         }
+        catch (e) {
+           console.error(e);
+        }
+        
+    }
 
-        });
-        // console.log(response)
-        console.log("HERE's the link (hopefully)");
-        console.log(response.data.data.link) // this works!!!!
-   }
-
-    
+   return imgurUrlArray;
 }
 
+const uploadToLatelySocialDatabase = async () => {
 
+    var data = new FormData();
+    // data.append('files[]', fs.createReadStream('/C:/Users/iansb/Downloads/tind.png'));
+
+    var fs = require('fs');
+
+    // const t = stringtostream(samplebase64)
+
+    // const t2 = Readable.from([samplebase64])
+
+    // var base64Data = req.rawBody.replace(/^data:image\/png;base64,/, "");
+    var base64Data = samplebase64;
+    require("fs").writeFile("out.png", base64Data, 'base64', function(err) {
+        console.log(err);
+    });
+
+    // return;
+
+    // return;
+
+    // const t3 = (new Base64Encode(samplebase64));
+
+
+    const test = fs.createReadStream('out.png');
+
+//     // Read and disply the file data on console
+// test.on('data', function (chunk) {
+//     console.log(chunk.toString());
+// });
+// return;
+    // console.log(t);
+    // console.log(test);
+    // console.log(t2);
+    // console.log(t3);
+    // return;
+    
+
+    // return;
+    
+    data.append('files[]', test);
+    data.append('token', '14b22ac28ff5b8fc7a4312e8f5217540');
+    data.append('user', '182278');
+
+    // console.log(data)
+
+    var config = {
+    method: 'post',
+    url: 'https://app.scheduleinstagrampostsfree.com/uploadvideo/welcome/lately/',
+    headers: { 
+        // 'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"', 
+        // 'Accept': 'application/json, text/javascript, */*; q=0.01', 
+        // 'DNT': '1', 
+        // 'sec-ch-ua-mobile': '?0', 
+        // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36', 
+        // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVwlWdwcdGwK5uPBB', 
+        ... data.getHeaders()
+    },
+    data : data
+    };
+
+    // console.log(data.getHeaders());
+// return;
+    const res = await axios(config);
+    console.log(res);
+
+}
 
 // makeLatelySocialPost();
 
-getBase64Array();
- 
+const testToPostArray = [
+    {
+        content: "test to post array",
+        hashedId: "123",
+        tags: "what,the,fuck,is,we,doin",
+        theme: "imessage",
+        timestamp: "nah",
+        signature: {
+            location: "Gateway",
+            school: "Price",
+            fraternity: "SigNu",
+            year: "Junior"
+        }
+    },
+    {
+        content: "test to post array 3123123123123123",
+        hashedId: "1234",
+        tags: "in",
+        theme: "zoom",
+        timestamp: "ok",
+        signature: {
+            location: "ok",
+            school: "will",
+            fraternity: "asd",
+            year: "haha"
+        }
+    },
+    {
+        content: "this shit better fuek en work",
+        hashedId: "122222223",
+        tags: "what",
+        theme: "tinder",
+        timestamp: "aaaaaa",
+        signature: {
+            location: "Gateaaaaaaway",
+            school: "Pricaaaae",
+            fraternity: "SigaaaaNu",
+            year: "Junaaaaaaaaaior"
+        }
+    }
+];
+
+
+
+(async () => {
+    const base64Array = await getBase64Array(testToPostArray);
+    console.log(`base64Array.length: ${base64Array.length}`)
+    console.log(base64Array[0]);
+    return;
+    const imgurUrlArray = await postToImgur(base64Array);
+    console.log(`imgurUrlArray.length: ${imgurUrlArray.length}`)
+
+    const caption = 'wowwwwww';
+
+    await makeLatelySocialPost(imgurUrlArray, caption);
+});
+
+(async () => {
+    // await uploadToLatelySocialDatabase();
+    const res = await makeLatelySocialPost();
+    console.log(res);
+
+})(); 

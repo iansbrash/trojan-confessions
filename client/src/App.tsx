@@ -14,6 +14,8 @@ import Confessions from './Components/Confessions/Confessions';
 import Anonymity from './Components/Anonymity/Anonymity';
 import About from './Components/About/About';
 import IMessageRoute from './Components/Preview/IndividualRoutes/IMessageRoute';
+import ZoomRoute from './Components/Preview/IndividualRoutes/ZoomRoute';
+import TinderRoute from './Components/Preview/IndividualRoutes/TinderRoute';
 
 
 // tailwind
@@ -144,6 +146,16 @@ function App() {
           {/* /preview/imessage */}
           <Route path="/preview/imessage">
             <IMessageRoute />
+          </Route>
+
+          {/* /preview/imessage */}
+          <Route path="/preview/zoom">
+            <ZoomRoute />
+          </Route>
+
+          {/* /preview/imessage */}
+          <Route path="/preview/tinder">
+            <TinderRoute />
           </Route>
 
           {/* /preview */}

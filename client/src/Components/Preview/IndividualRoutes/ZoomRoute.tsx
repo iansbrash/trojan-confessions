@@ -5,11 +5,11 @@ import React, {
 } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
-import IMessage from '../iMessage'
+import Zoom from '../Zoom'
 import ThemeProps from '../ThemeProps';
 import * as htmlToImage from 'html-to-image';
 
-const IMessageRoute : FC = () => {
+const ZoomRoute : FC = () => {
 
     const { search } = useLocation();
 
@@ -30,7 +30,7 @@ const IMessageRoute : FC = () => {
     return (
         <div className="w-screen h-screen flex justify-center items-center flex-col">
             <div id="submission" className="w-96 h-96">
-                <IMessage 
+                <Zoom 
                     confessionInput={themeProps.confessionInput}
                     location={themeProps.location}
                     school={themeProps.school}
@@ -53,4 +53,4 @@ const IMessageRoute : FC = () => {
     )
 }
 
-export default IMessageRoute;
+export default ZoomRoute;

@@ -42,7 +42,7 @@ const Zoom : FC<ThemeProps> = ({
 } : ThemeProps) => {
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-between items-center h-96 w-96 bg-white rounded-md shadow-md">
+            <div className="flex flex-col justify-between items-center h-96 w-96 bg-white shadow-md">
                 {/* Chat / Caret Header */}
                 <div className="relative flex w-full h-12 justify-center items-center">
                     <div className="text-l text-black">

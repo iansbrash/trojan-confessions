@@ -155,7 +155,7 @@ const Tinder : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-start items-center h-96 w-96 bg-white rounded-md shadow-md">
+            <div className="flex flex-col justify-start items-center h-96 w-96 bg-white shadow-md">
                 {/* Header */}
                 { textHeight > 276 ? null : <TinderHeader /> }
 
