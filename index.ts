@@ -5,7 +5,7 @@ import confessions from './routes/api/confessions';
 import preview from './routes/api/preview';
 import admin from './routes/api/admin';
 import firebase from "firebase";
-
+import path from 'path';
 
 // app
 const app = express();
@@ -66,6 +66,14 @@ app.use('/api/preview', preview);
 
 // router 3
 app.use('/api/admin', admin);
+
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 
 
 
