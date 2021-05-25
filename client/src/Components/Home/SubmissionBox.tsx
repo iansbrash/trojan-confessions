@@ -185,7 +185,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
 
             var config : object = {
                 method: 'post',
-                url: 'http://localhost:5000/api/confessions/',
+                url: '/api/confessions/',
                 headers: { 
                     'content': inputSpan.current.textContent, 
                     'hashedid': userName,

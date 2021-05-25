@@ -123,7 +123,7 @@ const ApprovalBlock : FC<any> = ({
         
         axios({
             method: 'delete',
-            url: 'http://localhost:5000/api/admin/submissions/',
+            url: '/api/admin/submissions/',
             headers: {
                 jwt_token: cookies['jwt_token'],
                 key: subObj.key
@@ -140,7 +140,7 @@ const ApprovalBlock : FC<any> = ({
 
         const res = await axios({
             method: 'patch',
-            url: 'http://localhost:5000/api/admin/submissions/',
+            url: '/api/admin/submissions/',
             headers: {
                 jwt_token: cookies['jwt_token'],
                 key: subObj.key,
@@ -165,7 +165,7 @@ const ApprovalBlock : FC<any> = ({
         
         const res = await axios({
             method: 'post',
-            url: 'http://localhost:5000/api/admin/approve',
+            url: '/api/admin/approve',
             headers: {
                 'jwt_token': cookies['jwt_token'],
                 'content': subObj.content, 
@@ -266,7 +266,7 @@ const Dashboard : FC = () => {
     
             var configSubmissions : object = {
                 method: 'get',
-                url: 'http://localhost:5000/api/admin/submissions/',
+                url: '/api/admin/submissions/',
                 headers: {
                     jwt_token: cookies['jwt_token']
                 }
@@ -289,7 +289,7 @@ const Dashboard : FC = () => {
 
             var configToPost : object = {
                 method: 'get',
-                url: 'http://localhost:5000/api/admin/toPost/',
+                url: '/api/admin/toPost/',
                 headers: {
                     jwt_token: cookies['jwt_token']
                 }

@@ -74,9 +74,10 @@ const Preview : FC = () => {
         //     var sanitizedMessage = result.data.text;
         //     console.log(sanitizedMessage);
         // });
-        axios.post("https://localhost:5001/trojan-confessions-449cf/us-central1/helloWorld", (res : object) => {
-            console.log(res);
-        });
+        // axios.post("https://localhost:5001/trojan-confessions-449cf/us-central1/helloWorld", (res : object) => {
+        //     console.log(res);
+        // });
+        console.log(`nah deprecated`)
     }   
 
 

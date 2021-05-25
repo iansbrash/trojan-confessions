@@ -48,7 +48,7 @@ const PrivateRoute : FC<any> = ({ children, ...rest } : any) => {
       try {
         const res = await axios({
           method: 'post',
-          url: 'http://localhost:5000/api/admin/auth/',
+          url: '/api/admin/auth/',
           headers: {
             jwt_token: cookies['jwt_token']
           }

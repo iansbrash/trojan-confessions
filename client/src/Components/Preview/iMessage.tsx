@@ -49,7 +49,7 @@ const IMessage : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-center items-end h-96 w-96 bg-gray-900 shadow-md">
+            <div className="flex flex-col justify-center items-end h-96 w-96 bg-black shadow-md">
                 <Text content={confessionInput} hasTail={false}/>
                 <Text content={
                     `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`

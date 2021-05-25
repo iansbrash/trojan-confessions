@@ -76,7 +76,7 @@ const Login : FC = () => {
 
         const res = await axios({
             method: 'post',
-            url: `http://localhost:5000/api/admin/login/`,
+            url: `/api/admin/login/`,
             headers: {
                 id_token: tokenObj
             }

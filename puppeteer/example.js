@@ -39,10 +39,6 @@ const INSTAGRAM_URL = 'https://instagram.com';
 
     let imageArray = [];
 
-    // for (let i = 0; i < 10; i++){
-    //     await page.goto('http://localhost:3000/preview');
-    // }
-
     await page.goto('http://localhost:3000/preview');
 
 

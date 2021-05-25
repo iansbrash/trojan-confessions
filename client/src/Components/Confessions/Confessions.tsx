@@ -98,7 +98,7 @@ const Confessions : FC = () => {
         (async () => {
             const res = await axios({
                 method: 'get',
-                url: 'http://localhost:5000/api/confessions/',
+                url: '/api/confessions/',
                 headers: { }
             })
 

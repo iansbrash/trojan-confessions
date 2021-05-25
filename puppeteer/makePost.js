@@ -7,32 +7,22 @@
  */
 
  "use strict";
-
-// import axios from 'axios';
 var axios = require('axios');
 var qs = require('qs');
 var FormData = require('form-data');
 var constants = require( './constants.js' );
-var imagebase64 = require('./imagebase64');
 const puppeteer = require('puppeteer');
 var fs = require('fs');
 
+// For testing
+var imagebase64 = require('./imagebase64');
 
-const { Readable } = require("stream")
-
-const readable = Readable.from(["input string"])
-
+// Contants for logging in, etc
 var samplebase64 = imagebase64.samplebase64;
-
-var stringtostream = require('string-to-stream')
-// var intoStream = require('into-stream');
-// import intoStream from 'into-stream';
-
 var latelysocialUsername = constants.latelysocialUsername;
 var latelysocialPassword = constants.latelysocialPassword;
 var latelysocialAccountId = constants.latelysocialAccountId;
 var imgurClientId = constants.imgurClientId;
-
 
 // returns a req object... or the only important parts
 const getLatelySocialHome = async () => {
@@ -86,13 +76,6 @@ const loginLatelySocial = async () => {
         method: 'post',
         url: 'https://latelysocial.com/auth/ajax_login',
         headers: { 
-            // 'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"', 
-            // 'Accept': 'application/json, text/javascript, */*; q=0.01', 
-            // 'DNT': '1', 
-            // 'X-Requested-With': 'XMLHttpRequest', 
-            // 'sec-ch-ua-mobile': '?0', 
-            // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36', 
-            // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 
             'Cookie': 'general_sessions=' + cookies.general_sessions + '; token=' + cookies.token
         },
         data : data
@@ -119,47 +102,16 @@ const makeLatelySocialPost = async (imageUrlArray, caption) => {
     // cookies contains:
     // token, general_sessions, mid
     const cookies = await loginLatelySocial();
-
-    // usctrojanconfessions
-
-    /** CAROSEL POST SPECIFICATIONS */
-    // const caption = 'tessssst';
-    
-    const media = [
-        // 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png',
-        // 'https://dymwzetew9d5u.cloudfront.net/user182278/16212916379406.png',
-        // 'https://i.imgur.com/zRQGgNx.jpg',
-        // 'https://i.imgur.com/lsgicGv.jpeg',
-        // 'https://i.imgur.com/mPnRn0g.png'
-        // below is created by us thru reqs
-        'https://dymwzetew9d5u.cloudfront.net/user182278/16219582433279.png'
-
-    ]
-
-    let media2 = [
-        'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png'
-    ]
-
-    // for (let i = 0; i < imgurUrlArray.length; i++){
-    //     media2.push(imgurUrlArray[i]);
-    // }
-    // const media = imgurUrlArray;
-    /** CAROSEL POST SPECIFICATIONS */
-
-    console.log('in mLSP...')
-    // console.log(imgurUrlArray);
-
-    console.log('Starting makeLatelySocialPost');
+    console.log(`in makingLatelySocialPost`);
+    console.log(`caption: ${caption}`)
+    console.log(`imageUrlArray.length: ${imageUrlArray.length}`)
 
     var data = qs.stringify({
         'account[]': latelysocialAccountId,
-        'caption': caption ? caption : 'NEED TO CHANGE THIS',
+        'caption': caption ? caption : 'Confessions.',
         'carouselUserTagData': '',
         'comment': '',
         'media': imageUrlArray,
-        // 'media[]': 'https://i.imgur.com/aszWQ1L.png',
-        // 'media[]': 'https://i.imgur.com/P970j0r.png',
-        // 'repeat_end': '17/05/2021 05:46 PM',
         'repeat_every': '0',
         'thumbnailTimestamp': '',
         'title': '',
@@ -174,35 +126,25 @@ const makeLatelySocialPost = async (imageUrlArray, caption) => {
         method: 'post',
         url: 'https://latelysocial.com/instagram/post/ajax_post',
         headers: { 
-            // 'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"', 
-            // 'Accept': 'application/json, text/javascript, */*; q=0.01', 
-            // 'DNT': '1', 
-            // 'X-Requested-With': 'XMLHttpRequest', 
-            // 'sec-ch-ua-mobile': '?0', 
-            // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36', 
-            // 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8', 
             'Cookie': 'general_sessions=' + cookies.general_sessions + '; token=' + cookies.token + '; mid=' + cookies.mid
         },
         data : data
     };
 
-    const res = await axios(config);
+    try {
+        const res = await axios(config);
+    }
+    catch (e) {
+        console.error("error making latelysocial post")
+        console.error(error);
+    }
 
     // make sure that res.data !=== 'error'
     // and that it === 'success'
 
-
-
     console.log(res);
-
-    
-
-
     return;
 }
-
-// substr 26 for base64 form htmltoimage
-// https://stackoverflow.com/questions/49131516/how-to-copy-text-from-browser-clipboard-using-puppeteer-in-nodejs
 
 
 /**
@@ -283,7 +225,7 @@ const postToImgur = async (base64Array) => {
             var data = new FormData();
 
             //23 for jpeg 22 for png
-            data.append('image', base64Array[i].substring(22));
+            data.append('image', base64Array[i].replace(/^data:image\/png;base64,/, ""));
             data.append('type', 'base64');
 
             const res = await axios({
@@ -311,8 +253,6 @@ const postToImgur = async (base64Array) => {
 }
 
 const uploadToLatelySocialDatabase = async (base64Array) => {
-
-    // var base64Data = req.rawBody.replace(/^data:image\/png;base64,/, "");
 
     let latelysocialUploadArray = [];
 
@@ -348,11 +288,13 @@ const uploadToLatelySocialDatabase = async (base64Array) => {
             data : data
         };
     
-        // const res = await axios(config);
+        // upload image
+        const res = await axios(config);
 
-        // latelysocialUploadArray.push(
-        //     `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
-        // );
+        // push to array which we use to upload to insta
+        latelysocialUploadArray.push(
+            `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
+        );
     }
 
     // then delete out.png
@@ -417,17 +359,11 @@ const testToPostArray = [
     }
 ];
 
-
-
 (async () => {
-    console.log('starting');
+    console.log('starting entire upload process');
 
     const base64Array = await getBase64Array(testToPostArray);
     console.log(`base64Array.length: ${base64Array.length}`)
-    console.log(base64Array[0]);
-    // return;
-    // const imgurUrlArray = await postToImgur(base64Array);
-    // console.log(`imgurUrlArray.length: ${imgurUrlArray.length}`)
 
     const caption = 'wowwwwww';
 
