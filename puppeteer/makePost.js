@@ -15,6 +15,8 @@ var FormData = require('form-data');
 var constants = require( './constants.js' );
 var imagebase64 = require('./imagebase64');
 const puppeteer = require('puppeteer');
+var fs = require('fs');
+
 
 const { Readable } = require("stream")
 
@@ -112,7 +114,7 @@ const loginLatelySocial = async () => {
     return cookies2;
 }
 
-const makeLatelySocialPost = async (imgurUrlArray, caption) => {
+const makeLatelySocialPost = async (imageUrlArray, caption) => {
 
     // cookies contains:
     // token, general_sessions, mid
@@ -138,14 +140,14 @@ const makeLatelySocialPost = async (imgurUrlArray, caption) => {
         'https://dymwzetew9d5u.cloudfront.net/user182278/16212916316774.png'
     ]
 
-    for (let i = 0; i < imgurUrlArray.length; i++){
-        media2.push(imgurUrlArray[i]);
-    }
-    const media = imgurUrlArray;
+    // for (let i = 0; i < imgurUrlArray.length; i++){
+    //     media2.push(imgurUrlArray[i]);
+    // }
+    // const media = imgurUrlArray;
     /** CAROSEL POST SPECIFICATIONS */
 
     console.log('in mLSP...')
-    console.log(imgurUrlArray);
+    // console.log(imgurUrlArray);
 
     console.log('Starting makeLatelySocialPost');
 
@@ -154,7 +156,7 @@ const makeLatelySocialPost = async (imgurUrlArray, caption) => {
         'caption': caption ? caption : 'NEED TO CHANGE THIS',
         'carouselUserTagData': '',
         'comment': '',
-        'media': media,
+        'media': imageUrlArray,
         // 'media[]': 'https://i.imgur.com/aszWQ1L.png',
         // 'media[]': 'https://i.imgur.com/P970j0r.png',
         // 'repeat_end': '17/05/2021 05:46 PM',
@@ -308,75 +310,70 @@ const postToImgur = async (base64Array) => {
    return imgurUrlArray;
 }
 
-const uploadToLatelySocialDatabase = async () => {
-
-    var data = new FormData();
-    // data.append('files[]', fs.createReadStream('/C:/Users/iansb/Downloads/tind.png'));
-
-    var fs = require('fs');
-
-    // const t = stringtostream(samplebase64)
-
-    // const t2 = Readable.from([samplebase64])
+const uploadToLatelySocialDatabase = async (base64Array) => {
 
     // var base64Data = req.rawBody.replace(/^data:image\/png;base64,/, "");
-    var base64Data = samplebase64;
-    require("fs").writeFile("out.png", base64Data, 'base64', function(err) {
-        console.log(err);
-    });
 
-    // return;
+    let latelysocialUploadArray = [];
 
-    // return;
+    for (let i = 0; i < base64Array.length; i++){
 
-    // const t3 = (new Base64Encode(samplebase64));
+        var base64Data = base64Array[i].replace(/^data:image\/png;base64,/, "");
 
-
-    const test = fs.createReadStream('out.png');
-
-//     // Read and disply the file data on console
-// test.on('data', function (chunk) {
-//     console.log(chunk.toString());
-// });
-// return;
-    // console.log(t);
-    // console.log(test);
-    // console.log(t2);
-    // console.log(t3);
-    // return;
+        console.log('about to write to out.png in iteration ' + i)
+        try {
+            const res1 = await fs.promises.writeFile("out.png", base64Data, 'base64');
+        }
+        catch (e) {
+            console.error('error writing to out.png')
+            console.error(e);
+        }
+        
     
-
-    // return;
+        console.log('about to create read stream');
+        const readStream = fs.createReadStream('out.png');
     
-    data.append('files[]', test);
-    data.append('token', '14b22ac28ff5b8fc7a4312e8f5217540');
-    data.append('user', '182278');
+        var data = new FormData();
+        data.append('files[]', readStream);
+        data.append('token', '14b22ac28ff5b8fc7a4312e8f5217540');
+        data.append('user', '182278');
+    
+    
+        var config = {
+            method: 'post',
+            url: 'https://app.scheduleinstagrampostsfree.com/uploadvideo/welcome/lately/',
+            headers: { 
+                ... data.getHeaders()
+            },
+            data : data
+        };
+    
+        // const res = await axios(config);
 
-    // console.log(data)
+        // latelysocialUploadArray.push(
+        //     `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
+        // );
+    }
 
-    var config = {
-    method: 'post',
-    url: 'https://app.scheduleinstagrampostsfree.com/uploadvideo/welcome/lately/',
-    headers: { 
-        // 'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="90", "Google Chrome";v="90"', 
-        // 'Accept': 'application/json, text/javascript, */*; q=0.01', 
-        // 'DNT': '1', 
-        // 'sec-ch-ua-mobile': '?0', 
-        // 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36', 
-        // 'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundaryVwlWdwcdGwK5uPBB', 
-        ... data.getHeaders()
-    },
-    data : data
-    };
+    // then delete out.png
+    console.log('now deleting out.png')
+    try {
+        const res2 = await fs.promises.unlink("out.png", err => {
+            if (err) throw err;
+            else console.log('out.png was deleted');
+        });
+    }
+    catch (e) {
+        console.error('error deleting out.png')
+        console.error(e);
+    }
 
-    // console.log(data.getHeaders());
-// return;
-    const res = await axios(config);
-    console.log(res);
+    console.log(latelysocialUploadArray);
 
+    // then return the array
+    return latelysocialUploadArray;
 }
 
-// makeLatelySocialPost();
 
 const testToPostArray = [
     {
@@ -423,21 +420,18 @@ const testToPostArray = [
 
 
 (async () => {
+    console.log('starting');
+
     const base64Array = await getBase64Array(testToPostArray);
     console.log(`base64Array.length: ${base64Array.length}`)
     console.log(base64Array[0]);
-    return;
-    const imgurUrlArray = await postToImgur(base64Array);
-    console.log(`imgurUrlArray.length: ${imgurUrlArray.length}`)
+    // return;
+    // const imgurUrlArray = await postToImgur(base64Array);
+    // console.log(`imgurUrlArray.length: ${imgurUrlArray.length}`)
 
     const caption = 'wowwwwww';
 
-    await makeLatelySocialPost(imgurUrlArray, caption);
-});
+    const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
 
-(async () => {
-    // await uploadToLatelySocialDatabase();
-    const res = await makeLatelySocialPost();
-    console.log(res);
-
-})(); 
+    await makeLatelySocialPost(latelysocialUploadArray, caption);
+})();
