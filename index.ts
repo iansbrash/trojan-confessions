@@ -69,24 +69,26 @@ app.use('/api/preview', preview);
 // router 3
 app.use('/api/admin', admin);
 // test
-// if (process.env.NODE_ENV === "production") {
-    // app.use(express.static(path.join(__dirname, 'client/build')));
+if (process.env.NODE_ENV === "production") {
+    console.log("IN PRODUCTION")
+    app.use(express.static(path.join(__dirname, 'client/build')));
 
-    // app.get('/*', (req, res) => {
-    //     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-    // })
-// }
+    app.get('/*', (req, res) => {
+        console.log('FUCK THIS FUCKING HORSESHIT')
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    })
+}
 // bruh
 
-app.use(express.static(__dirname + '/client' + '/build'))
+// app.use(express.static(__dirname + '/client' + '/build'))
 
 // app.get('*', function (request, response){
 //   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 // })
 
-app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-  })
+// app.get('/*', (req, res) => {
+//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+//   })
 
 
 
