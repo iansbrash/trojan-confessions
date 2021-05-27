@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import firebase from 'firebase';
 import { CookiesProvider } from 'react-cookie';
+import { HashRouter } from 'react-router-dom';
 
 // Use your config values here.
 firebase.initializeApp({
@@ -20,7 +21,11 @@ firebase.initializeApp({
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
-      <App />
+      {/* <HashRouter
+      basename={"/"}
+      > */}
+        <App />
+      {/* </HashRouter> */}
     </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
