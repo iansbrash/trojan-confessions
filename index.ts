@@ -71,11 +71,11 @@ app.use('/api/admin', admin);
 // test
 if (process.env.NODE_ENV === "production") {
     console.log("IN PRODUCTION")
-    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use(express.static(path.join(__dirname, '..', 'client/build')));
 
     app.get('/*', (req, res) => {
         console.log('FUCK THIS FUCKING HORSESHIT')
-        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
     })
 }
 // bruh
