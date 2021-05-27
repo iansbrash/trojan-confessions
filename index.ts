@@ -68,7 +68,7 @@ app.use('/api/preview', preview);
 
 // router 3
 app.use('/api/admin', admin);
-
+// test
 // if (process.env.NODE_ENV === "production") {
     app.use(express.static(path.join(__dirname, 'client', 'build')));
 
