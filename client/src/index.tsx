@@ -21,11 +21,11 @@ firebase.initializeApp({
 ReactDOM.render(
   <React.StrictMode>
     <CookiesProvider>
-      {/* <HashRouter
-      basename={"/"}
-      > */}
+      <HashRouter
+      // basename={"/"}
+      >
         <App />
-      {/* </HashRouter> */}
+      </HashRouter>
     </CookiesProvider>
   </React.StrictMode>,
   document.getElementById('root')
