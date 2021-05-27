@@ -78,10 +78,10 @@ app.use('/api/admin', admin);
 // }
 // bruh
 
-app.use(express.static(__dirname + '/client' + '/public'))
+app.use(express.static(__dirname + '/client' + '/build'))
 
 app.get('*', function (request, response){
-  response.sendFile(path.resolve(__dirname, 'client', 'public', 'index.html'))
+  response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
 })
 
 
