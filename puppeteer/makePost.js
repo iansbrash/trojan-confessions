@@ -192,9 +192,12 @@ const getBase64Array = async (toPostArray) => {
             tags: ${tags},
             theme: ${theme},
             timestamp: ${timestamp}
-        `)
+        `);
 
-        await page.goto(`http://localhost:3000/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
+        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        // const tcUrl = 'http://localhost:3000'
+
+        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
         `);
         //&tags[]=one&tags[]=2
 
@@ -365,7 +368,7 @@ const testToPostArray = [
     const base64Array = await getBase64Array(testToPostArray);
     console.log(`base64Array.length: ${base64Array.length}`)
 
-    const caption = 'wowwwwww';
+    const caption = 'full stack';
 
     const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
 

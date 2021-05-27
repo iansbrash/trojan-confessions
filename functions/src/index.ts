@@ -43,6 +43,8 @@ var FormData = require('form-data');
 
 const puppeteer = require('puppeteer');
 var fs = require('fs');
+const path = require('path');
+const os = require('os');
 
 import {
     latelysocialUsername,
@@ -229,7 +231,10 @@ const getBase64Array = async (toPostArray : any) => {
             timestamp: ${timestamp}
         `)
 
-        await page.goto(`http://localhost:3000/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}
+        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        // const tcUrl = 'http://localhost:3000'
+
+        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}
         `);
         //&tags[]=one&tags[]=2
 
@@ -256,13 +261,15 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
 
     let latelysocialUploadArray = [];
 
+    const tempFilePath = path.join(os.tmpdir(), 'out.png');
+
     for (let i = 0; i < base64Array.length; i++){
 
         var base64Data = base64Array[i].replace(/^data:image\/png;base64,/, "");
 
         console.log('about to write to out.png in iteration ' + i)
         try {
-            await fs.promises.writeFile("out.png", base64Data, 'base64');
+            await fs.promises.writeFile(tempFilePath, base64Data, 'base64');
         }
         catch (e) {
             console.error('error writing to out.png')
@@ -271,7 +278,9 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
         
     
         console.log('about to create read stream');
-        const readStream = fs.createReadStream('out.png');
+
+
+        const readStream = fs.createReadStream(tempFilePath);
     
         var data = new FormData();
         data.append('files[]', readStream);
@@ -298,15 +307,15 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
     }
 
     // then delete out.png
-    console.log('now deleting out.png')
+    console.log(`now deleting ${tempFilePath}`)
     try {
-        await fs.promises.unlink("out.png", (err : Error) => {
+        await fs.promises.unlink(tempFilePath, (err : Error) => {
             if (err) throw err;
-            else console.log('out.png was deleted');
+            else console.log(`${tempFilePath} was deleted`);
         });
     }
     catch (e) {
-        console.error('error deleting out.png')
+        console.error(`error deleting ${tempFilePath}`)
         console.error(e);
     }
 
@@ -319,7 +328,10 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
 
 
 
-export const onToPostCreate3 = functions.database.ref(
+export const onToPostCreate3 = functions.runWith({
+    timeoutSeconds: 140,
+    memory: '1GB'
+}).database.ref(
     '/toPost/{toPostId}'
 ).onCreate((snapshot, context) => {
     // const postId = context.params.postId;
@@ -346,7 +358,7 @@ export const onToPostCreate3 = functions.database.ref(
             const base64Array = await getBase64Array(newArrayDataOfOjbect);
             console.log(`base64Array.length: ${base64Array.length}`)
         
-            const caption = 'from functions';
+            const caption = 'from functions from live web';
         
             const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
         
