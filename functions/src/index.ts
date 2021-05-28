@@ -363,6 +363,7 @@ export const onToPostCreate3 = functions.runWith({
 
                 console.log('starting entire upload process');
                 try {
+                    // need to account for having more than 10 in queue
                     var newArrayDataOfOjbect = Object.values(datasnapshot.val())
                     const base64Array = await getBase64Array(newArrayDataOfOjbect);
                     // console.log(`base64Array.length: ${base64Array.length}`)

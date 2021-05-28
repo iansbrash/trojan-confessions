@@ -1,6 +1,7 @@
 import React, {
     FC,
-    useState
+    useState,
+    useEffect
 } from 'react';
 
 
@@ -18,8 +19,16 @@ const SignatureField : FC<SignatureFieldProps> = ({
     setField
 } : SignatureFieldProps) => {
 
+    const [selection, setSelection] = useState<string>('None');
+
     const handleChange = (e : any) => {
-        setField(e.target.value);
+        if (e.target.value === 'None'){
+            setField('');
+        }
+        else {
+            setField(e.target.value);
+        }
+        setSelection(e.target.value)
     }
 
     return (
@@ -27,7 +36,7 @@ const SignatureField : FC<SignatureFieldProps> = ({
             <div className="mt-2">
                 {svg}
             </div>
-            <input 
+            {/* <input 
             list={placeholder}
             placeholder={placeholder}
             className="bg-gray-200 my-2 text-2xl z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 placeholder-gray-400 text-gray-700 relative rounded border-0 outline-none focus:outline-none w-full text-left"    
@@ -37,7 +46,15 @@ const SignatureField : FC<SignatureFieldProps> = ({
             </input>
             <datalist id={placeholder}>
                 {datalistArray.map(dl => <option value={dl} />)}
-            </datalist>
+            </datalist> */}
+            <select value={selection} onChange={(e) => handleChange(e)} className={`${selection === 'None' ? 'text-gray-400' : ''} text-2xl mt-2 appearance-none bg-gray-200 focus:outline-none`}>
+                {/* <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="fiat">Fiat</option> */}
+                {/* <option value="audi">Audi</option> */}
+                <option className="text-gray-400" value={`None`}>None</option>
+                {datalistArray.map(item => <option className="text-black" value={item}>{item}</option>)}
+            </select>
 
         </div>
         
@@ -181,12 +198,21 @@ const AddIdentifiers : FC<AddIdentifiersProps> = ({
         setYear(yearTemp);
     }
 
+    useEffect(() => {
+
+        signatureAdded();
+        
+        return () => {
+            
+        }
+    }, [locationTemp, schoolTemp, fraternityTemp, yearTemp])
+
 
 
     return (
         <div className="mb-4">
             <div className="relative">
-                <div className="absolute top-3 -right-2">
+                {/* <div className="absolute top-3 -right-2">
                     <div className="flex flex-col justify-center content-center bg-red-400 rounded-md shadow-md">
                         <button 
                             className="focus:outline-none text-center font-bold text-xl text-white"
@@ -195,7 +221,7 @@ const AddIdentifiers : FC<AddIdentifiersProps> = ({
                             <PlusSvg />
                         </button>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className="font-bold text-4xl text-gray-700 mb-2">
                 Add a Signature

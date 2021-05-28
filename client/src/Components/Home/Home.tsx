@@ -93,9 +93,9 @@ const Home : FC = () => {
                 <div className="my-4"></div>
             </div>
             <div className="z-0">
-                <div className="flex flex-col max-w-4xl mx-auto">
+                <div className="flex flex-col max-w-4xl mx-auto items-center">
                     {/* Submission */}
-                    <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} z-20 text-center flex-1 items-center`}>
+                    <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} z-20 text-center w-full items-center max-w-xl mdlg:max-w-none`}>
                         <div className={
                             `transition duration-500 ease-in-out ${email.includes('@usc.edu') ? 'opacity-1' : 'opacity-0'}`
                         }>
@@ -129,10 +129,10 @@ const Home : FC = () => {
                     {/* Everything Else */}
                     {/* We do the email.includes check because the invisible submission box fucks with some stuff */}
                     <div className={`${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
-                        <div className={`transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-start`}>
+                        <div className={`transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-center`}>
 
                             <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
-                                <div className={`transform -translate-y-6 aspect-h-1 aspect-w-1 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                                <div className={`transform -translate-y-6  w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                     {/* <Preview /> */}
 
                                     {/* Ideas:
@@ -160,8 +160,8 @@ const Home : FC = () => {
                                         RobinHood
                                     */}
 
-                                    <div className="aspect-w-1 aspect-h-1">
-                                        <div className="flex justify-center items-center">
+                                    <div className="">
+                                        <div className="flex justify-center items-center p-7">
                                             {/* <div id="toPreview">
 
                                             </div> */}
@@ -200,7 +200,7 @@ const Home : FC = () => {
                                 </div>
                                 
 
-                                <div className="flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
+                                <div className="max-w-xl flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
                                     <HowItWorks
                                         firstName={firstName}
                                         lastName={lastName}
@@ -222,7 +222,7 @@ const Home : FC = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex flex-1 h-12 items-start">
+                        <div className={`hidden mdlg:block flex flex-1 h-12 items-start`}>
                             <div className={`${submitted ? 'hidden' : ''} flex-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                 <ConfessionsFeed />
                             </div>

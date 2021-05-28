@@ -23,6 +23,64 @@ const Tag : FC<TagProps> = ({
     )
 }
 
+interface TagErrorPopupProps {
+    tagError: TagErrors
+}
+
+const TagErrorPopup : FC<TagErrorPopupProps> = ({
+    tagError
+} : TagErrorPopupProps) => {
+
+    const hints = [
+        '',
+        'Tags must start with a #',
+        'Tags must not contains spaces',
+        'Tags must not be empty',
+        'Tags can only contain letters and numbers',
+        'This tag has already been added'
+    ]
+
+    const [currentHint, setCurrentHint] = useState<string>(hints[0]);
+
+    useEffect(() => {
+
+        if (tagError !== TagErrors.None){
+            setCurrentHint(hints[tagError]);
+        }
+
+    }, [tagError])
+
+
+    
+
+    return (
+        <div className={`transform-opacity duration-500 ease-in-out ${tagError !== TagErrors.None ? 'opacity-1' : 'opacity-0'} z-10 absolute left-0 bottom-10`}>
+            <div className={`relative m-2 p-2 bg-red-500 rounded-md shadow-md`}>
+                <div className="z-0 absolute left-6 -bottom-2 flex justify-center">
+                    <div className="transform rotate-45 bg-red-500 h-4 w-4">
+
+                    </div>
+                </div>
+                <div className="z-10 break-normal text-xl text-white">
+                    {currentHint}
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
+
+
+enum TagErrors {
+    None,
+    NeedsHash,
+    HasSpace,
+    EmptyTag,
+    ContainsNonAlphaNumeric,
+    TagExists
+}
+
     
 interface AddTagsProps {
     hashtags: string[],
@@ -34,42 +92,65 @@ const AddTags : FC<AddTagsProps> = ({
     setHashtags
 } : AddTagsProps) => {
 
+    
+
     const inputRef = useRef<HTMLInputElement>(document.createElement('input'))
+    const [tagError, setTagError] = useState<TagErrors>(TagErrors.None);
 
     const HandleChange = (e : any) => {
         const t : string = e.target.value;
 
         if (t.length === 0){
-            return;
+            setTagError(TagErrors.None)
         }
         else {
             if (t.charAt(0) !== '#'){
-                return;
+                setTagError(TagErrors.NeedsHash)
+            }
+            else if (t.substr(1) === ' '){
+                setTagError(TagErrors.EmptyTag);
+            }
+            else if (t.indexOf(' ') !== -1 && t.indexOf(' ') !== t.length - 1){
+                setTagError(TagErrors.HasSpace);
+            }
+            else if (
+                t.substring(1) !== '' && 
+                !t.substring(1, t.length - 1).match(/^[a-z0-9]+$/i) &&
+                !t.substring(1, 2).match(/^[a-z0-9]+$/i)
+
+                ){
+                setTagError(TagErrors.ContainsNonAlphaNumeric);
             }
             else if (t.charAt(t.length - 1) === ' '){
                 console.log('time to tag!')
 
                 const trimmedTag = (t.substr(1)).trim();
-
+                
                 if (!hashtags.includes(trimmedTag)){
                     setHashtags([...hashtags, trimmedTag])
                     inputRef.current.value = '';
-                    
+                    setTagError(TagErrors.None);
                 }
                 else {
-                    // error
+                    setTagError(TagErrors.TagExists);
                 }
+            }
+            else {
+                setTagError(TagErrors.None);
             }
         }
     }
     
     return (
-        <div className="self-center">
+        <div className="relative self-center">
             <input 
                 ref={inputRef}
                 onChange={(e) => HandleChange(e)}
                 placeholder={`#tag`}
                 className="bg-gray-200 ml-2 text-2xl z-10 leading-6 break-all whitespace-normal break-text flex-1 placeholder-gray-400 text-gray-700 relative rounded border-0 outline-none focus:outline-none w-full text-left"
+            />
+            <TagErrorPopup 
+                tagError={tagError}
             />
         </div>
     )
@@ -272,9 +353,9 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                         </div>
                     </div>
 
-                    <div className="w-36 bg-black">
+                    {/* <div className="w-36 bg-black">
 
-                    </div>
+                    </div> */}
                 </div>
 
                 {/* Divider */}

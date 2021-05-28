@@ -29,6 +29,9 @@ module.exports = {
      '7.1xl': '5.1rem'
     },
     extend: {
+      screens: {
+        'mdlg': '900px',
+      },
       translate: {
         '102': '26rem',
         '103': '27.8rem',
