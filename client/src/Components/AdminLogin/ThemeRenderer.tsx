@@ -27,6 +27,8 @@ const ThemeRenderer : FC<ThemeRendererProps> = ({
         year,
         tags
     } = themeprops;
+
+    console.log('Rerendering ThemeRenderer: theme value: ' + theme)
     
     switch (theme) {
         case "imessage":

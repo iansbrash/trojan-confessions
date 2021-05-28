@@ -16,7 +16,8 @@ import About from './Components/About/About';
 import IMessageRoute from './Components/Preview/IndividualRoutes/IMessageRoute';
 import ZoomRoute from './Components/Preview/IndividualRoutes/ZoomRoute';
 import TinderRoute from './Components/Preview/IndividualRoutes/TinderRoute';
-
+import EmailRoute from './Components/Preview/IndividualRoutes/EmailRoute';
+import TwitterRoute from './Components/Preview/IndividualRoutes/TwitterRoute';
 
 // tailwind
 import "tailwindcss/tailwind.css";
@@ -153,9 +154,19 @@ function App() {
             <ZoomRoute />
           </Route>
 
-          {/* /preview/imessage */}
+          {/* /preview/tinder */}
           <Route path="/preview/tinder">
             <TinderRoute />
+          </Route>
+
+          {/* /preview/email */}
+          <Route path="/preview/email">
+            <EmailRoute />
+          </Route>
+
+          {/* /preview/twitter */}
+          <Route path="/preview/twitter">
+            <TwitterRoute />
           </Route>
 
           {/* /preview */}

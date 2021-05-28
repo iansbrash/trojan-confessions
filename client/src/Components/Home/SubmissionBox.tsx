@@ -158,15 +158,18 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             Themes.twitter
         ]
 
-        if (themesIndex === themesArray.length - 1){
-            setThemesIndex(0);
-        }
-        else {
-            setThemesIndex(themesIndex + 1);
-        }
+        console.log(`themesIndex before setting: ${themesIndex}`)
 
-        setTheme(themesArray[themesIndex]);
+        let newValue = themesIndex + 1;
+        console.log(`newValue: ${newValue}`)
+
+        setThemesIndex(newValue)
+        console.log(`themesIndex after setting: ${themesIndex}`)
+
+
+        setTheme(themesArray[newValue % themesArray.length]);
         console.log(`Toggled theme to: ${Themes[theme]}`)
+
     }
 
 

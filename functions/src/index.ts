@@ -212,6 +212,8 @@ const getBase64Array = async (toPostArray : any) => {
     });
     const page = await browser.newPage();
 
+    await page.setDefaultNavigationTimeout(0);
+
     // should iterate 10 times regardless
     for (let i = 0; i < toPostArray.length; i++){
         const {
@@ -353,30 +355,35 @@ export const onToPostCreate3 = functions.runWith({
             //     console.log(datasnapshot.val()[key].content)
             // })
 
-            console.log('starting entire upload process');
-            var newArrayDataOfOjbect = Object.values(datasnapshot.val())
-            const base64Array = await getBase64Array(newArrayDataOfOjbect);
-            console.log(`base64Array.length: ${base64Array.length}`)
-        
-            const caption = 'from functions from live web';
-        
-            const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
-        
-            await makeLatelySocialPost(latelysocialUploadArray, caption);
+            
 
             if (numberOfChildren >= 10){
 
                 console.log('about to remove 10!');
 
-                // this is where we post to latelysocial
+                console.log('starting entire upload process');
+                try {
+                    var newArrayDataOfOjbect = Object.values(datasnapshot.val())
+                    const base64Array = await getBase64Array(newArrayDataOfOjbect);
+                    // console.log(`base64Array.length: ${base64Array.length}`)
+                
+                    const caption = 'from functions from live web';
+                
+                    const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
+                
+                    await makeLatelySocialPost(latelysocialUploadArray, caption);
 
-
-                datasnapshot.ref.limitToFirst(10).ref.remove().then( () => {
-                    console.log('remove successfulk')
-                }).catch( e => {
-                    console.log('removed failed')
-                    console.error(e);
-                })
+                    datasnapshot.ref.limitToFirst(10).ref.remove().then( () => {
+                        console.log('remove successfulk')
+                    }).catch( e => {
+                        console.log('removed failed')
+                        console.error(e);
+                    })
+                }
+                catch (err) {
+                    console.error('Problem during upload process')
+                    console.error(err);
+                }
             }
         });
     }

@@ -32,6 +32,14 @@ const HomeHeader : FC = () => {
                 <div className="flex flex-row">
                     <HeaderLink title={'Home'} path="/"/>
                     <HeaderLink title={'Confessions'} path="/confessions/"/>
+                    <div className="flex mx-1">
+                        <a className="cursor-pointer flex px-2 justify-center content-center flex-1 transition duration-400 ease-in-out shadow-none hover:shadow-lg rounded-md"
+                        href={`https://www.instagram.com/usctrojanconfessions/`}>
+                            <div className="my-auto text-center text-white text-xl">
+                                {'Instagram'}
+                            </div>
+                        </a>
+                    </div>
                     <HeaderLink title={'Anonymity'} path="/anonymity/"/>
                     <HeaderLink title={'About'} path="/about/"/>
                 </div>
