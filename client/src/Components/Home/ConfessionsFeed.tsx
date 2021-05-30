@@ -124,7 +124,7 @@ const ConfessionsFeed : FC = () => {
         .then(function (response) {
             console.log(`response: XDD`);
             console.log(response.data);
-            setConfessions(response.data);
+            setConfessions(Object.values(response.data));
             // console.log(JSON.stringify(response.data));
         })
         .catch(function (error) {

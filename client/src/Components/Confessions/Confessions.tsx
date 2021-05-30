@@ -6,6 +6,7 @@ import React, {
 import HomeHeader from '../Home/HomeHeader'
 import axios from 'axios';
 import LoadingIndicator from '../Home/LoadingIndicator';
+import InfiniteScroll from 'react-infinite-scroller';
 
 
 interface FeedTagProps {
@@ -91,23 +92,37 @@ const Confessions : FC = () => {
 
     const [confessions, setConfessions] = useState<object[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [lastkey, setLastkey] = useState<string>('');
+
+    const loadConfession = async () => {
+        const res = await axios({
+            method: 'get',
+            url: '/api/confessions/',
+            headers: {
+                lastkey: lastkey
+            }
+        })
+
+        // console.log(res.data);
+        console.log(`res.data length: ${Object.keys(res.data).length}`)
+
+        //@ts-ignore
+        setConfessions([...confessions, ...Object.values(res.data)]);
+
+        const lastIndex = Object.keys(res.data).length - 1;
+
+        setLastkey(Object.keys(res.data)[lastIndex])
+
+        setLoading(false);
+
+        console.log(`lastkey: ${lastkey}`);
+        console.log(res.data[Object.keys(res.data)[lastIndex]].content)
+    }
 
     useEffect(() => {
         setLoading(true);
 
-        (async () => {
-            const res = await axios({
-                method: 'get',
-                url: '/api/confessions/',
-                headers: { }
-            })
-
-            console.log(res.data);
-
-            setConfessions(res.data);
-
-            setLoading(false);
-        })();
+        loadConfession();
 
         return () => {
 
@@ -133,42 +148,52 @@ const Confessions : FC = () => {
                 {/* Maybe a lil sorting action */}
 
                 {/* Actual confessions */}
-                <div className="gap-4 grid grid-cols-2 flex flex-col">
-                    <div className="flex flex-col space-y-4">
-                        {
-                            confessions.map((subObj : any, i : number) => i % 2 !== 0 ? null :
-                                // <div className="w-full">
-                                    <Confession 
-                                        content={subObj.content}
-                                        hashedId={subObj.hashedId}
-                                        signature={subObj.signature}
-                                        tags={subObj.tags.split(',')}
-                                        theme={subObj.theme}
-                                        timestamp={subObj.timestamp}
-                                    />
-                                // </div>
-                            )
-                        }
+                <InfiniteScroll
+                    pageStart={0}
+                    loadMore={() => loadConfession()}
+                    hasMore={true || false}
+                    loader={<div className="loader" key={0}>Loading ...</div>}
+                >
+                    <div className="gap-4 grid grid-cols-2 flex flex-col">
+                        <div className="flex flex-col space-y-4">
+                            {
+                                confessions.map((subObj : any, i : number) => {
+                                    // console.log(subObj);
+                                    if (i % 2 === 0){
+                                        return <Confession 
+                                            content={subObj.content}
+                                            hashedId={subObj.hashedId}
+                                            signature={subObj.signature}
+                                            tags={subObj.tags.split(',')}
+                                            theme={subObj.theme}
+                                            timestamp={subObj.timestamp}
+                                        />
+                                    }
+                                    return null;
+                                })
+                            }
+                        </div>
+                        <div className="flex flex-col space-y-4">
+                            {
+                                confessions.map((subObj : any, i : number) => {
+                                    // console.log(subObj);
+                                    if (i % 2 !== 0){
+                                        return <Confession 
+                                            content={subObj.content}
+                                            hashedId={subObj.hashedId}
+                                            signature={subObj.signature}
+                                            tags={subObj.tags.split(',')}
+                                            theme={subObj.theme}
+                                            timestamp={subObj.timestamp}
+                                        />
+                                    }
+                                    return null;
+                                })
+                            }
+                        </div>
                     </div>
-                    <div className="flex flex-col space-y-4">
-                        {
-                            confessions.map((subObj : any, i : number) => i % 2 === 0 ? null :
-                                // <div className="w-full">
-                                <>
-                                    <Confession 
-                                        content={subObj.content}
-                                        hashedId={subObj.hashedId}
-                                        signature={subObj.signature}
-                                        tags={subObj.tags.split(',')}
-                                        theme={subObj.theme}
-                                        timestamp={subObj.timestamp}
-                                    />
-                                </>
-                                // </div>
-                            )
-                        }
-                    </div>
-                </div>
+                </InfiniteScroll>
+
                 
             </div>
         </div>

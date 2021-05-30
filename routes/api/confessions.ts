@@ -39,23 +39,46 @@ router.get('/', (req, res) => {
     console.log(`in GET(/api/confessions/)`);
     console.log('========================');
 
+    const lastkey : any = req.headers.lastkey;
+
     let approvedRef = firebase.database().ref('approved');
 
-    approvedRef.limitToLast(10).once('value', snapshot => {
-        if (snapshot.exists()){
-            console.log('snapshot exists in ConfFeed!');
+    // if we're infinite scrolling
+    if (lastkey || lastkey !== ''){
+        console.log(`lastkey is provided: ${lastkey}`)
+        approvedRef.orderByChild('timestamp').startAt(lastkey).limitToFirst(20).once('value', snapshot => {
+            if (snapshot.exists()){
+                console.log('snapshot exists in ConfFeed!');
+    
+                const toSet : any[] = Object.values(snapshot.val()).reverse();
+    
+                return res.status(200).send(snapshot.val());
+            }
+            else { 
+                // null; 
+                console.log('err')
+                return res.status(404);
+            }
+        })
+    }
+    else {
+        approvedRef.limitToLast(20).once('value', snapshot => {
+            if (snapshot.exists()){
+                console.log('snapshot exists in ConfFeed!');
+    
+                const toSet : any[] = Object.values(snapshot.val()).reverse();
+    
+    
+                return res.status(200).send(snapshot.val());
+            }
+            else { 
+                // null; 
+                return res.status(404);
+            }
+        });
+    }
 
-            const toSet : any[] = Object.values(snapshot.val()).reverse();
-
-            return res.status(200).send(toSet);
-        }
-        else { 
-            // null; 
-            return res.status(404);
-        }
-    });
-
-    console.log('WHY AM I HERE');
+    return;
 });
 
 // Adding a new submission

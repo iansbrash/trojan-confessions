@@ -5,6 +5,7 @@
   "dependencies": {
     "@craco/craco": "^6.1.1",
     "@tailwindcss/aspect-ratio": "^0.2.0",
+    "@tailwindcss/postcss7-compat": "^2.1.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -13,24 +14,25 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.1",
+    "@types/react-infinite-scroller": "^1.2.1",
     "@types/react-router-dom": "^5.1.7",
+    "autoprefixer": "^9.8.6",
     "axios": "^0.21.1",
     "firebase": "^8.4.1",
     "html-to-image": "^1.6.1",
+    "postcss": "^7.0.35",
     "query-string": "^7.0.0",
     "react": "^17.0.2",
     "react-cookie": "^4.0.3",
     "react-dom": "^17.0.2",
     "react-google-login": "^5.2.2",
     "react-helmet": "^6.1.0",
+    "react-infinite-scroller": "^1.2.4",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2",
     "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1",
-    "@tailwindcss/postcss7-compat": "^2.1.0",
-    "autoprefixer": "^9.8.6",
-    "postcss": "^7.0.35",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.1.2"
+    "web-vitals": "^1.0.1"
   },
   "scripts": {
     "start": "craco start",
@@ -56,6 +58,5 @@
       "last 1 safari version"
     ]
   },
-  
   "proxy": "http://localhost:5000"
 }
