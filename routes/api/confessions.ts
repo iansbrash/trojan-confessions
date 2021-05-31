@@ -12,6 +12,7 @@ const { OAuth2Client } = require('google-auth-library');
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase";
+import { GoogleAuth, GoogleAuthOptions } from 'google-auth-library';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
@@ -52,6 +53,8 @@ router.get('/', (req, res) => {
     
                 const toSet : any[] = Object.values(snapshot.val()).reverse();
     
+                let toRet = {};
+
                 return res.status(200).send(snapshot.val());
             }
             else { 
@@ -119,8 +122,16 @@ router.post('/', async (req, res) => {
     // security
     // and cuz we cant store total email
     // cuz the @ messes it up
-
     // use JWT to auth in request
+    try { 
+        await onSignIn(id_token);
+        console.log('in try catch for awaiut onSignIn')
+    }
+    catch (err) {
+        console.log(`onSignIn error`)
+        return res.status(404).send("Error: Invalid Google id_token")
+
+    }
 
     const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 
@@ -150,13 +161,11 @@ router.post('/', async (req, res) => {
         console.log('in catch: ' + isError)
     }
 
-    console.log(`Beforea: ${isError}`)
     if (isError) {
         console.log('Got an error, gonna sendStatus404')
         return res.sendStatus(404)
     };
 
-    console.log(`After: ${isError}`)
 
     const userName = Date.now();
 
@@ -207,5 +216,53 @@ router.post('/', async (req, res) => {
 
     return res.status(200);
 });
+
+async function onSignIn(id_token : any) {
+    console.log(`in onSignIn`);
+    // We need to register an Observer on Firebase Auth to make sure auth is initialized.
+    var unsubscribe = firebase.auth().onAuthStateChanged(async (firebaseUser) => {
+        unsubscribe();
+        // Check if we are already signed-in Firebase with the correct user.
+        if (!isUserEqual(id_token, firebaseUser)) {
+        // Build Firebase credential with the Google ID token.
+            var credential = firebase.auth.GoogleAuthProvider.credential(id_token);
+
+            // Sign in with credential from the Google user.
+            try {
+                await firebase.auth().signInWithCredential(credential)
+                console.log('after awauit in onSignIn')
+            }
+            catch (error) {
+                console.log('error');
+                console.log(error);
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var cred = error.credential;
+                // ...
+            }
+            
+        } else {
+            console.log('User already signed-in Firebase.');
+        }
+    });
+}
+
+async function isUserEqual(id_token : string, firebaseUser : any) {
+    if (firebaseUser) {
+        var providerData = await firebaseUser.providerData;
+        for (var i = 0; i < providerData.length; i++) {
+        if (providerData[i].providerId === firebase.auth.GoogleAuthProvider.PROVIDER_ID &&
+            providerData[i].uid === id_token ) {
+            // We don't need to reauth the Firebase connection.
+            return true;
+        }
+        }
+    }
+    return false;
+}
 
 export default router;
