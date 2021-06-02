@@ -117,19 +117,21 @@ const ConfessionsFeed : FC = () => {
         var config : object = {
             method: 'get',
             url: '/api/confessions/',
-            headers: { }
+            headers: {
+                lastkey: '',
+                amount: 10
+            }
         };
 
-        await axios(config)
-        .then(function (response) {
-            console.log(`response: XDD`);
-            console.log(response.data);
-            setConfessions(Object.values(response.data));
-            // console.log(JSON.stringify(response.data));
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        try {
+            const res = await axios(config)
+
+            // @ts-ignore
+            setConfessions(Object.values(res.data).sort((a,b) => (a.timestamp < b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0)));
+        }
+        catch (err) {
+            console.error(err);
+        }
 
         setLoadingPosts(false);
     }

@@ -43,6 +43,8 @@ router.get('/', (req, res) => {
     const lastkey : any = req.headers.lastkey;
     const amount : any = req.headers.amount;
 
+    const parsedAmount : number = parseInt(amount);
+
     
 
     let approvedRef = firebase.database().ref('approved');
@@ -52,13 +54,13 @@ router.get('/', (req, res) => {
         console.log(`lastkey is provided: ${lastkey}`)
         //.startAfter(lastkey).limitToLast(20)
         approvedRef.orderByKey().endAt(lastkey).limitToLast(
-            parseInt(amount)
+            parsedAmount
         ).once('value', snapshot => {
             if (snapshot.exists()){
                 console.log('snapshot exists in ConfFeed!');
     
                 // if we have reached the end
-                if (Object.keys(snapshot.val()).length < parseInt(amount)){
+                if (Object.keys(snapshot.val()).length < parsedAmount){
                     console.log('hasMore: settting to false')
                     res.set('hasMore', 'false');
                 }
@@ -76,7 +78,9 @@ router.get('/', (req, res) => {
         })
     }
     else {
-        approvedRef.limitToLast(20).once('value', snapshot => {
+        approvedRef.limitToLast(
+            parsedAmount
+        ).once('value', snapshot => {
             if (snapshot.exists()){
                 console.log('snapshot exists in ConfFeed!');
     
