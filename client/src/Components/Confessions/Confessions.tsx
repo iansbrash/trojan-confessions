@@ -93,30 +93,36 @@ const Confessions : FC = () => {
     const [confessions, setConfessions] = useState<object[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [lastkey, setLastkey] = useState<string>('');
+    const [hasMore, setHasMore] = useState<boolean>(true);
 
     const loadConfession = async () => {
+
+        // amount of posts we want to load at a time
+        const amount = 20;
+
         const res = await axios({
             method: 'get',
             url: '/api/confessions/',
             headers: {
-                lastkey: lastkey
+                lastkey: lastkey,
+                amount: amount
             }
         })
 
-        // console.log(res.data);
-        console.log(`res.data length: ${Object.keys(res.data).length}`)
+        //@ts-ignore
+        setConfessions([...confessions, ...(Object.values(res.data).sort((a,b) => (a.timestamp < b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0)))]);
+
+        const lastIndex = Object.values(res.data).length - 1;
 
         //@ts-ignore
-        setConfessions([...confessions, ...Object.values(res.data)]);
+        setLastkey(Object.keys(res.data)[0])
 
-        const lastIndex = Object.keys(res.data).length - 1;
-
-        setLastkey(Object.keys(res.data)[lastIndex])
+        if (res.headers.hasmore === 'false'){
+            console.log('res.headers.hasMore === false');
+            setHasMore(false);
+        }
 
         setLoading(false);
-
-        console.log(`lastkey: ${lastkey}`);
-        console.log(res.data[Object.keys(res.data)[lastIndex]].content)
     }
 
     useEffect(() => {
@@ -136,9 +142,10 @@ const Confessions : FC = () => {
 
             {
                 loading ? 
-                <div className="mt-10 w-screen flex justify-center items-center">
-                    <LoadingIndicator size={20}/>
-                </div>
+                // <div className="mt-10 w-screen flex justify-center items-center">
+                //     <LoadingIndicator size={20}/>
+                // </div>
+                null
                 
                 : null
             }
@@ -150,9 +157,15 @@ const Confessions : FC = () => {
                 {/* Actual confessions */}
                 <InfiniteScroll
                     pageStart={0}
-                    loadMore={() => loadConfession()}
-                    hasMore={true || false}
-                    loader={<div className="loader" key={0}>Loading ...</div>}
+                    // Why do I have to do the below lmao
+                    // This is to fix double-loading of very last item in database
+                    loadMore={() => hasMore ? loadConfession() : null}
+                    hasMore={hasMore}
+                    loader={
+                        <div className="mt-5 justify-center items-center flex">
+                            <LoadingIndicator size={20}/>
+                        </div>
+                    }
                 >
                     <div className="gap-4 grid grid-cols-2 flex flex-col">
                         <div className="flex flex-col space-y-4">

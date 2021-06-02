@@ -34,10 +34,10 @@ const TagErrorPopup : FC<TagErrorPopupProps> = ({
     const hints = [
         '',
         'Tags must start with a #',
-        'Tags must not contains spaces',
-        'Tags must not be empty',
+        'Tags can\'t contains spaces',
+        'Tags can\'t be empty',
         'Tags can only contain letters and numbers',
-        'This tag has already been added'
+        'This tag has already exists'
     ]
 
     const [currentHint, setCurrentHint] = useState<string>(hints[0]);
@@ -104,33 +104,35 @@ const AddTags : FC<AddTagsProps> = ({
             setTagError(TagErrors.None)
         }
         else {
+            // Needs a hashtag
             if (t.charAt(0) !== '#'){
                 setTagError(TagErrors.NeedsHash)
             }
+            // Tag is empty
             else if (t.substr(1) === ' '){
                 setTagError(TagErrors.EmptyTag);
             }
+            // Tag contains a space somewhere
             else if (t.indexOf(' ') !== -1 && t.indexOf(' ') !== t.length - 1){
                 setTagError(TagErrors.HasSpace);
             }
-            else if (
-                t.substring(1) !== '' && 
-                !t.substring(1, t.length - 1).match(/^[a-z0-9]+$/i) &&
-                !t.substring(1, 2).match(/^[a-z0-9]+$/i)
-
-                ){
-                setTagError(TagErrors.ContainsNonAlphaNumeric);
-            }
+            // We check if tag ends in a space
             else if (t.charAt(t.length - 1) === ' '){
                 console.log('time to tag!')
 
                 const trimmedTag = (t.substr(1)).trim();
-                
-                if (!hashtags.includes(trimmedTag)){
+
+                // if trimmed tag isn't alphanumeric
+                if (!trimmedTag.match(/^[a-z0-9]+$/i)){
+                    setTagError(TagErrors.ContainsNonAlphaNumeric);
+                }
+                // if the tag is a go
+                else if (!hashtags.includes(trimmedTag)){
                     setHashtags([...hashtags, trimmedTag])
                     inputRef.current.value = '';
                     setTagError(TagErrors.None);
                 }
+                // tag already exists
                 else {
                     setTagError(TagErrors.TagExists);
                 }

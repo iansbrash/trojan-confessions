@@ -41,19 +41,30 @@ router.get('/', (req, res) => {
     console.log('========================');
 
     const lastkey : any = req.headers.lastkey;
+    const amount : any = req.headers.amount;
+
+    
 
     let approvedRef = firebase.database().ref('approved');
 
     // if we're infinite scrolling
     if (lastkey || lastkey !== ''){
         console.log(`lastkey is provided: ${lastkey}`)
-        approvedRef.orderByChild('timestamp').startAt(lastkey).limitToFirst(20).once('value', snapshot => {
+        //.startAfter(lastkey).limitToLast(20)
+        approvedRef.orderByKey().endAt(lastkey).limitToLast(
+            parseInt(amount)
+        ).once('value', snapshot => {
             if (snapshot.exists()){
                 console.log('snapshot exists in ConfFeed!');
     
-                const toSet : any[] = Object.values(snapshot.val()).reverse();
-    
-                let toRet = {};
+                // if we have reached the end
+                if (Object.keys(snapshot.val()).length < parseInt(amount)){
+                    console.log('hasMore: settting to false')
+                    res.set('hasMore', 'false');
+                }
+                else {
+                    res.set('hasMore', 'true');
+                }
 
                 return res.status(200).send(snapshot.val());
             }
