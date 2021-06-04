@@ -19,6 +19,9 @@ import TinderRoute from './Components/Preview/IndividualRoutes/TinderRoute';
 import EmailRoute from './Components/Preview/IndividualRoutes/EmailRoute';
 import TwitterRoute from './Components/Preview/IndividualRoutes/TwitterRoute';
 
+// Header Testing
+import HeaderTest from './Components/HeaderTest/HeaderTest';
+
 // tailwind
 import "tailwindcss/tailwind.css";
 
@@ -175,6 +178,11 @@ function App() {
               <style>{'body { background-color: #F3F4F6; }'}</style>
             </Helmet>
             <Preview />
+          </Route>
+
+          {/* /headertest */}
+          <Route path="/headertest">
+            <HeaderTest />
           </Route>
 
           {/* / */}

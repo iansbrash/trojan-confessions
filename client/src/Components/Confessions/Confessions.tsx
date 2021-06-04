@@ -141,7 +141,7 @@ const Confession : FC<ConfessionProps> = ({
     } = signature;
 
     return (
-        <div className="p-4 w-96 bg-gray-200 shadow-md rounded-md">
+        <div className="p-4 m-2 flex-1 bg-gray-200 shadow-md rounded-md">
             <div className="leading-7 break-all font-bold text-2xl text-gray-500">
                 {new Date(timestamp).toISOString().substring(0, 10)}
             </div>
@@ -202,7 +202,7 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
 
     return (
         <div className="my-3 flex justify-center items-center flex-col">
-            <div className="flex flex-row justify-center items-center">
+            <div className="flex-wrap flex flex-row justify-start items-center">
                 {
                     contentFilter ? 'content' : null
                 }
@@ -455,7 +455,7 @@ const Confessions : FC = () => {
                 
                 {/* Maybe a lil sorting action */}
                 <div className="w-full max-w-4xl flex justify-start bg-black px-2">
-                    <FilterInterface 
+                    {/* <FilterInterface 
                         contentFilter={contentFilter}
                         setContentFilter={setContentFilter}
                         locationFilter={locationFilter}
@@ -468,7 +468,7 @@ const Confessions : FC = () => {
                         setYearFilter={setYearFilter}
                         tagFilter={tagFilter}
                         setTagFilter={setTagFilter}
-                    />
+                    /> */}
                 </div>
                 
 
@@ -485,54 +485,106 @@ const Confessions : FC = () => {
                         </div>
                     }
                 >
-                    <div className="gap-4 grid grid-cols-2 flex flex-col">
-                        <div className="flex flex-col space-y-4">
-                            {
-                                confessions.map((subObj : any, i : number) => {
-                                    // console.log(subObj);
-                                    if (i % 2 === 0){
-                                        return <Confession
-                                            key={(i * 2).toString()} 
-                                            content={subObj.content}
-                                            hashedId={subObj.hashedId}
-                                            signature={subObj.signature}
-                                            tags={subObj.tags.split(',')}
-                                            theme={subObj.theme}
-                                            timestamp={subObj.timestamp}
-                                            setLocation={setLocationFilter}
-                                            setSchool={setSchoolFilter}
-                                            setFratenity={setFraternityFilter}
-                                            setYear={setYearFilter}
-                                            setTag={setTagFilter}
-                                        />
-                                    }
-                                    return null;
-                                })
-                            }
+                    <div className="max-w-4xl flex flex-col flex-1 m-4 justify-center items-center">
+
+                        {/* Filter */}
+                        <div className="w-full flex justify-start items-start">
+                            <FilterInterface 
+                                contentFilter={contentFilter}
+                                setContentFilter={setContentFilter}
+                                locationFilter={locationFilter}
+                                setLocationFilter={setLocationFilter}
+                                schoolFilter={schoolFilter}
+                                setSchoolFilter={setSchoolFilter}
+                                fraternityFilter={fraternityFilter}
+                                setFraternityFilter={setFraternityFilter}
+                                yearFilter={yearFilter}
+                                setYearFilter={setYearFilter}
+                                tagFilter={tagFilter}
+                                setTagFilter={setTagFilter}
+                            />
                         </div>
-                        <div className="flex flex-col space-y-4">
-                            {
-                                confessions.map((subObj : any, i : number) => {
-                                    // console.log(subObj);
-                                    if (i % 2 !== 0){
-                                        return <Confession 
-                                            key={(i * 2 + 1).toString()} 
-                                            content={subObj.content}
-                                            hashedId={subObj.hashedId}
-                                            signature={subObj.signature}
-                                            tags={subObj.tags.split(',')}
-                                            theme={subObj.theme}
-                                            timestamp={subObj.timestamp}
-                                            setLocation={setLocationFilter}
-                                            setSchool={setSchoolFilter}
-                                            setFratenity={setFraternityFilter}
-                                            setYear={setYearFilter}
-                                            setTag={setTagFilter}
-                                        />
+
+                        {/* Confessions */}
+                        <div className="w-full">
+
+                            {/* Single Column for small devices */}
+                            <div className="flex flex-col block md:hidden">
+                                {
+                                    confessions.map((subObj : any, i : number) => {
+                                        return (
+                                            <div className="w-full">
+                                                <Confession
+                                                    key={(i).toString()} 
+                                                    content={subObj.content}
+                                                    hashedId={subObj.hashedId}
+                                                    signature={subObj.signature}
+                                                    tags={subObj.tags.split(',')}
+                                                    theme={subObj.theme}
+                                                    timestamp={subObj.timestamp}
+                                                    setLocation={setLocationFilter}
+                                                    setSchool={setSchoolFilter}
+                                                    setFratenity={setFraternityFilter}
+                                                    setYear={setYearFilter}
+                                                    setTag={setTagFilter}
+                                                />
+                                        </div>)
+                                    })
+                                }
+                            </div>
+
+                            {/* Double column for bigger devices */}
+                            <div className="hidden md:flex flex-row">
+                                <div className="w-1/2 flex flex-col">
+                                    {
+                                        confessions.map((subObj : any, i : number) => {
+                                            // console.log(subObj);
+                                            if (i % 2 === 0){
+                                                return <Confession
+                                                    key={(i * 2).toString()} 
+                                                    content={subObj.content}
+                                                    hashedId={subObj.hashedId}
+                                                    signature={subObj.signature}
+                                                    tags={subObj.tags.split(',')}
+                                                    theme={subObj.theme}
+                                                    timestamp={subObj.timestamp}
+                                                    setLocation={setLocationFilter}
+                                                    setSchool={setSchoolFilter}
+                                                    setFratenity={setFraternityFilter}
+                                                    setYear={setYearFilter}
+                                                    setTag={setTagFilter}
+                                                />
+                                            }
+                                            return null;
+                                        })
                                     }
-                                    return null;
-                                })
-                            }
+                                </div>
+                                <div className="w-1/2 flex flex-col">
+                                    {
+                                        confessions.map((subObj : any, i : number) => {
+                                            // console.log(subObj);
+                                            if (i % 2 !== 0){
+                                                return <Confession 
+                                                    key={(i * 2 + 1).toString()} 
+                                                    content={subObj.content}
+                                                    hashedId={subObj.hashedId}
+                                                    signature={subObj.signature}
+                                                    tags={subObj.tags.split(',')}
+                                                    theme={subObj.theme}
+                                                    timestamp={subObj.timestamp}
+                                                    setLocation={setLocationFilter}
+                                                    setSchool={setSchoolFilter}
+                                                    setFratenity={setFraternityFilter}
+                                                    setYear={setYearFilter}
+                                                    setTag={setTagFilter}
+                                                />
+                                            }
+                                            return null;
+                                        })
+                                    }
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
                 </InfiniteScroll>

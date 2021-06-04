@@ -29,6 +29,9 @@ module.exports = {
      '7.1xl': '5.1rem'
     },
     extend: {
+      transitionProperty: {
+        'height': 'height'
+      },
       screens: {
         'mdlg': '900px',
       },
@@ -40,7 +43,8 @@ module.exports = {
         '106': '30rem',
       },
       height: {
-        '0.25': '0.0625rem'
+        '0.25': '0.0625rem',
+        '50': '12.5rem'
       },
       transitionTimingFunction: {
        '4sfade': 'cubic-bezier(1.00, 1.00, 1.00, 0.00)',
