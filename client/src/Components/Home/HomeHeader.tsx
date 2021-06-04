@@ -99,7 +99,7 @@ const HomeHeader : FC = () => {
             </div>
 
             {/* Invisible div that grows in height for dropdown */}
-            <div className={`z-0 relative w-full transition-height duration-500 ease-in-out ${isDropped ? 'h-50' : 'h-0'}`}>
+            <div className={`block md:hidden z-0 relative w-full transition-height duration-500 ease-in-out ${isDropped ? 'h-50' : 'h-0'}`}>
                 {/* Dropdown for mobile that is absolute*/}
                 <div className="z-0 w-full absolute bottom-0 bg-red-500 w-10 h-auto">
                     <MobileMenuText title={'Home'} path="/"/>

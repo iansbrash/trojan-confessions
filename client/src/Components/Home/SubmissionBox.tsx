@@ -211,9 +211,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     setSubmitted
 } : SubmissionBoxProps) => {
 
-    const inputSpan = useRef<HTMLSpanElement>(document.createElement('span'));
+    const inputSpan = useRef<HTMLTextAreaElement>(document.createElement('textarea'));
     const [inputLength, setInputLength] = useState<number>(0);
-    const [isKeydown, setIsKeydown] = useState<boolean>(false);
     const [themesIndex, setThemesIndex] = useState<number>(0);
 
     /** Idea: Semi-Anonymous Submissions
@@ -256,6 +255,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
 
+
     const writeUserData = async (submission : string, email : string) : Promise<any> =>{
         const maxCharLength = 280;
 
@@ -273,7 +273,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 method: 'post',
                 url: '/api/confessions/',
                 headers: { 
-                    'content': inputSpan.current.textContent, 
+                    // we use .value now because it is a textarea
+                    'content': inputSpan.current.value, 
                     'hashedid': userName,
                     'tags': tags,
                     'theme': Themes[theme],
@@ -294,48 +295,18 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
 
-
-    const handleKeydown = (evt : any) => {
-        setIsKeydown(true);
-        if (inputSpan !== null){
-
-            const maxLength = 280;
-
-            const l = inputSpan.current.innerHTML.toString().length;
-
-            if (l >= maxLength){
-                if (evt.key !== "Backspace"){
-                    evt.preventDefault();
-                }
-            }
-            else if (evt.key === "Enter") {
-                evt.preventDefault();
-            }
-        }
-    }
-
-    const handleKeyup = (evt : any) => {
-        setIsKeydown(false);
-        if (inputSpan !== null){
-            setInputLength(inputSpan.current.innerHTML.toString().length);
-            setConfessionInput(inputSpan.current.innerHTML.toString());
-        }
-    }
-
+    // Dynamically sets starting size on page load
     useEffect(() => {
-        let is = inputSpan.current;
+        auto_grow(inputSpan.current)
+    }, [])
 
-        if (inputSpan.current !== null){
-            inputSpan.current.addEventListener('keydown', handleKeydown);
-            inputSpan.current.addEventListener('keyup', handleKeyup);
-        }
-        return () => {
-            if (is !== null){
-                is.removeEventListener('keydown', handleKeydown);
-                is.removeEventListener('keyup', handleKeyup);
-            }
-        }
-    })
+    function auto_grow(element : HTMLElement) {
+        element.style.height = "5px";
+        element.style.height = (element.scrollHeight)+"px";
+
+        // updates the X/280 counter
+        setInputLength(inputSpan.current.value.length)
+    }
 
     return (
         <div className="flex flex-1 flex-col rounded-lg pb-6">
@@ -343,21 +314,16 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 {/* Submission Text Span */}
                 <div className="flex flex-1 flex-row space-x-4">
                     <div className="relative flex-1 flex">
-                        <span
+                        <textarea 
+                            maxLength={280}
                             id="editable"
                             ref={inputSpan}
+                            onInput={e => auto_grow(e.currentTarget)}
                             contentEditable={true}
                             placeholder="I left my camera on in my 300 person lecture while I..."
-                            className="z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
+                            className="bg-gray-200 min-h-0 resize-none overflow-hidden z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
                         />
-                        <div className={`z-0 text-2xl ml-3 text-gray-400 absolute top-0 bottom-0 left-0 flex flex-1 items-center`}>
-                            {inputSpan.current.textContent === '' && !isKeydown ? 'I left my Zoom camera on and...' : null}
-                        </div>
                     </div>
-
-                    {/* <div className="w-36 bg-black">
-
-                    </div> */}
                 </div>
 
                 {/* Divider */}
@@ -410,7 +376,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                             </button>
                         </div>
                     </div>
-                    <div className={`flex flex-col justify-center content-center px-2 h-8 ${inputLength > 280 ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
+                    <div className={`flex flex-col justify-center content-center px-2 h-8 transition-colors duration-500 ease-in-out ${inputLength === 280 ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
                         <div className={`text-center font-bold text-xl text-white`}>
                             {`${inputLength}/280`}
                         </div>
