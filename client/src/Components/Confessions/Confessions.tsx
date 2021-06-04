@@ -64,7 +64,7 @@ const FeedTag : FC<FeedTagProps> = ({
         console.log(`url:`)
         console.log(url.href)
 
-        window.history.pushState({state: 1}, '', url.href.toString())
+        window.history.pushState({}, '', url.href.toString())
 
         return [...p, isTag ? text.substring(1) : text];
     }
@@ -200,59 +200,53 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
     setTagFilter
 } : FilterInterfaceProps) => {
 
-    const testOnClick = () => {
-
-        // let refresh = window.location.protocol + "//" + window.location.host + window.location.pathname + '?tag=one&tag=tne';
-
-        // window.history.pushState({path: refresh}, '', refresh)
-        let myUrl = document.location;
-        // @ts-ignore
-        document.location = myUrl + "?content=asd";
-    
-    }
-
-
-
     return (
-        <div className="flex justify-center items-center flex-col">
-            <div className="flex flex-row space-x-4 font-bold text-5xl text-gray-700">
-                Filter:
-            </div>
-            <div className="flex flex-row justify-center items-center space-x-2">
+        <div className="my-3 flex justify-center items-center flex-col">
+            <div className="flex flex-row justify-center items-center">
                 {
                     contentFilter ? 'content' : null
                 }
+                <button className="flex flex-row justif-center items-center focus:outline-none m-2 px-2 py-1 font-bold text-2xl text-gray-700 bg-gray-200 rounded-md transform transition duration-400 ease-in-out shadow-md hover:shadow-lg hover:scale-105 ">
+                    Add Filter
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                </button>
                 <FilterMapper 
                     tagHook={locationFilter}
                     setTagHook={setLocationFilter}
                     bgColor={'bg-red-800'}
+                    tagName={'location'}
                 />
                 <FilterMapper 
                     tagHook={schoolFilter}
                     setTagHook={setSchoolFilter}
                     bgColor={'bg-red-700'}
+                    tagName={'school'}
+
                 />
                 <FilterMapper 
                     tagHook={fraternityFilter}
                     setTagHook={setFraternityFilter}
                     bgColor={'bg-red-600'}
+                    tagName={'fraternity'}
+
                 />
                 <FilterMapper 
                     tagHook={yearFilter}
                     setTagHook={setYearFilter}
                     bgColor={'bg-red-500'}
+                    tagName={'year'}
+
                 />
                 <FilterMapper 
                     tagHook={tagFilter}
                     setTagHook={setTagFilter}
                     bgColor={'bg-red-400'}
+                    tagName={'tag'}
+
                 />
             </div>
-            <button className="m-2 px-2 py-1 bg-red-600 rounded-md shadow-md"
-                onClick={() => testOnClick()}
-            >
-                BUTTON
-            </button>
         </div>
     )
 }
@@ -260,18 +254,20 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
 interface FilterMapperProps {
     tagHook: string[],
     setTagHook: (x : string[]) => void,
-    bgColor: string
+    bgColor: string,
+    tagName: string
 }
 
 const FilterMapper : FC<FilterMapperProps> = ({
     tagHook,
     setTagHook,
-    bgColor
+    bgColor,
+    tagName
 } : FilterMapperProps) => {
     return (
         <div className="flex flex-row space-x-4">
             {
-                Array.isArray(tagHook) ? tagHook.map(
+                tagHook.map(
                     tag => 
                         <TagDisplay 
                             tag={tag}
@@ -279,15 +275,9 @@ const FilterMapper : FC<FilterMapperProps> = ({
                             setTagHook={setTagHook}
                             bgColor={bgColor}
                             key={tag}
+                            tagName={tagName}
                         />
-                ) : 
-                // temp solution below
-                <TagDisplay 
-                    tag={tagHook}
-                    tagHook={tagHook}
-                    setTagHook={setTagHook}
-                    bgColor={bgColor}
-                />
+                )
             }
         </div>
     )
@@ -297,19 +287,49 @@ interface TagDisplayProps {
     tag: string,
     tagHook: string[],
     setTagHook: (s : string[]) => void,
-    bgColor: string
+    bgColor: string,
+    tagName: string
 }
 
 const TagDisplay : FC<TagDisplayProps> = ({
     tag,
     tagHook,
     setTagHook,
-    bgColor
+    bgColor,
+    tagName
 } : TagDisplayProps) => {
+
+    const removeSelf = () => {
+
+        // @ts-ignore
+        const url = new URL(window.location);
+
+        url.searchParams.delete(tagName);
+
+        window.history.pushState({}, '', url.href);
+
+        // @ts-ignore
+        setTagHook(prevTags => {
+            console.log('prevtags:')
+            console.log(`isArray: ${Array.isArray(prevTags)} and ${prevTags}`)
+
+            // @ts-ignore
+            return prevTags.filter(t => t !== tag);
+        })
+    }
+
     return (
-        <div className={`text-white font-bold rounded-md shadow-md px-2 py-1 ${bgColor}`}>
-            {tag}
-        </div>
+        <button className="focus:outline-none"
+        onClick={() => removeSelf()}
+        >
+            <div className={`flex flex-row justify-center items-center text-white font-bold rounded-md shadow-md px-2 py-1 ${bgColor}`}>
+                {tag}
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                
+            </div>
+        </button>
     )
 }
 
@@ -407,7 +427,7 @@ const Confessions : FC = () => {
             console.log(key)
 
             // @ts-ignore
-            wtf[key](newqs[key]); 
+            wtf[key](Array.isArray( newqs[key] ) ? newqs[key] : [newqs[key]]); 
         })
 
         
@@ -434,20 +454,23 @@ const Confessions : FC = () => {
             <div className="mt-4 w-screen flex flex-col justify-center items-center">
                 
                 {/* Maybe a lil sorting action */}
-                <FilterInterface 
-                    contentFilter={contentFilter}
-                    setContentFilter={setContentFilter}
-                    locationFilter={locationFilter}
-                    setLocationFilter={setLocationFilter}
-                    schoolFilter={schoolFilter}
-                    setSchoolFilter={setSchoolFilter}
-                    fraternityFilter={fraternityFilter}
-                    setFraternityFilter={setFraternityFilter}
-                    yearFilter={yearFilter}
-                    setYearFilter={setYearFilter}
-                    tagFilter={tagFilter}
-                    setTagFilter={setTagFilter}
-                />
+                <div className="w-full max-w-4xl flex justify-start bg-black px-2">
+                    <FilterInterface 
+                        contentFilter={contentFilter}
+                        setContentFilter={setContentFilter}
+                        locationFilter={locationFilter}
+                        setLocationFilter={setLocationFilter}
+                        schoolFilter={schoolFilter}
+                        setSchoolFilter={setSchoolFilter}
+                        fraternityFilter={fraternityFilter}
+                        setFraternityFilter={setFraternityFilter}
+                        yearFilter={yearFilter}
+                        setYearFilter={setYearFilter}
+                        tagFilter={tagFilter}
+                        setTagFilter={setTagFilter}
+                    />
+                </div>
+                
 
                 {/* Actual confessions */}
                 <InfiniteScroll
