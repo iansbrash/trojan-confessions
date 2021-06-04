@@ -128,7 +128,7 @@ const Home : FC = () => {
 
                     {/* Everything Else */}
                     {/* We do the email.includes check because the invisible submission box fucks with some stuff */}
-                    <div className={`${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
+                    <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
                         <div className={`transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-center`}>
 
                             <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
@@ -162,9 +162,6 @@ const Home : FC = () => {
 
                                     <div className="">
                                         <div className="flex justify-center items-center p-7">
-                                            {/* <div id="toPreview">
-
-                                            </div> */}
                                             <ThemeRenderer 
                                             theme={Themes[theme]}
                                             themeprops={{
@@ -176,12 +173,6 @@ const Home : FC = () => {
                                                 tags: tags
                                             }}
                                             />
-                                            {/* <div className="flex flex-col justify-center items-center h-96 w-96 bg-gray-900 rounded-md shadow-md">
-                                                <Text content={confessionInput} hasTail={false}/>
-                                                <Text content={
-                                                    `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`
-                                                } hasTail={true} />
-                                            </div> */}
                                         </div>
                                     </div>
                                 </div>

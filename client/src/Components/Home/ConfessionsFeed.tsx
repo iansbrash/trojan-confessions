@@ -145,21 +145,6 @@ const ConfessionsFeed : FC = () => {
         });
     }, []);
 
-    // let tempConfArr = [
-    //     {
-    //         date: 'feb 10',
-    //         confession: 'i ate andy cruz`s ass and it was fucking distusgintg. do not reocmmend whatsoever'
-    //     },
-    //     {
-    //         date: '4/20',
-    //         confession: 'rohan kalra robbed me at gunpoiint. he is my roomate. we are no longer on good terms because of this occurence'
-    //     },
-    //     {
-    //         date: 'january 69',
-    //         confession: 'justin childress told me that asian lives do not matter. although i agree, i think he could have been more tactful because i am one fifth asian (i am japaneez)'
-    //     }
-    // ]
-
     return (
         <div>
             <div className="font-bold text-4xl text-gray-700">
