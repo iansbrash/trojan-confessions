@@ -436,6 +436,37 @@ const Confessions : FC = () => {
         }
     }, [content, location, school, year, tag, fraternity])
 
+    const filterAbstracter = (array : string[], lookingFor : string) => {
+        if (array.length === 0) return true;
+        return array.includes(lookingFor);
+    }
+
+    const applyFilter = (confObj : any) => {
+        const {
+            // content,
+            // hashedId,
+            signature,
+            tags,
+            // timestamp
+        } = confObj;
+
+        const {
+            location,
+            school,
+            fraternity,
+            year
+        } = signature;
+
+        console.log('in filter');
+        return (
+            filterAbstracter(locationFilter, location) &&
+            filterAbstracter(schoolFilter, school) &&
+            filterAbstracter(fraternityFilter, fraternity) &&
+            filterAbstracter(yearFilter, year) &&
+            filterAbstracter(tagFilter, tags)
+        )
+    }
+
 
     return (
         <div className="w-screen">
@@ -452,26 +483,6 @@ const Confessions : FC = () => {
             }
 
             <div className="mt-4 w-screen flex flex-col justify-center items-center">
-                
-                {/* Maybe a lil sorting action */}
-                <div className="w-full max-w-4xl flex justify-start bg-black px-2">
-                    {/* <FilterInterface 
-                        contentFilter={contentFilter}
-                        setContentFilter={setContentFilter}
-                        locationFilter={locationFilter}
-                        setLocationFilter={setLocationFilter}
-                        schoolFilter={schoolFilter}
-                        setSchoolFilter={setSchoolFilter}
-                        fraternityFilter={fraternityFilter}
-                        setFraternityFilter={setFraternityFilter}
-                        yearFilter={yearFilter}
-                        setYearFilter={setYearFilter}
-                        tagFilter={tagFilter}
-                        setTagFilter={setTagFilter}
-                    /> */}
-                </div>
-                
-
                 {/* Actual confessions */}
                 <InfiniteScroll
                     pageStart={0}
@@ -484,9 +495,9 @@ const Confessions : FC = () => {
                             <LoadingIndicator size={20}/>
                         </div>
                     }
+                    className="w-full flex justify-center items-center flex-col"
                 >
                     <div className="max-w-4xl flex flex-col flex-1 m-4 justify-center items-center">
-
                         {/* Filter */}
                         <div className="w-full flex justify-start items-start">
                             <FilterInterface 
@@ -511,37 +522,7 @@ const Confessions : FC = () => {
                             {/* Single Column for small devices */}
                             <div className="flex flex-col block md:hidden">
                                 {
-                                    confessions.filter((confObj : any) => {
-
-                                        const abstracter = (array : string[], lookingFor : string) => {
-                                            if (array.length === 0) return true;
-                                            return array.includes(lookingFor);
-                                        }
-
-                                        const {
-                                            // content,
-                                            // hashedId,
-                                            signature,
-                                            tags,
-                                            // timestamp
-                                        } = confObj;
-
-                                        const {
-                                            location,
-                                            school,
-                                            fraternity,
-                                            year
-                                        } = signature;
-
-
-                                        return (
-                                            abstracter(locationFilter, location) &&
-                                            abstracter(schoolFilter, school) &&
-                                            abstracter(fraternityFilter, fraternity) &&
-                                            abstracter(yearFilter, year) &&
-                                            abstracter(tagFilter, tags)
-                                        )
-                                    }).map((subObj : any, i : number) => {
+                                    confessions.filter(confObj => applyFilter(confObj)).map((subObj : any, i : number) => {
                                         return (
                                             <div className="w-full">
                                                 <Confession
@@ -567,7 +548,7 @@ const Confessions : FC = () => {
                             <div className="hidden md:flex flex-row">
                                 <div className="w-1/2 flex flex-col">
                                     {
-                                        confessions.map((subObj : any, i : number) => {
+                                        confessions.filter(confObj => applyFilter(confObj)).map((subObj : any, i : number) => {
                                             // console.log(subObj);
                                             if (i % 2 === 0){
                                                 return <Confession
@@ -591,7 +572,7 @@ const Confessions : FC = () => {
                                 </div>
                                 <div className="w-1/2 flex flex-col">
                                     {
-                                        confessions.map((subObj : any, i : number) => {
+                                        confessions.filter(confObj => applyFilter(confObj)).map((subObj : any, i : number) => {
                                             // console.log(subObj);
                                             if (i % 2 !== 0){
                                                 return <Confession 

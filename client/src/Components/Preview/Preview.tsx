@@ -7,6 +7,7 @@ import Zoom from './Zoom';
 import Email from './Email';
 import Tinder from './Tinder';
 import Twitter from './Twitter';
+import Snapchat from './Snapchat';
 
 import * as htmlToImage from 'html-to-image';
 import axios from 'axios';
@@ -23,7 +24,7 @@ const ThemeButton : FC<ThemeButtonProps> = ({
     setTheme
 } : ThemeButtonProps) => {
     return (
-        <div className="bg-red-400 rounded-md shadow-md">
+        <div className="m-1 bg-red-400 rounded-md shadow-md">
             <button 
             onClick={() => setTheme(themeIndex)}
             className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
@@ -86,7 +87,8 @@ const Preview : FC = () => {
         'Zoom',
         'Email',
         'Tinder',
-        'Twitter'
+        'Twitter',
+        'Snapchat'
     ]
 
     const [sizeIndex, setSizeIndex] = useState<number>(0);
@@ -135,6 +137,14 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+        />,
+        <Snapchat 
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
         />
 
     ]
@@ -145,25 +155,25 @@ const Preview : FC = () => {
     return (
         <div className="flex w-screen h-screen flex-col justify-center items-center bg-gray100">
             {/* Options */}
-            <div className="flex flex-row space-x-4 m-4">
+            <div className="flex flex-row m-4 flex-wrap">
                 {
                     themesArray.map((t, i) => <ThemeButton theme={t} themeIndex={i} setTheme={setCurrentTheme}/>)
                 }
-                <div className="bg-red-600 rounded-md shadow-md">
+                <div className="m-1 bg-red-600 rounded-md shadow-md">
                     <button 
                     onClick={() => toggleSize()}
                     className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
                         Toggle Size
                     </button>
                 </div>
-                <div className="bg-red-600 rounded-md shadow-md">
+                <div className="m-1 bg-red-600 rounded-md shadow-md">
                     <button 
                     onClick={() => testFunction()}
                     className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
                         Test Functions
                     </button>
                 </div>
-                <div className="bg-red-600 rounded-md shadow-md">
+                <div className="m-1 bg-red-600 rounded-md shadow-md">
                     <button 
                     id="download"
                     onClick={() => SaveImage()}

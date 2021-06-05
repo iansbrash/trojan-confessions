@@ -135,33 +135,8 @@ const Home : FC = () => {
 
                             <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
                                 <div className={`transform -translate-y-6  w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                                    
                                     {/* <Preview /> */}
-
-                                    {/* Ideas:
-                                        iMessage
-                                        Zoom Chat
-                                        Email to Professor
-                                        Instagram DM
-                                        Snapchat
-                                        Blackboard Post
-                                        Post-it note
-                                        Clash of clans chat
-                                        Spotify Playlist
-                                        Powerpoint / Google Docs
-                                        VSCode
-                                        MOSS Report
-                                        SJACS
-                                        PornHub Theme
-                                        Twitter
-                                        Tinder
-                                        UCLA
-                                        USC
-                                        YouTube
-                                        Local Community College
-                                        uscmissedconfessions
-                                        RobinHood
-                                    */}
-
                                     <div className="">
                                         <div className="flex justify-center items-center p-7">
                                             <ThemeRenderer 
