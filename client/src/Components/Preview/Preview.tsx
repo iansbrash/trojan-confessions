@@ -8,6 +8,7 @@ import Email from './Email';
 import Tinder from './Tinder';
 import Twitter from './Twitter';
 import Snapchat from './Snapchat';
+import Notes from './Notes';
 
 import * as htmlToImage from 'html-to-image';
 import axios from 'axios';
@@ -88,7 +89,8 @@ const Preview : FC = () => {
         'Email',
         'Tinder',
         'Twitter',
-        'Snapchat'
+        'Snapchat',
+        'Notes',
     ]
 
     const [sizeIndex, setSizeIndex] = useState<number>(0);
@@ -139,6 +141,14 @@ const Preview : FC = () => {
             tags={tagsArray[sizeIndex]}
         />,
         <Snapchat 
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
+        />,
+        <Notes 
             confessionInput={confessionArray[sizeIndex]}
             location={locationArray[sizeIndex]}
             school={schoolArray[sizeIndex]}

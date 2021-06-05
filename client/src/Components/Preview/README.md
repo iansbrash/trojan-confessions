@@ -2,8 +2,8 @@
 * iMessage ✔
 * Zoom Chat ✔
 * Email to Professor ✔
-* Instagram DM ✔
-* Snapchat
+* Instagram DM
+* Snapchat ✔
 * Blackboard Post
 * Post-it note
 * Clash of clans chat
@@ -15,6 +15,7 @@
 * ⬛🟧
 * Twitter ✔
 * Tinder ✔
+* iPhone Notes App
 * UCLA
 * USC
 * YouTube

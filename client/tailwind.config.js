@@ -82,6 +82,9 @@ module.exports = {
         },
         'gray-150': {
           DEFAULT: '#ECEEF1'
+        },
+        notestoolbar: {
+          DEFAULT: '#1c1c1e'
         }
 
       }
