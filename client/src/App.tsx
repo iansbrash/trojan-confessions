@@ -127,6 +127,7 @@ function App() {
           <Route path="/anonymity">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>
+              <style>{'html {overflow: scroll;overflow-x: hidden;}::-webkit-scrollbar {width: 0;  background: transparent; }::-webkit-scrollbar-thumb {background: #FF0000;}'}</style>
             </Helmet>
             <Anonymity />
           </Route>
@@ -143,6 +144,7 @@ function App() {
           <Route path="/confessions">
             <Helmet>
               <style>{'body { background-color: #F3F4F6; }'}</style>
+              <style>{'html {overflow: scroll;overflow-x: hidden;}::-webkit-scrollbar {width: 0;  background: transparent; }::-webkit-scrollbar-thumb {background: #FF0000;}'}</style>
             </Helmet>
             <Confessions />
           </Route>
@@ -188,7 +190,14 @@ function App() {
           {/* / */}
           <Route path="/">
             <Helmet>
-              <style>{'body { background-color: #F3F4F6; }'}</style>
+              <style>{'html {overflow: scroll;overflow-x: hidden;}::-webkit-scrollbar {width: 0;  background: transparent; }::-webkit-scrollbar-thumb {background: #FF0000;}'}</style>
+
+              <style>{'body { background-color: #F3F4F6;'}</style>
+              {/* <style>
+                {'html, body {overflow-x: hidden;}body {position: relative}'}
+              </style>
+              <meta name="viewport" content="user-scalable=0, width=device-width, initial-scale=1.0" />
+              <meta name="apple-mobile-web-app-capable" content="yes" />             */}
             </Helmet>
             <Home />
           </Route>

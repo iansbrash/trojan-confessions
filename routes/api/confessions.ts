@@ -45,6 +45,32 @@ router.get('/', (req, res) => {
 
     const parsedAmount : number = parseInt(amount);
 
+    /**
+     * 
+     * 
+{
+  "rules": {    
+        "submissions": {
+          ".read": "auth.uid != null",
+          ".write": "auth.uid != null"
+        },
+        "toPost": {
+          ".read": "auth.uid == 'cJO6p8OCdpQHVyWDQy1TuJoD1a83'",
+          ".write": "auth.uid == 'cJO6p8OCdpQHVyWDQy1TuJoD1a83'"
+        },
+        "approved": {
+          ".read": true,
+          ".write": "auth.uid == 'cJO6p8OCdpQHVyWDQy1TuJoD1a83'"
+        },
+          "recentPosters": {
+            ".read": true,
+            ".write": true
+          }
+    }
+}
+     * 
+     */
+
     
 
     let approvedRef = firebase.database().ref('approved');
@@ -138,15 +164,18 @@ router.post('/', async (req, res) => {
     // and cuz we cant store total email
     // cuz the @ messes it up
     // use JWT to auth in request
-    try { 
-        await onSignIn(id_token);
-        console.log('in try catch for awaiut onSignIn')
-    }
-    catch (err) {
-        console.log(`onSignIn error`)
-        return res.status(404).send("Error: Invalid Google id_token")
 
-    }
+
+    // Firebase AUTH shit. Gonna leave it be for now
+    // try { 
+    //     await onSignIn(id_token);
+    //     console.log('in try catch for awaiut onSignIn')
+    // }
+    // catch (err) {
+    //     console.log(`onSignIn error`)
+    //     return res.status(404).send("Error: Invalid Google id_token")
+
+    // }
 
     const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 

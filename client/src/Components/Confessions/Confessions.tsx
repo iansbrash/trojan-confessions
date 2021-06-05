@@ -511,7 +511,37 @@ const Confessions : FC = () => {
                             {/* Single Column for small devices */}
                             <div className="flex flex-col block md:hidden">
                                 {
-                                    confessions.map((subObj : any, i : number) => {
+                                    confessions.filter((confObj : any) => {
+
+                                        const abstracter = (array : string[], lookingFor : string) => {
+                                            if (array.length === 0) return true;
+                                            return array.includes(lookingFor);
+                                        }
+
+                                        const {
+                                            // content,
+                                            // hashedId,
+                                            signature,
+                                            tags,
+                                            // timestamp
+                                        } = confObj;
+
+                                        const {
+                                            location,
+                                            school,
+                                            fraternity,
+                                            year
+                                        } = signature;
+
+
+                                        return (
+                                            abstracter(locationFilter, location) &&
+                                            abstracter(schoolFilter, school) &&
+                                            abstracter(fraternityFilter, fraternity) &&
+                                            abstracter(yearFilter, year) &&
+                                            abstracter(tagFilter, tags)
+                                        )
+                                    }).map((subObj : any, i : number) => {
                                         return (
                                             <div className="w-full">
                                                 <Confession
