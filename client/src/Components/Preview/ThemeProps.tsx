@@ -4,7 +4,8 @@ interface ThemeProps {
     school: string,
     fraternity: string,
     year: string,
-    tags: string[]
+    tags: string[],
+    timestamp: string
 }
 
 export default ThemeProps;

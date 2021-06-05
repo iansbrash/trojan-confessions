@@ -59,7 +59,7 @@ const Snapchat : FC<ThemeProps> = ({
     return (
         <div className="flex justify-center items-center">
             <div className="flex flex-col justify-between items-center h-96 w-96 bg-white shadow-md">
-                <div className="flex flex-col justify-start items-center ">
+                <div className="w-full flex flex-col justify-start items-center ">
                     {/* Top Banner (Bitmoji, Name, Call, Video, Exit) */}
                     <div className="flex flex-row justify-between items-center w-full h-12 border-gray-200 border-b">
 

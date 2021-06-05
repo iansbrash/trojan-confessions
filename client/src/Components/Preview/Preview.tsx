@@ -50,6 +50,8 @@ const Preview : FC = () => {
     const yearArray = ["Sophomore", "Senior", ""];
     const tagsArray = [["FuckCovid", "JustinIsHot"], ["Demons"], []];
 
+    const timestampArray = ['2021-05-13T01:13:28.120Z', '2021-05-27T19:59:49.911Z', '2021-05-30T17:53:09.106Z'];
+
     const SaveImage = () => {
         htmlToImage.toJpeg(document.getElementById('theme')!, { quality: 0.95 })
         .then(function (dataUrl) {
@@ -107,6 +109,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Zoom 
             confessionInput={confessionArray[sizeIndex]}
@@ -115,6 +118,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Email 
             confessionInput={confessionArray[sizeIndex]}
@@ -123,6 +127,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Tinder 
             confessionInput={confessionArray[sizeIndex]}
@@ -131,6 +136,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Twitter 
             confessionInput={confessionArray[sizeIndex]}
@@ -139,6 +145,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Snapchat 
             confessionInput={confessionArray[sizeIndex]}
@@ -147,6 +154,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />,
         <Notes 
             confessionInput={confessionArray[sizeIndex]}
@@ -155,6 +163,7 @@ const Preview : FC = () => {
             fraternity={fraternityArray[sizeIndex]}
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
         />
 
     ]

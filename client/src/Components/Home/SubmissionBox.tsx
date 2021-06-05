@@ -193,6 +193,8 @@ enum Themes {
     email = "email",
     tinder = "tinder",
     twitter = "twitter",
+    snapchat = "snapchat",
+    notes = "notes",
 }
 
 const SubmissionBox : FC<SubmissionBoxProps> = ({
@@ -237,7 +239,9 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             Themes.zoom,
             Themes.email,
             Themes.tinder,
-            Themes.twitter
+            Themes.twitter,
+            Themes.snapchat,
+            Themes.notes
         ]
 
         console.log(`themesIndex before setting: ${themesIndex}`)
@@ -306,6 +310,9 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
 
         // updates the X/280 counter
         setInputLength(inputSpan.current.value.length)
+
+        // updates confession for preview
+        setConfessionInput(inputSpan.current.value);
     }
 
     return (

@@ -7,6 +7,9 @@ import Zoom from '../Preview/Zoom';
 import Email from '../Preview/Email';
 import Tinder from '../Preview/Tinder';
 import Twitter from '../Preview/Twitter';
+import Snapchat from '../Preview/Snapchat';
+import Notes from '../Preview/Notes';
+
 
 
 interface ThemeRendererProps {
@@ -25,7 +28,8 @@ const ThemeRenderer : FC<ThemeRendererProps> = ({
         school,
         fraternity,
         year,
-        tags
+        tags,
+        timestamp
     } = themeprops;
 
     console.log('Rerendering ThemeRenderer: theme value: ' + theme)
@@ -34,56 +38,43 @@ const ThemeRenderer : FC<ThemeRendererProps> = ({
         case "imessage":
             return (
                 <IMessage 
-                    confessionInput={confessionInput}
-                    location={location}
-                    school={school}
-                    fraternity={fraternity}
-                    year={year}
-                    tags={tags}
+                    {...themeprops}
                 />
             )
         case "zoom":
             return (
                 <Zoom 
-                    confessionInput={confessionInput}
-                    location={location}
-                    school={school}
-                    fraternity={fraternity}
-                    year={year}
-                    tags={tags}
+                    {...themeprops}
                 />
             )
         case "email":
             return (
                 <Email 
-                    confessionInput={confessionInput}
-                    location={location}
-                    school={school}
-                    fraternity={fraternity}
-                    year={year}
-                    tags={tags}
+                    {...themeprops}
                 />
             )
         case "tinder":
             return (
                 <Tinder 
-                    confessionInput={confessionInput}
-                    location={location}
-                    school={school}
-                    fraternity={fraternity}
-                    year={year}
-                    tags={tags}
+                    {...themeprops}
                 />
             )
         case "twitter":
             return (
                 <Twitter 
-                    confessionInput={confessionInput}
-                    location={location}
-                    school={school}
-                    fraternity={fraternity}
-                    year={year}
-                    tags={tags}
+                    {...themeprops}
+                />
+            )
+        case "snapchat":
+            return (
+                <Snapchat 
+                    {...themeprops}
+                />
+            )
+        case "notes":
+            return (
+                <Notes 
+                    {...themeprops}
                 />
             )
     default:

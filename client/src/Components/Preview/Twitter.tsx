@@ -260,7 +260,7 @@ const Twitter : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-start items-center h-96 w-96 bg-twitterblue rounded-md shadow-md">
+            <div className="flex flex-col justify-start items-center h-96 w-96 bg-twitterblue shadow-md">
                 {/* People liked... */}
                 <div className="flex flex-row justify-center items-center my-2">
                     <div className="text-gray-300 mr-1">

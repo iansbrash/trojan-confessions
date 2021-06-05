@@ -44,6 +44,7 @@ const RouteWrapper : FC<RouteWrapperProps> = ({
                     fraternity={themeProps.fraternity}
                     year={themeProps.year}
                     tags={themeProps.tags}
+                    timestamp={themeProps.timestamp}
                 />
             </div>
 

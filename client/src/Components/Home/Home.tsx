@@ -19,6 +19,8 @@ enum Themes {
     email = "email",
     tinder = "tinder",
     twitter = "twitter",
+    snapchat = "snapchat",
+    notes = "notes",
 }
 
 const Home : FC = () => {
@@ -131,30 +133,31 @@ const Home : FC = () => {
                     {/* Everything Else */}
                     {/* We do the email.includes check because the invisible submission box fucks with some stuff */}
                     <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
-                        <div className={`transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-center`}>
-
+                        <div className={`w-1/2 transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-center`}>
+                            
+                            {/* Preview */}
                             <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
-                                <div className={`transform -translate-y-6  w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
-                                    
-                                    {/* <Preview /> */}
-                                    <div className="">
-                                        <div className="flex justify-center items-center p-7">
-                                            <ThemeRenderer 
-                                            theme={Themes[theme]}
-                                            themeprops={{
-                                                confessionInput: confessionInput,
-                                                location: location,
-                                                school: school,
-                                                fraternity: fraternity,
-                                                year: year,
-                                                tags: tags
-                                            }}
-                                            />
-                                        </div>
+
+                                {/* BG Color is from below div */}
+                                <div className={`transform -translate-y-6  absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg shadow-md`}>
+                                    <div className="flex justify-center items-center p-7 ">
+                                        <ThemeRenderer 
+                                        theme={Themes[theme]}
+                                        themeprops={{
+                                            confessionInput: confessionInput,
+                                            location: location,
+                                            school: school,
+                                            fraternity: fraternity,
+                                            year: year,
+                                            tags: tags,
+                                            timestamp: new Date().toISOString()
+                                        }}
+                                        />
                                     </div>
                                 </div>
                             </div>
-
+                            
+                            {/* Add Identifiers + HowItWorks */}
                             <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
                                 <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
                                     <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>

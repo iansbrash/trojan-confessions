@@ -29,7 +29,7 @@ const Email : FC<ThemeProps> = ({
 } : ThemeProps) => {
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-start items-center h-96 w-96 bg-white rounded-md shadow-md">
+            <div className="flex flex-col justify-start items-center h-96 w-96 bg-white shadow-md">
                 {/* Icon */}
                 <div className="flex flex-row justify-start w-full h-20">
                     {/* Icon */}
