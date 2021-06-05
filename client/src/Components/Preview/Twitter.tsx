@@ -3,6 +3,7 @@ import React, {
     useState
 } from 'react';
 import ThemeProps from './ThemeProps';
+import generateSignature from './generateSignature';
 
 // Randoms
 import ReplyUsersArray from './TwitterRandoms/ReplyUsers';

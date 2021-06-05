@@ -4,6 +4,7 @@ import React, {
     useState
 } from 'react';
 import ThemeProps from './ThemeProps';
+import generateSignature from './generateSignature';
 
 interface TinderTextProps {
     text: string
@@ -174,7 +175,7 @@ const Tinder : FC<ThemeProps> = ({
                     </div>
 
                     <TinderText 
-                        text={`-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`}
+                        text={generateSignature({location, school, fraternity, year})}
                         needsCorner={true}
                     />
                 </div>

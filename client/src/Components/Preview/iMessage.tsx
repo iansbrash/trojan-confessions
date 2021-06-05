@@ -2,6 +2,7 @@ import React, {
     FC
 } from 'react';
 import ThemeProps from './ThemeProps';
+import generateSignature from './generateSignature';
 
 
 interface TextProps {
@@ -52,7 +53,7 @@ const IMessage : FC<ThemeProps> = ({
             <div className="flex flex-col justify-center items-end h-96 w-96 bg-black shadow-md">
                 <Text content={confessionInput} hasTail={false}/>
                 <Text content={
-                    `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`
+                    generateSignature({location, school, fraternity, year})
                 } hasTail={true} />
             </div>
         </div>

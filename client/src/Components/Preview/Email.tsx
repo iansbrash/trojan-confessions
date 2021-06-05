@@ -2,6 +2,7 @@ import React, {
     FC
 } from 'react';
 import ThemeProps from './ThemeProps';
+import generateSignature from './generateSignature';
 
 
 interface IconProps {
@@ -67,7 +68,7 @@ const Email : FC<ThemeProps> = ({
                     <div className="mx-4 mt-4 mb-2">
                         Best,
                         <div>
-                            {`Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`}
+                            {generateSignature({location, school, fraternity, year})}
                         </div>
                     </div>
                 </div>

@@ -18,6 +18,9 @@ import ZoomRoute from './Components/Preview/IndividualRoutes/ZoomRoute';
 import TinderRoute from './Components/Preview/IndividualRoutes/TinderRoute';
 import EmailRoute from './Components/Preview/IndividualRoutes/EmailRoute';
 import TwitterRoute from './Components/Preview/IndividualRoutes/TwitterRoute';
+import NotesRoute from './Components/Preview/IndividualRoutes/NotesRoute';
+import SnapchatRoute from './Components/Preview/IndividualRoutes/SnapchatRoute';
+
 
 // Header Testing
 import HeaderTest from './Components/HeaderTest/HeaderTest';
@@ -172,6 +175,16 @@ function App() {
           {/* /preview/twitter */}
           <Route path="/preview/twitter">
             <TwitterRoute />
+          </Route>
+
+          {/* /preview/snapchat */}
+          <Route path="/preview/snapchat">
+            <SnapchatRoute />
+          </Route>
+
+          {/* /preview/notes */}
+          <Route path="/preview/notes">
+            <NotesRoute />
           </Route>
 
           {/* /preview */}

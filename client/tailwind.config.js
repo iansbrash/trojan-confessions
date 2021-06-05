@@ -86,7 +86,6 @@ module.exports = {
         notestoolbar: {
           DEFAULT: '#1c1c1e'
         }
-
       }
     }
   }

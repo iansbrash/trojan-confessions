@@ -2,6 +2,7 @@ import React, {
     FC
 } from 'react';
 import ThemeProps from './ThemeProps';
+import generateSignature from './generateSignature';
 
 interface IconProps {
     cName: string
@@ -62,7 +63,7 @@ const Zoom : FC<ThemeProps> = ({
                             :
                         </div>
                         <ZoomText message={confessionInput}/>
-                        <ZoomText message={`-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`}/>
+                        <ZoomText message={generateSignature({location, school, fraternity, year})}/>
                     </div>
                 </div>
 
