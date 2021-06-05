@@ -96,8 +96,8 @@ const Home : FC = () => {
             </div>
 
 
-            <div className="z-0">
-                <div className="flex flex-col max-w-4xl mx-auto items-center">
+            <div className="w-full flex justify-center items-center z-0">
+                <div className="flex flex-col max-w-4xl mx-5 items-center">
                     {/* Submission */}
                     <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} z-20 text-center w-full items-center max-w-xl mdlg:max-w-none`}>
                         <div className={
@@ -132,15 +132,39 @@ const Home : FC = () => {
 
                     {/* Everything Else */}
                     {/* We do the email.includes check because the invisible submission box fucks with some stuff */}
-                    <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row space-x-6 transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
-                        <div className={`w-1/2 transform duration-500 ease-in-out ${previewDropped ? 'translate-y-105' : 'translate-y-0'} flex flex-1 flex-col items-center`}>
+                    <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
+
+                        {/* Left side */}
+                        <div className={`mdlg:w-1/2 w-full transform duration-500 ease-in-out ${previewDropped ? 'translate-y-104' : 'translate-y-0'} flex flex-col items-center`}>
+                            
+                            {/* This div enforces the margin-right-3 for the gap in the middle */}
+                            <div className="flex flex-col mdlg:items-start flex-1 mdlg:mr-3 items-center">
+
                             
                             {/* Preview */}
                             <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
 
                                 {/* BG Color is from below div */}
-                                <div className={`transform -translate-y-6  absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg shadow-md`}>
-                                    <div className="flex justify-center items-center p-7 ">
+                                <div className={`hidden mdlg:block w-full aspect-h-1 aspect-w-1 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
+                                    <div className="flex justify-center items-center  ">
+                                        <ThemeRenderer 
+                                        theme={Themes[theme]}
+                                        themeprops={{
+                                            confessionInput: confessionInput,
+                                            location: location,
+                                            school: school,
+                                            fraternity: fraternity,
+                                            year: year,
+                                            tags: tags,
+                                            timestamp: new Date().toISOString()
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+                                
+                                {/* Mobile view since breakpoints with aspect-w/h is being dick */}
+                                <div className={`block mdlg:hidden w-full py-6 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
+                                    <div className="flex justify-center items-center  ">
                                         <ThemeRenderer 
                                         theme={Themes[theme]}
                                         themeprops={{
@@ -192,9 +216,11 @@ const Home : FC = () => {
                                     />
                                 </div>
                             </div>
+                            </div>
+
                         </div>
-                        <div className={`hidden mdlg:block flex flex-1 h-12 items-start`}>
-                            <div className={`${submitted ? 'hidden' : ''} flex-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                        <div className={`hidden mdlg:block flex w-1/2 h-12 items-start`}>
+                            <div className={`${submitted ? 'hidden' : ''} ml-3 flex-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                 <ConfessionsFeed />
                             </div>
                         </div>
