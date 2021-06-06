@@ -327,7 +327,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                             ref={inputSpan}
                             onInput={e => auto_grow(e.currentTarget)}
                             contentEditable={true}
-                            placeholder="I left my camera on in my 300 person lecture while I..."
+                            // placeholder="I left my camera on in my 300 person lecture while I..."
+                            placeholder="I accidentally emailed my professor that..."
                             className="bg-gray-200 min-h-0 resize-none overflow-hidden z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
                         />
                     </div>

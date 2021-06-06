@@ -91,7 +91,6 @@ const Home : FC = () => {
                 <div className="flex justify-center content-center">
                     <WelcomeBanner />
                 </div>
-                {/* <Question /> */}
                 <div className="my-4"></div>
             </div>
 
