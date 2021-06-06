@@ -96,7 +96,7 @@ const Home : FC = () => {
 
 
             <div className="w-full flex justify-center items-center z-0">
-                <div className="flex flex-col max-w-4xl mx-5 items-center">
+                <div className="flex flex-col max-w-4xl w-full mx-5 items-center">
                     {/* Submission */}
                     <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} z-20 text-center w-full items-center max-w-xl mdlg:max-w-none`}>
                         <div className={
@@ -140,83 +140,82 @@ const Home : FC = () => {
                             <div className="flex flex-col mdlg:items-start flex-1 mdlg:mr-3 items-center">
 
                             
-                            {/* Preview */}
-                            <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                {/* Preview */}
+                                <div className={`w-full relative transform duration-500 ease-in-out ${previewDropped ? 'opacity-1' : 'opacity-0'}`}>
 
-                                {/* BG Color is from below div */}
-                                <div className={`hidden mdlg:block w-full aspect-h-1 aspect-w-1 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
-                                    <div className="flex justify-center items-center  ">
-                                        <ThemeRenderer 
-                                        theme={Themes[theme]}
-                                        themeprops={{
-                                            confessionInput: confessionInput,
-                                            location: location,
-                                            school: school,
-                                            fraternity: fraternity,
-                                            year: year,
-                                            tags: tags,
-                                            timestamp: new Date().toISOString()
-                                        }}
-                                        />
+                                    {/* BG Color is from below div */}
+                                    <div className={`hidden mdlg:block w-full aspect-h-1 aspect-w-1 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
+                                        <div className="flex justify-center items-center  ">
+                                            <ThemeRenderer 
+                                            theme={Themes[theme]}
+                                            themeprops={{
+                                                confessionInput: confessionInput,
+                                                location: location,
+                                                school: school,
+                                                fraternity: fraternity,
+                                                year: year,
+                                                tags: tags,
+                                                timestamp: new Date().toISOString()
+                                            }}
+                                            />
+                                        </div>
+                                    </div>
+                                    
+                                    {/* Mobile view since breakpoints with aspect-w/h is being dick */}
+                                    <div className={`block mdlg:hidden w-full py-6 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
+                                        <div className="flex justify-center items-center  ">
+                                            <ThemeRenderer 
+                                            theme={Themes[theme]}
+                                            themeprops={{
+                                                confessionInput: confessionInput,
+                                                location: location,
+                                                school: school,
+                                                fraternity: fraternity,
+                                                year: year,
+                                                tags: tags,
+                                                timestamp: new Date().toISOString()
+                                            }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
                                 
-                                {/* Mobile view since breakpoints with aspect-w/h is being dick */}
-                                <div className={`block mdlg:hidden w-full py-6 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
-                                    <div className="flex justify-center items-center  ">
-                                        <ThemeRenderer 
-                                        theme={Themes[theme]}
-                                        themeprops={{
-                                            confessionInput: confessionInput,
-                                            location: location,
-                                            school: school,
-                                            fraternity: fraternity,
-                                            year: year,
-                                            tags: tags,
-                                            timestamp: new Date().toISOString()
-                                        }}
+                                {/* Add Identifiers + HowItWorks */}
+                                <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
+                                    <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                        <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
+                                            <AddIdentifiers 
+                                                setLocation={setLocation}
+                                                setSchool={setSchool}
+                                                setFraternity={setFraternity}
+                                                setYear={setYear}
+                                            />
+                                        </div>
+                                    </div>
+                                    
+
+                                    <div className="max-w-xl flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
+                                        <HowItWorks
+                                            firstName={firstName}
+                                            lastName={lastName}
+                                            email={email}
+                                            imageUrl={imageUrl}
+                                        />
+                                        <Actions
+                                            firstName={firstName}
+                                            setFirstName={setFirstName}
+                                            lastName={lastName}
+                                            setLastName={setLastName}
+                                            email={email}
+                                            setEmail={setEmail}
+                                            imageUrl={imageUrl}
+                                            setImageUrl={setImageUrl}
+                                            id_token={id_token}
+                                            setId_token={setId_token}
                                         />
                                     </div>
                                 </div>
                             </div>
-                            
-                            {/* Add Identifiers + HowItWorks */}
-                            <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
-                                <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
-                                    <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
-                                        <AddIdentifiers 
-                                            setLocation={setLocation}
-                                            setSchool={setSchool}
-                                            setFraternity={setFraternity}
-                                            setYear={setYear}
-                                        />
-                                    </div>
-                                </div>
-                                
-
-                                <div className="max-w-xl flex-1 flex flex-col bg-gray-200 rounded-lg px-5 shadow-md">
-                                    <HowItWorks
-                                        firstName={firstName}
-                                        lastName={lastName}
-                                        email={email}
-                                        imageUrl={imageUrl}
-                                    />
-                                    <Actions
-                                        firstName={firstName}
-                                        setFirstName={setFirstName}
-                                        lastName={lastName}
-                                        setLastName={setLastName}
-                                        email={email}
-                                        setEmail={setEmail}
-                                        imageUrl={imageUrl}
-                                        setImageUrl={setImageUrl}
-                                        id_token={id_token}
-                                        setId_token={setId_token}
-                                    />
-                                </div>
-                            </div>
-                            </div>
-
                         </div>
                         <div className={`hidden mdlg:block flex w-1/2 h-12 items-start`}>
                             <div className={`${submitted ? 'hidden' : ''} ml-3 flex-1 bg-gray-200 rounded-lg px-5 shadow-md`}>
