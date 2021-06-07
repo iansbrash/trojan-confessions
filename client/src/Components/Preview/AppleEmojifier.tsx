@@ -90,10 +90,10 @@ const AppleEmojifier : FC<AppleEmojifierProps> = ({
                         if (index !== newContent.length - 1){
                             // if the next item is an emoji, don't put a space
                             if (isEmoji(newContent[index + 1])){
-                                return <span>{char}</span>
+                                return <span className="break-all">{char}</span>
                             }
                         }
-                        return <span>{char}&nbsp;</span>;
+                        return <span className="break-all">{char}&nbsp;</span>;
                     }
                     return <>&nbsp;</>
                 }

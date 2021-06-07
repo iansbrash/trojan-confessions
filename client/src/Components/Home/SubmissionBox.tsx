@@ -278,7 +278,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 url: '/api/confessions/',
                 headers: { 
                     // we use .value now because it is a textarea
-                    'content': inputSpan.current.value, 
+                    'content': encodeURIComponent(inputSpan.current.value), 
                     'hashedid': userName,
                     'tags': tags,
                     'theme': Themes[theme],
@@ -309,7 +309,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
         element.style.height = (element.scrollHeight)+"px";
 
         // updates the X/280 counter
-        setInputLength(inputSpan.current.value.length)
+        // we have to do this because emojis are represented by 2 unicode surrogate pairs
+        setInputLength(Array.from(inputSpan.current.value).length)
 
         // updates confession for preview
         setConfessionInput(inputSpan.current.value);

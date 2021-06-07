@@ -1,7 +1,6 @@
 const axios = require('axios');
 const runes = require('runes');
 
-// const redHair = '👩‍🦰';
 
 // const redCharCode = redHair.charCodeAt(0);
 
@@ -34,8 +33,28 @@ const emojiArray = [
 // console.log(ss);
 // console.log(ss.substr(1).substr(23, 3))
 
+// const redHair = '👩‍🦰';
 
-// return;
+// const redHairHex = redHair.codePointAt(0).toString(16);
+// const result = "\\u" + "0000".substring(0, 4 - redHairHex.length) + redHairHex;
+
+// console.log(result);
+
+// const facepalm = "🤦🏼‍♂️";
+// const codePoints = Array.from(facepalm)
+//   .map((v) => v.codePointAt(0).toString(16))
+//   .map((hex) => "\\u" + hex);
+// console.log(codePoints.join(''));
+function decodeURIComponentSafe(s) {
+    if (!s) {
+        return s;
+    }
+    return decodeURIComponent(s.replace(/%(?![\da-f][\da-f]+)/gi, '%25'));
+}
+
+console.log(decodeURIComponentSafe('%F0%9F%90%B3'));
+
+return;
 
 (async () => {
     const stringToParse = 'Wow i am fucking stupid 💯 I like flower 💮 what the fuck 👨👩‍🦰👨‍🦰 aaaaa';

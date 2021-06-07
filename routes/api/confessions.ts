@@ -125,10 +125,18 @@ router.get('/', (req, res) => {
     return;
 });
 
+// https://stackoverflow.com/questions/7449588/why-does-decodeuricomponent-lock-up-my-browser
+// we send over encoded submission (cuz emojis) then decode it here and push to firebase
+function decodeURIComponentSafe(s : string) {
+    if (!s) {
+        return s;
+    }
+    return decodeURIComponent(s.replace(/%(?![\da-f][\da-f]+)/gi, '%25'));
+}
+
 // Adding a new submission
 router.post('/', async (req, res) => {
     const { 
-        content,
         // timestamp, Probably don't want this 
         // -- we can calculate server-side instead
         hashedid,
@@ -144,6 +152,9 @@ router.post('/', async (req, res) => {
 
     const id_token = req.headers.id_token;
 
+    // @ts-ignore
+    const content : string = req.headers.content;
+
     // console.log(signature);
 
     // how are we going to make sure this POST request
@@ -152,6 +163,7 @@ router.post('/', async (req, res) => {
     console.log('========================');
     console.log(`in POST(/api/confessions/)`);
     console.log(`content: ${content}`);
+    console.log(`decoded content: ${decodeURIComponentSafe(content)}`);
     console.log(`hashedid: ${hashedid}`);
     // console.log(`id_token: ${id_token}`);
     console.log('========================');
@@ -230,7 +242,7 @@ router.post('/', async (req, res) => {
 
             
             subRef.child(newKey).set({
-                content: content,
+                content: decodeURIComponentSafe(content),
                 timestamp: new Date().toISOString(),
 
                 // to change
