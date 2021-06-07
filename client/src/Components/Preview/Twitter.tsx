@@ -4,6 +4,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
+import AppleEmojifier from './AppleEmojifier';
 
 // Randoms
 import ReplyUsersArray from './TwitterRandoms/ReplyUsers';
@@ -305,8 +306,8 @@ const Twitter : FC<ThemeProps> = ({
 
                 {/* Tweet */}
                 <div className="flex justify-start flex-row w-full">
-                    <div className="m-4 text-gray-100 text-lg">
-                        {confessionInput}
+                    <div className="flex flex-row flex-wrap m-4 text-gray-100 text-lg">
+                        <AppleEmojifier content={confessionInput}/>
                     </div>
                 </div>
 

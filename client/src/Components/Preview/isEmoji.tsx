@@ -31,9 +31,11 @@ export const retrieveEmojipediaImage = async (emoji: string) => {
         url: `https://emoji-api.com/emojis/${emojiToText}?access_key=16f77c6c04948b6de49269e3941e9a993df70e14`,
     })
 
+    // can also be 120
+    const resolution = 60;
 
     if (res.data){
-        let newUrl = `https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/apple/285/${emojiToText}_${res.data['0']['codePoint'].split(' ').join('-').toLowerCase()}.png`
+        let newUrl = `https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/${resolution}/apple/285/${emojiToText}_${res.data['0']['codePoint'].split(' ').join('-').toLowerCase()}.png`
         return newUrl;
     }
     else {

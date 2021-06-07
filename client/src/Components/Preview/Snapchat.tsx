@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
-
+import AppleEmojifier from './AppleEmojifier';
 
 
 const PhoneIcon = () => (
@@ -114,8 +114,8 @@ const Snapchat : FC<ThemeProps> = ({
 
                             {/* Vertical Line + Message */}
                             <div className="border-l-2 border-red-400 pl-1.5 font-medium">
-                                <div>
-                                    {confessionInput}
+                                <div className="flex flex-wrap flex-row">
+                                    <AppleEmojifier content={confessionInput} />
                                 </div>
                                 <div>
                                     {generateSignature({location, school, fraternity, year})}

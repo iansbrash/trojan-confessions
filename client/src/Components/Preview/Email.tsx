@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
-
+import AppleEmojifier from './AppleEmojifier';
 
 interface IconProps {
     cName: string
@@ -62,8 +62,8 @@ const Email : FC<ThemeProps> = ({
                     <div className="mx-4 mt-2 mb-2">
                         Hi President Folt,
                     </div>
-                    <div className="mx-4">
-                        {confessionInput}
+                    <div className="mx-4 flex flex-row flex-wrap">
+                        <AppleEmojifier content={confessionInput}/>
                     </div>
                     <div className="mx-4 mt-4 mb-2">
                         Best,

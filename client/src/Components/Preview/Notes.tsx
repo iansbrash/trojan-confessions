@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
+import AppleEmojifier from './AppleEmojifier';
 
 const Notes : FC<ThemeProps> = ({
     confessionInput,
@@ -56,8 +57,8 @@ const Notes : FC<ThemeProps> = ({
 
                         {/* Confession */}
                         <div className="text-white text-lg leading-5">
-                            <div>
-                                {confessionInput}
+                            <div className="flex flex-row flex-wrap">
+                                <AppleEmojifier content={confessionInput}/>
                             </div>
                             <div>
                                 {generateSignature({location, school, fraternity, year})}

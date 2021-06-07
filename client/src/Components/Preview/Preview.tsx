@@ -39,7 +39,7 @@ const Preview : FC = () => {
 
 
     const confessionArray = [
-        "I stole some kids keychain after they stole my alcohol 👩‍🦰👨‍🦰👩‍🦱. I also had sexual relations with a succulent plant. 👨‍🔥🗿 On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.",
+        "I stole some kids keychain after they stole my alcohol 👩‍🦰👨‍🦰👩‍🦱. I also had sexual relations with a succulent plant. 🔥👨🗿💂‍♀️👷‍♀️👩‍🎤💅✌ On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.",
         "I stole some kids keychain after they stole my alcohol 💯. I also had sexual relations 👖 with a succulent plant.",
         "I stole some kids keychain after they stole my alcohol 😊."
     ];

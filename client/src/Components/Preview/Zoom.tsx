@@ -3,6 +3,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
+import AppleEmojifier from './AppleEmojifier';
 
 interface IconProps {
     cName: string
@@ -26,8 +27,8 @@ const ZoomText : FC<ZoomTextProps> = ({
     message
 } : ZoomTextProps) => {
     return (
-        <div>
-            {message}
+        <div className="flex flex-row flex-wrap">
+            <AppleEmojifier content={message} />
         </div>
     )
 }

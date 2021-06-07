@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import ThemeProps from './ThemeProps';
 import generateSignature from './generateSignature';
+import AppleEmojifier from './AppleEmojifier';
 
 interface TinderTextProps {
     text: string
@@ -90,8 +91,9 @@ const TinderText : FC<TinderTextProps & TinderTextPropsTwo> = ({
             <div className="w-full flex flex-row justify-end relative">
                 <div className="z-30 relative">
                     <div className="z-10 bg-tinderblue rounded-3xl mr-3 py-2">
-                        <div className="break-all leading-6 mx-3 text-white text-lg text-left">
-                            {text}
+                        <div className="flex flex-row flex-wrap break-all leading-6 mx-3 text-white text-lg text-left">
+                            <AppleEmojifier content={text}/>
+                            {/* {text} */}
                         </div>
                     </div>
                     
@@ -146,6 +148,8 @@ const Tinder : FC<ThemeProps> = ({
             const height : number = document.getElementById('text')!.clientHeight;
 
             setTextHeight(height);
+
+            console.log(`height: ${height}`)
             //276 should be the max
         }
 
