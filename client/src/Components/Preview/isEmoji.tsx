@@ -9,17 +9,19 @@ const isEmoji = (s : string) : boolean => {
 export const retrieveEmojipediaImage = async (emoji: string) => {
 
     console.log(encodeURI(`https://emojipedia.org/search/?q=${emoji}`))
+
+    // const corsAnywhereLink = 'https://cors-anywhere.herokuapp.com/';
+    const corsAnywhereLink = 'https://trojan-confessions-cors.herokuapp.com/';
+    // const corsAnywhereLink = 'http://localhost:8080/';
     
     const emojipediaRes = await axios({
         method: 'get',
-        url: encodeURI(`${'https://cors-anywhere.herokuapp.com/'}https://emojipedia.org/search/?q=${emoji}`),
+        url: encodeURI(`${corsAnywhereLink}https://emojipedia.org/search/?q=${emoji}`),
         headers: {
             origin: window.location.protocol + '//' + window.location.host,
-            // open: XMLHttpRequest.prototype.open
         }
     })
 
-    // console.log(emojipediaRes);
 
     const finalUrl = emojipediaRes.headers['x-final-url'];
 

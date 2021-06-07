@@ -18,6 +18,15 @@ const { OAuth2Client } = require('google-auth-library');
 
 router.use(cors());
 
+// https://stackoverflow.com/questions/7449588/why-does-decodeuricomponent-lock-up-my-browser
+// we send over encoded submission (cuz emojis) then decode it here and push to firebase
+function decodeURIComponentSafe(s : string) {
+    if (!s) {
+        return s;
+    }
+    return decodeURIComponent(s.replace(/%(?![\da-f][\da-f]+)/gi, '%25'));
+}
+
 const generateAccessToken = (username : string) => {
     return jwt.sign({id: username}, process.env.TOKEN_SECRET, { expiresIn: '1h' });
 }
@@ -164,7 +173,7 @@ router.get('/toPost/', authenticateJWT, (req, res) => {
 
 router.post('/approve/', authenticateJWT, (req, res) => {
     const { 
-        content,
+        // content,
         // timestamp, Probably don't want this 
         // -- we can calculate server-side instead
         hashedid,
@@ -175,6 +184,9 @@ router.post('/approve/', authenticateJWT, (req, res) => {
         fraternity,
         year,
     } = req.headers;
+
+    // @ts-ignore
+    const content : string = decodeURIComponentSafe(req.headers.content);
 
     const timestamp : any = req.headers.timestamp;
     const key : any = req.headers.key;

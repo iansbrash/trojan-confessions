@@ -145,7 +145,7 @@ const ApprovalBlock : FC<any> = ({
             headers: {
                 jwt_token: cookies['jwt_token'],
                 key: subObj.key,
-                content: editingCurrentContent
+                content: encodeURIComponent(editingCurrentContent)
             }
         })
     }
@@ -169,7 +169,7 @@ const ApprovalBlock : FC<any> = ({
             url: '/api/admin/approve',
             headers: {
                 'jwt_token': cookies['jwt_token'],
-                'content': subObj.content, 
+                'content': encodeURIComponent(subObj.content), 
                 'hashedid': subObj.userName,
                 'tags': subObj.tags,
                 'theme': subObj.theme,
