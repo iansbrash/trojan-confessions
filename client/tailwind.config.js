@@ -31,6 +31,11 @@ module.exports = {
      '7.1xl': '5.1rem'
     },
     extend: {
+      maxWidth: {
+        '1/4': '25%',
+        '1/2': '50%',
+        '3/4': '75%',
+      },
       transitionProperty: {
         'height': 'height'
       },
@@ -46,7 +51,11 @@ module.exports = {
       },
       height: {
         '0.25': '0.0625rem',
-        '50': '12.5rem'
+        '50': '12.5rem',
+        '4.5': '1.125rem'
+      },
+      width: {
+        '4.5': '1.125rem'
       },
       transitionTimingFunction: {
        '4sfade': 'cubic-bezier(1.00, 1.00, 1.00, 0.00)',

@@ -9,6 +9,7 @@ import Tinder from './Tinder';
 import Twitter from './Twitter';
 import Snapchat from './Snapchat';
 import Notes from './Notes';
+import Instagram from './Instagram';
 
 import * as htmlToImage from 'html-to-image';
 import axios from 'axios';
@@ -41,7 +42,7 @@ const Preview : FC = () => {
     const confessionArray = [
         "I stole some kids keychain after they stole my alcohol 👩‍🦰👨‍🦰👩‍🦱. I also had sexual relations with a succulent plant. 🔥👨🗿💂‍♀️👷‍♀️👩‍🎤💅✌ On top of that, I made three seperate posts on uscmissedconnections about my friends so they wouldn't feel so lonely.",
         "I stole some kids keychain after they stole my alcohol 💯. I also had sexual relations 👖 with a succulent plant.",
-        "I stole some kids keychain after they stole my alcohol 😊."
+        "I stole some kids keychain 😊."
     ];
 
     const locationArray = ["University Gateway", "Lorenzo", ""];
@@ -93,6 +94,7 @@ const Preview : FC = () => {
         'Twitter',
         'Snapchat',
         'Notes',
+        'Instagram'
     ]
 
     const [sizeIndex, setSizeIndex] = useState<number>(0);
@@ -157,6 +159,15 @@ const Preview : FC = () => {
             timestamp={timestampArray[sizeIndex]}
         />,
         <Notes 
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
+        />,
+        <Instagram 
             confessionInput={confessionArray[sizeIndex]}
             location={locationArray[sizeIndex]}
             school={schoolArray[sizeIndex]}

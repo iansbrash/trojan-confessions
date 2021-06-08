@@ -9,6 +9,7 @@ import Tinder from '../Preview/Tinder';
 import Twitter from '../Preview/Twitter';
 import Snapchat from '../Preview/Snapchat';
 import Notes from '../Preview/Notes';
+import Instagram from '../Preview/Instagram';
 
 
 
@@ -39,49 +40,48 @@ const ThemeRenderer : FC<ThemeRendererProps> = ({
             return (
                 <IMessage 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "zoom":
             return (
                 <Zoom 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "email":
             return (
                 <Email 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "tinder":
             return (
                 <Tinder 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "twitter":
             return (
                 <Twitter 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "snapchat":
             return (
                 <Snapchat 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
                 />
             )
         case "notes":
             return (
                 <Notes 
                     {...themeprops}
-                    // confessionInput={decodeURIComponent(confessionInput)}
+                />
+            )
+        case "instagram":
+            return (
+                <Instagram 
+                    {...themeprops}
                 />
             )
     default:
