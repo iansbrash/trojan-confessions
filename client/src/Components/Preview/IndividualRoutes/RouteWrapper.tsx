@@ -10,6 +10,38 @@ import queryString from 'query-string';
 import ThemeProps from '../ThemeProps';
 import * as htmlToImage from 'html-to-image';
 
+const onImagesLoaded = (container : any, event : Function) => {
+    var images = container.getElementsByTagName("img");
+    var loaded = images.length;
+
+    console.log(`images.length: ${images.length}`)
+
+    for (var i = 0; i < images.length; i++) {
+        if (images[i].complete && images[i].naturalHeight !== 0) {
+            console.log(`image[${i}] is complete already`)
+            loaded--;
+        }
+        else {
+            // images[i].addEventListener("load", function() {
+            //     console.log(`loaded! ${loaded}`)
+            //     loaded--;
+            //     if (loaded == 0) {
+            //         return event();
+            //     }
+            // });
+            images[i].onload = () => {
+                loaded--;
+                if (loaded == 0){
+                    event();
+                }
+            }
+        }
+        if (loaded == 0) {
+            return event();
+        }
+    }
+}
+
 interface RouteWrapperProps {
     Theme: FC<ThemeProps>
 }
@@ -27,10 +59,18 @@ const RouteWrapper : FC<RouteWrapperProps> = ({
     const [b64, setb64] = useState<string>('');
 
     useEffect(() => {
-        htmlToImage.toPng(document.getElementById('submission')!)
-        .then(function (dataUrl) {
-            setb64(dataUrl);
-        });
+        
+        (async () => {
+            await setTimeout(() => {
+                onImagesLoaded(document.getElementsByTagName("body")[0], function() {
+                    htmlToImage.toPng(document.getElementById('submission')!)
+                    .then(function (dataUrl) {
+                        setb64(dataUrl);
+                    });
+                });
+            }, 1000)
+        })();
+
     }, [search])
 
 

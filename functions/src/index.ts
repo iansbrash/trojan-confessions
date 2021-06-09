@@ -197,6 +197,49 @@ const makeLatelySocialPost = async (
  *      }
  * }
  */
+const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, index : number) => {
+    const tempFilePath = path.join(os.tmpdir(), 'out.png');
+
+    // const browser = await puppeteer.launch({
+    //     args: ['--no-sandbox']
+    // });
+
+    const page = await browser.newPage();
+
+    await page.setDefaultNavigationTimeout(0);
+
+    // for (let i = 0; i < toPostArray.length; i++){
+        const {
+            content,
+            hashedId,
+            tags,
+            theme,
+            timestamp,
+            signature
+        } = toPostArray[index];
+
+        console.log(`
+            content: ${content}, 
+            hashedId: ${hashedId},
+            tags: ${tags},
+            theme: ${theme},
+            timestamp: ${timestamp}
+        `)
+
+        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}`);
+
+        await page.waitForSelector('#b64');
+        const submission = await page.$("#submission");
+
+        await submission.screenshot({path: tempFilePath});
+    // }
+
+
+
+}
+
+// @ts-ignore
 const getBase64Array = async (toPostArray : any) => {
     // headless: false for debugging
     // let options = {
@@ -258,7 +301,84 @@ const getBase64Array = async (toPostArray : any) => {
     return base64Array;
 };
 
+const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
 
+    let latelysocialUploadArray = [];
+
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox']
+    });
+
+    const tempFilePath = path.join(os.tmpdir(), 'out.png');
+
+    for (let i = 0; i < toPostArray.length; i++){
+
+        // var base64Data = base64Array[i].replace(/^data:image\/png;base64,/, "");
+
+        console.log('about to write to out.png in iteration ' + i)
+        try {
+            // await fs.promises.writeFile(tempFilePath, base64Data, 'base64');
+            await puppeteerScreenshotAndSaveFile(toPostArray, browser, i);
+        }
+        catch (e) {
+            console.error('error writing to out.png')
+            console.error(e);
+        }
+        
+    
+        console.log('about to create read stream');
+
+
+        const readStream = fs.createReadStream(tempFilePath);
+    
+        var data = new FormData();
+        data.append('files[]', readStream);
+        data.append('token', '14b22ac28ff5b8fc7a4312e8f5217540');
+        data.append('user', '182278');
+    
+    
+        var config = {
+            method: 'post',
+            url: 'https://app.scheduleinstagrampostsfree.com/uploadvideo/welcome/lately/',
+            headers: { 
+                ... data.getHeaders()
+            },
+            data : data
+        };
+    
+        // upload image
+        const res = await axios(config);
+
+        // push to array which we use to upload to insta
+        latelysocialUploadArray.push(
+            `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
+        );
+    }
+
+    // then delete out.png
+    console.log(`now deleting ${tempFilePath}`)
+    try {
+        await fs.promises.unlink(tempFilePath, (err : Error) => {
+            if (err) throw err;
+            else console.log(`${tempFilePath} was deleted`);
+        });
+    }
+    catch (e) {
+        console.error(`error deleting ${tempFilePath}`)
+        console.error(e);
+    }
+
+    console.log('now closing brwoser')
+
+    await browser.close();
+
+    console.log(latelysocialUploadArray);
+
+    // then return the array
+    return latelysocialUploadArray;
+}
+
+// @ts-ignore
 const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
 
     let latelysocialUploadArray = [];
@@ -363,16 +483,24 @@ export const onToPostCreate3 = functions.runWith({
 
                 console.log('starting entire upload process');
                 try {
+
+                    /** ORIGINAL FLOW */
+                    // need to account for having more than 10 in queue
+                    // var newArrayDataOfOjbect = Object.values(datasnapshot.val())
+                    // const base64Array = await getBase64Array(newArrayDataOfOjbect);
+                    // const caption = 'from functions from live web';
+                    // const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
+                    // await makeLatelySocialPost(latelysocialUploadArray, caption);
+                    /** ORIGINAL FLOW */
+
+                     /** NEW FLOW */
                     // need to account for having more than 10 in queue
                     var newArrayDataOfOjbect = Object.values(datasnapshot.val())
-                    const base64Array = await getBase64Array(newArrayDataOfOjbect);
-                    // console.log(`base64Array.length: ${base64Array.length}`)
-                
+                    // const base64Array = await getBase64Array(newArrayDataOfOjbect);
                     const caption = 'from functions from live web';
-                
-                    const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
-                
+                    const latelysocialUploadArray = await uploadToLatelySocialDatabaseViaScreenshot(newArrayDataOfOjbect);
                     await makeLatelySocialPost(latelysocialUploadArray, caption);
+                    /** NEW FLOW */
 
                     datasnapshot.ref.limitToFirst(10).ref.remove().then( () => {
                         console.log('remove successfulk')

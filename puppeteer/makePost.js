@@ -97,6 +97,125 @@ const loginLatelySocial = async () => {
     return cookies2;
 }
 
+const puppeteerScreenshotAndSaveFile = async (toPostArray , browser , index ) => {
+    const tempFilePath = 'out.png';
+
+    // const browser = await puppeteer.launch({
+    //     args: ['--no-sandbox']
+    // });
+
+    const page = await browser.newPage();
+
+    await page.setDefaultNavigationTimeout(0);
+
+    // for (let i = 0; i < toPostArray.length; i++){
+        const {
+            content,
+            hashedId,
+            tags,
+            theme,
+            timestamp,
+            signature
+        } = toPostArray[index];
+
+        console.log(`
+            content: ${content}, 
+            hashedId: ${hashedId},
+            tags: ${tags},
+            theme: ${theme},
+            timestamp: ${timestamp}
+        `)
+
+        // const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        const tcUrl = 'http://localhost:3000'
+        
+        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}`);
+
+        await page.waitForSelector('#b64');
+        const submission = await page.$("#submission");
+
+        await submission.screenshot({path: tempFilePath});
+    // }
+}
+
+const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray) => {
+
+    let latelysocialUploadArray = [];
+
+    const browser = await puppeteer.launch({
+        args: ['--no-sandbox'],
+        headless: false
+    });
+
+    const tempFilePath = 'out.png';
+
+    for (let i = 0; i < toPostArray.length; i++){
+
+        // var base64Data = base64Array[i].replace(/^data:image\/png;base64,/, "");
+
+        console.log('about to write to out.png in iteration ' + i)
+        try {
+            // await fs.promises.writeFile(tempFilePath, base64Data, 'base64');
+            await puppeteerScreenshotAndSaveFile(toPostArray, browser, i);
+        }
+        catch (e) {
+            console.error('error writing to out.png')
+            console.error(e);
+        }
+        
+    
+        console.log('about to create read stream');
+
+
+        const readStream = fs.createReadStream(tempFilePath);
+    
+        var data = new FormData();
+        data.append('files[]', readStream);
+        data.append('token', '14b22ac28ff5b8fc7a4312e8f5217540');
+        data.append('user', '182278');
+    
+    
+        var config = {
+            method: 'post',
+            url: 'https://app.scheduleinstagrampostsfree.com/uploadvideo/welcome/lately/',
+            headers: { 
+                ... data.getHeaders()
+            },
+            data : data
+        };
+    
+        // upload image
+        // const res = await axios(config);
+
+        // push to array which we use to upload to insta
+        latelysocialUploadArray.push(
+            `https://dymwzetew9d5u.cloudfront.net/user182278/${'nah'}`
+        );
+    }
+
+    // then delete out.png
+    // console.log(`now deleting ${tempFilePath}`)
+    // try {
+    //     await fs.promises.unlink(tempFilePath, (err) => {
+    //         if (err) throw err;
+    //         else console.log(`${tempFilePath} was deleted`);
+    //     });
+    // }
+    // catch (e) {
+    //     console.error(`error deleting ${tempFilePath}`)
+    //     console.error(e);
+    // }
+
+    console.log('now closing brwoser')
+
+    await browser.close();
+
+    console.log(latelysocialUploadArray);
+
+    // then return the array
+    return latelysocialUploadArray;
+}
+
 const makeLatelySocialPost = async (imageUrlArray, caption) => {
 
     // cookies contains:
@@ -194,8 +313,8 @@ const getBase64Array = async (toPostArray) => {
             timestamp: ${timestamp}
         `);
 
-        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
-        // const tcUrl = 'http://localhost:3000'
+        // const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        const tcUrl = 'http://localhost:3000'
 
         await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
         `);
@@ -301,17 +420,17 @@ const uploadToLatelySocialDatabase = async (base64Array) => {
     }
 
     // then delete out.png
-    console.log('now deleting out.png')
-    try {
-        const res2 = await fs.promises.unlink("out.png", err => {
-            if (err) throw err;
-            else console.log('out.png was deleted');
-        });
-    }
-    catch (e) {
-        console.error('error deleting out.png')
-        console.error(e);
-    }
+    // console.log('now deleting out.png')
+    // try {
+    //     const res2 = await fs.promises.unlink("out.png", err => {
+    //         if (err) throw err;
+    //         else console.log('out.png was deleted');
+    //     });
+    // }
+    // catch (e) {
+    //     console.error('error deleting out.png')
+    //     console.error(e);
+    // }
 
     console.log(latelysocialUploadArray);
 
@@ -322,7 +441,7 @@ const uploadToLatelySocialDatabase = async (base64Array) => {
 
 const testToPostArray = [
     {
-        content: "test to post array",
+        content: "test to post👴👩👴👩‍🦳🤶👮‍♂️👩‍🍳👩‍🍳👩‍🔬 array",
         hashedId: "123",
         tags: "what,the,fuck,is,we,doin",
         theme: "imessage",
@@ -335,7 +454,7 @@ const testToPostArray = [
         }
     },
     {
-        content: "test to post array 3123123123123123",
+        content: "test to post array 3👩‍🦼👩‍🦼🚶‍♀️🧘‍♀️🏌️‍♂️🏌️‍♂️🤽‍♂️🏌️‍♂️123123123123123",
         hashedId: "1234",
         tags: "in",
         theme: "zoom",
@@ -348,7 +467,7 @@ const testToPostArray = [
         }
     },
     {
-        content: "this shit better fuek en work",
+        content: "this s👱‍♀️👷‍♀️👩‍💼👨‍💼👩‍✈️👩‍💼👩‍💼👨‍🎤hit better fuek en work",
         hashedId: "122222223",
         tags: "what",
         theme: "tinder",
@@ -365,12 +484,12 @@ const testToPostArray = [
 (async () => {
     console.log('starting entire upload process');
 
-    const base64Array = await getBase64Array(testToPostArray);
-    console.log(`base64Array.length: ${base64Array.length}`)
+    // const base64Array = await getBase64Array(testToPostArray);
+    // console.log(`base64Array.length: ${base64Array.length}`)
 
     const caption = 'full stack';
 
-    const latelysocialUploadArray = await uploadToLatelySocialDatabase(base64Array);
-
+    const latelysocialUploadArray = await uploadToLatelySocialDatabaseViaScreenshot(testToPostArray);
+    return;
     await makeLatelySocialPost(latelysocialUploadArray, caption);
 })();

@@ -4,6 +4,9 @@ import React, {
     useEffect
 } from 'react';
 import axios from 'axios';
+import {
+    Link
+} from 'react-router-dom';
 
 import LoadingIndicator from './LoadingIndicator';
 
@@ -26,12 +29,14 @@ interface SignatureProps {
 
 interface FeedTagProps {
     text: string,
-    color: string
+    color: string,
+    query: string
 }
 
 const FeedTag : FC<FeedTagProps> = ({
     text,
-    color
+    color,
+    query
 } : FeedTagProps) => {
 
     if (text === ''){
@@ -40,11 +45,14 @@ const FeedTag : FC<FeedTagProps> = ({
 
     return (
         <div className="p-0.5 transform transition duration-400 ease-in-out hover:scale-105">
-            <button className={`focus:outline-none ${color} transition duration-400 ease-in-out shadow-md hover:shadow-lg rounded-md`}>
-                <div className="text-white font-bold text-md mx-2 my-0.5 text-center">
-                    {text}
-                </div>
-            </button>
+            <Link
+            to={`/confessions?${query}=${query === 'tag' ? text.substring(1) : text}`}>
+                <button className={`focus:outline-none ${color} transition duration-400 ease-in-out shadow-md hover:shadow-lg rounded-md`}>
+                    <div className="text-white font-bold text-md mx-2 my-0.5 text-center">
+                        {text}
+                    </div>
+                </button>
+            </Link>
         </div>
         
     )
@@ -74,12 +82,12 @@ const Confession : FC<ConfessionProps> = ({
                 {submission}
             </div>
             <div className="flex flex-row flex-wrap mt-2 -mx-2">
-                <FeedTag color={'bg-red-800'} text={location}/>
-                <FeedTag color={'bg-red-700'} text={school}/>
-                <FeedTag color={'bg-red-600'} text={fraternity}/>
-                <FeedTag color={'bg-red-500'} text={year}/>
+                <FeedTag color={'bg-red-800'} text={location} query={'location'}/>
+                <FeedTag color={'bg-red-700'} text={school} query={'school'}/>
+                <FeedTag color={'bg-red-600'} text={fraternity} query={'fraternity'}/>
+                <FeedTag color={'bg-red-500'} text={year} query={'year'}/>
                 {
-                    tags.map(tag => <FeedTag color={'bg-red-400'} text={tag === '' ? '' : `#${tag}`}/> )
+                    tags.map(tag => <FeedTag color={'bg-red-400'} text={tag === '' ? '' : `#${tag}`} query={'tag'}/> )
                 }
             </div>
         </div>

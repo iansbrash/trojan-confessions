@@ -497,7 +497,7 @@ const Confessions : FC = () => {
                     }
                     className="w-full flex justify-center items-center flex-col"
                 >
-                    <div className="max-w-4xl flex flex-col flex-1 m-4 justify-center items-center">
+                    <div className="max-w-4xl flex flex-col w-full m-4 justify-center items-center">
                         {/* Filter */}
                         <div className="w-full flex justify-start items-start">
                             <FilterInterface 
@@ -545,7 +545,7 @@ const Confessions : FC = () => {
                             </div>
 
                             {/* Double column for bigger devices */}
-                            <div className="hidden md:flex flex-row">
+                            <div className="hidden md:flex flex-row w-full">
                                 <div className="w-1/2 flex flex-col">
                                     {
                                         confessions.filter(confObj => applyFilter(confObj)).map((subObj : any, i : number) => {
