@@ -6,7 +6,9 @@ import RouteWrapper from './RouteWrapper';
 
 const NotesRoute : FC = () => {
     return (
-        <RouteWrapper Theme={Notes}/>
+        // <RouteWrapper Theme={Notes}/>
+        <div></div>
+
     )
 }
 

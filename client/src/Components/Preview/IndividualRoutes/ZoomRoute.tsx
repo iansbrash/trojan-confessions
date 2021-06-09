@@ -7,7 +7,9 @@ import RouteWrapper from './RouteWrapper';
 const ZoomRoute : FC = () => {
 
     return (
-        <RouteWrapper Theme={Zoom}/>
+        // <RouteWrapper Theme={Zoom}/>
+        <div></div>
+
    )
 }
 

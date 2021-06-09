@@ -7,7 +7,9 @@ import RouteWrapper from './RouteWrapper';
 const TinderRoute : FC = () => {
 
     return (
-        <RouteWrapper Theme={Tinder}/>
+        // <RouteWrapper Theme={Tinder}/>
+        <div></div>
+
     )
 }
 

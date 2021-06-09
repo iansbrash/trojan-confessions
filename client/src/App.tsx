@@ -2,8 +2,6 @@ import React, {
   FC, 
   useEffect,
   useState,
-  createContext,
-  useContext
 } from 'react';
 import Home from './Components/Home/Home'
 import Login from './Components/AdminLogin/Login';
@@ -20,7 +18,9 @@ import EmailRoute from './Components/Preview/IndividualRoutes/EmailRoute';
 import TwitterRoute from './Components/Preview/IndividualRoutes/TwitterRoute';
 import NotesRoute from './Components/Preview/IndividualRoutes/NotesRoute';
 import SnapchatRoute from './Components/Preview/IndividualRoutes/SnapchatRoute';
+import InstagramRoute from './Components/Preview/IndividualRoutes/InstagramRoute';
 
+import CatchallRoute from './Components/Preview/IndividualRoutes/CatchallRoute';
 
 // Header Testing
 import HeaderTest from './Components/HeaderTest/HeaderTest';
@@ -152,40 +152,48 @@ function App() {
             <Confessions />
           </Route>
 
-          {/* /preview/imessage */}
+          {/* /preview/:theme */}
+          <Route path="/preview/:theme" component={CatchallRoute}/>
+
+          {/* /preview/imessage
           <Route path="/preview/imessage">
             <IMessageRoute />
           </Route>
 
           {/* /preview/imessage */}
-          <Route path="/preview/zoom">
+          {/* <Route path="/preview/zoom">
             <ZoomRoute />
-          </Route>
+          </Route> */}
 
           {/* /preview/tinder */}
-          <Route path="/preview/tinder">
+          {/* <Route path="/preview/tinder">
             <TinderRoute />
-          </Route>
+          </Route> */}
 
           {/* /preview/email */}
-          <Route path="/preview/email">
+          {/* <Route path="/preview/email">
             <EmailRoute />
-          </Route>
+          </Route> */}
 
           {/* /preview/twitter */}
-          <Route path="/preview/twitter">
+          {/* <Route path="/preview/twitter">
             <TwitterRoute />
-          </Route>
+          </Route> */}
 
           {/* /preview/snapchat */}
-          <Route path="/preview/snapchat">
+          {/* <Route path="/preview/snapchat">
             <SnapchatRoute />
-          </Route>
+          </Route> */}
 
           {/* /preview/notes */}
-          <Route path="/preview/notes">
+          {/* <Route path="/preview/notes">
             <NotesRoute />
-          </Route>
+          </Route> */}
+
+          {/* /preview/notes */}
+          {/* <Route path="/preview/instagram">
+            <InstagramRoute />
+          </Route> */}
 
           {/* /preview */}
           <Route path="/preview">

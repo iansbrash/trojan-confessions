@@ -1,9 +1,9 @@
 import React, {
     FC,
-    ReactChild,
-    ReactComponentElement,
+    ReactChildren,
     useEffect,
-    useState
+    useState,
+    ReactElement
 } from 'react';
 import { useLocation } from 'react-router';
 import queryString from 'query-string';
@@ -22,13 +22,6 @@ const onImagesLoaded = (container : any, event : Function) => {
             loaded--;
         }
         else {
-            // images[i].addEventListener("load", function() {
-            //     console.log(`loaded! ${loaded}`)
-            //     loaded--;
-            //     if (loaded == 0) {
-            //         return event();
-            //     }
-            // });
             images[i].onload = () => {
                 loaded--;
                 if (loaded == 0){
@@ -43,11 +36,11 @@ const onImagesLoaded = (container : any, event : Function) => {
 }
 
 interface RouteWrapperProps {
-    Theme: FC<ThemeProps>
+    children: ReactElement
 }
 
 const RouteWrapper : FC<RouteWrapperProps> = ({
-    Theme
+    children
 } : RouteWrapperProps) => {
 
     const { search } = useLocation();
@@ -77,7 +70,7 @@ const RouteWrapper : FC<RouteWrapperProps> = ({
     return (
         <div className="w-screen h-screen flex justify-center items-center flex-col">
             <div id="submission" className="w-96 h-96">
-                <Theme 
+                {/* <Theme 
                     confessionInput={themeProps.confessionInput}
                     location={themeProps.location}
                     school={themeProps.school}
@@ -85,7 +78,8 @@ const RouteWrapper : FC<RouteWrapperProps> = ({
                     year={themeProps.year}
                     tags={themeProps.tags}
                     timestamp={themeProps.timestamp}
-                />
+                /> */}
+                {children}
             </div>
 
             {/* Textarea */}

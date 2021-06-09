@@ -6,7 +6,9 @@ import RouteWrapper from './RouteWrapper';
 
 const SnapchatRoute : FC = () => {
     return (
-        <RouteWrapper Theme={Snapchat}/>
+        // <RouteWrapper Theme={Snapchat}/>
+        <div></div>
+
     )
 }
 

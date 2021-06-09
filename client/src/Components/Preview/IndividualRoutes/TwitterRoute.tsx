@@ -6,7 +6,9 @@ import RouteWrapper from './RouteWrapper';
 
 const TwitterRoute : FC = () => {
     return (
-        <RouteWrapper Theme={Twitter}/>
+        // <RouteWrapper Theme={Twitter}/>
+        <div></div>
+
     )
 }
 

@@ -6,7 +6,8 @@ import RouteWrapper from './RouteWrapper';
 
 const EmailRoute : FC = () => {
     return (
-        <RouteWrapper Theme={Email}/>
+        // <RouteWrapper Theme={Email}/>
+        <div></div>
     )
 }
 

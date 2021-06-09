@@ -6,7 +6,9 @@ import RouteWrapper from './RouteWrapper';
 
 const IMessageRoute : FC = () => {
     return (
-        <RouteWrapper Theme={IMessage}/>
+        // <RouteWrapper Theme={IMessage}/>
+        <div></div>
+
     )
 }
 
