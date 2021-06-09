@@ -2,9 +2,13 @@
 * iMessage ✔
 * Zoom Chat ✔
 * Email to Professor ✔
-* Instagram DM
+* Instagram DM ✔
 * Snapchat ✔
+* Twitter ✔
+* iPhone Notes App ✔
+* Tinder ✔
 * Blackboard Post
+* Reddit Post
 * Post-it note
 * Clash of clans chat
 * Spotify Playlist
@@ -13,9 +17,6 @@
 * MOSS Report
 * SJACS
 * ⬛🟧
-* Twitter ✔
-* Tinder ✔
-* iPhone Notes App
 * UCLA
 * USC
 * YouTube

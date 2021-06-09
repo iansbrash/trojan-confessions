@@ -10,6 +10,7 @@ import Twitter from './Twitter';
 import Snapchat from './Snapchat';
 import Notes from './Notes';
 import Instagram from './Instagram';
+import Reddit from './Reddit';
 
 import * as htmlToImage from 'html-to-image';
 import axios from 'axios';
@@ -94,7 +95,8 @@ const Preview : FC = () => {
         'Twitter',
         'Snapchat',
         'Notes',
-        'Instagram'
+        'Instagram',
+        'Reddit'
     ]
 
     const [sizeIndex, setSizeIndex] = useState<number>(0);
@@ -168,6 +170,15 @@ const Preview : FC = () => {
             timestamp={timestampArray[sizeIndex]}
         />,
         <Instagram 
+            confessionInput={confessionArray[sizeIndex]}
+            location={locationArray[sizeIndex]}
+            school={schoolArray[sizeIndex]}
+            fraternity={fraternityArray[sizeIndex]}
+            year={yearArray[sizeIndex]}
+            tags={tagsArray[sizeIndex]}
+            timestamp={timestampArray[sizeIndex]}
+        />,
+        <Reddit 
             confessionInput={confessionArray[sizeIndex]}
             location={locationArray[sizeIndex]}
             school={schoolArray[sizeIndex]}
