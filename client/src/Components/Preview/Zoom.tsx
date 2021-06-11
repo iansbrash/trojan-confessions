@@ -40,7 +40,8 @@ const Zoom : FC<ThemeProps> = ({
     school,
     fraternity,
     year,
-    tags
+    tags,
+    dark
 } : ThemeProps) => {
     return (
         <div className="flex justify-center items-center">

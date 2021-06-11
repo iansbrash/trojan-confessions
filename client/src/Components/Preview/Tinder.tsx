@@ -137,7 +137,8 @@ const Tinder : FC<ThemeProps> = ({
     school,
     fraternity,
     year,
-    tags
+    tags,
+    dark
 } : ThemeProps) => {
 
     const [textHeight, setTextHeight] = useState<number>(0);

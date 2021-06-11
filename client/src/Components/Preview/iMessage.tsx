@@ -7,12 +7,14 @@ import AppleEmojifier from './AppleEmojifier';
 
 interface TextProps {
     content: string,
-    hasTail: boolean
+    hasTail: boolean,
+    dark: boolean
 }
 
 const Text : FC<TextProps> = ({
     content,
-    hasTail
+    hasTail,
+    dark
 } : TextProps) => {
 
 
@@ -27,8 +29,8 @@ const Text : FC<TextProps> = ({
                         hasTail ? 
                         <>
                             <div className="transform translate-x-0.5 absolute bottom-0 -right-2.5 h-5 w-5 bg-blue-400 rounded-full"></div>
-                            <div className="transform translate-x-0.5 absolute bottom-0 -right-3.5 h-4 w-4 bg-gray-900 rounded-full"></div>
-                            <div className="transform translate-x-0.5 absolute bottom-2 -right-3.5 h-4 w-4 bg-gray-900"></div>
+                            <div className={`transform translate-x-0.5 absolute bottom-0 -right-3.5 h-4 w-4 ${dm(dark)['bg']} rounded-full`}></div>
+                            <div className={`transform translate-x-0.5 absolute bottom-2 -right-3.5 h-4 w-4 ${dm(dark)['bg']}`}></div>
                         </> 
                             : 
                         null
@@ -47,21 +49,35 @@ const IMessage : FC<ThemeProps> = ({
     school,
     fraternity,
     year,
-    tags
+    tags,
+    dark
 } : ThemeProps) => {
 
     
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-center items-end h-96 w-96 bg-black shadow-md">
-                <Text content={confessionInput} hasTail={false}/>
+            <div className={`flex flex-col justify-center items-end h-96 w-96 ${dm(dark)['bg']} shadow-md`}>
+                <Text content={confessionInput} hasTail={false} dark={dark}/>
                 <Text content={
                     generateSignature({location, school, fraternity, year})
-                } hasTail={true} />
+                } hasTail={true} dark={dark}/>
             </div>
         </div>
     )
+}
+
+const dm = (dark: boolean) => {
+    if (dark) return darkStyles;
+    return lightStyles;
+}
+
+const darkStyles = {
+    bg: 'bg-black',
+}
+
+const lightStyles = {
+    bg: 'bg-white',
 }
 
 export default IMessage;

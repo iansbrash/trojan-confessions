@@ -57,7 +57,8 @@ const AdminSubmission : FC<AdminSubmissionProps> = ({
                         fraternity: signature.fraternity,
                         year: signature.year,
                         tags: tags,
-                        timestamp: timestamp
+                        timestamp: timestamp,
+                        dark: false
                     }}
                 />
             </div>

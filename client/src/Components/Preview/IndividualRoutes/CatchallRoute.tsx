@@ -41,7 +41,8 @@ const CatchallRoute = ({
                     fraternity: themeProps.fraternity,
                     year: themeProps.year,
                     tags: themeProps.tags,
-                    timestamp: themeProps.timestamp
+                    timestamp: themeProps.timestamp,
+                    dark: false
                 }}
             />
         </RouteWrapper>

@@ -30,7 +30,8 @@ const ThemeRenderer : FC<ThemeRendererProps> = ({
         fraternity,
         year,
         tags,
-        timestamp
+        timestamp,
+        dark
     } = themeprops;
 
     console.log('Rerendering ThemeRenderer: theme value: ' + theme)

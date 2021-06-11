@@ -65,6 +65,12 @@ const Preview : FC = () => {
         });
     }
 
+
+    const [dark, setDark] = useState<boolean>(false);
+    const toggleDark = () => {
+        setDark(!dark);
+    }
+
     const toggleSize = () => {
         setSizeIndex((sizeIndex + 1) % confessionArray.length)
     }
@@ -114,6 +120,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Zoom 
             confessionInput={confessionArray[sizeIndex]}
@@ -123,6 +130,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Email 
             confessionInput={confessionArray[sizeIndex]}
@@ -132,6 +140,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Tinder 
             confessionInput={confessionArray[sizeIndex]}
@@ -141,6 +150,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Twitter 
             confessionInput={confessionArray[sizeIndex]}
@@ -150,6 +160,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Snapchat 
             confessionInput={confessionArray[sizeIndex]}
@@ -159,6 +170,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Notes 
             confessionInput={confessionArray[sizeIndex]}
@@ -168,6 +180,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Instagram 
             confessionInput={confessionArray[sizeIndex]}
@@ -177,6 +190,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />,
         <Reddit 
             confessionInput={confessionArray[sizeIndex]}
@@ -186,6 +200,7 @@ const Preview : FC = () => {
             year={yearArray[sizeIndex]}
             tags={tagsArray[sizeIndex]}
             timestamp={timestampArray[sizeIndex]}
+            dark={dark}
         />
 
     ]
@@ -205,6 +220,13 @@ const Preview : FC = () => {
                     onClick={() => toggleSize()}
                     className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
                         Toggle Size
+                    </button>
+                </div>
+                <div className="m-1 bg-red-600 rounded-md shadow-md">
+                    <button 
+                    onClick={() => toggleDark()}
+                    className="text-white font-bold my-1 mx-2 focus:outline-none outline-none">
+                        {dark ? 'Light Mode' : 'Dark Mode'}
                     </button>
                 </div>
                 <div className="m-1 bg-red-600 rounded-md shadow-md">

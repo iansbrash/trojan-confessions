@@ -5,7 +5,8 @@ interface ThemeProps {
     fraternity: string,
     year: string,
     tags: string[],
-    timestamp: string
+    timestamp: string,
+    dark: boolean
 }
 
 export default ThemeProps;

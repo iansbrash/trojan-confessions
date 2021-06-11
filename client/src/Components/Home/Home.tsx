@@ -155,7 +155,8 @@ const Home : FC = () => {
                                                 fraternity: fraternity,
                                                 year: year,
                                                 tags: tags,
-                                                timestamp: new Date().toISOString()
+                                                timestamp: new Date().toISOString(),
+                                                dark: false
                                             }}
                                             />
                                         </div>
@@ -173,7 +174,8 @@ const Home : FC = () => {
                                                 fraternity: fraternity,
                                                 year: year,
                                                 tags: tags,
-                                                timestamp: new Date().toISOString()
+                                                timestamp: new Date().toISOString(),
+                                                dark: false
                                             }}
                                             />
                                         </div>

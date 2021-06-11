@@ -19,20 +19,28 @@ const Dot : FC = () => {
     )
 }
 
-const Divider : FC = () => {
+interface DividerProps {
+    dark: boolean
+}
+
+const Divider : FC<DividerProps> = ({
+    dark
+} : DividerProps) => {
     return (
         <div className="h-0.25 w-full my-1">
-            <div className="h-0.25 bg-gray-600 mx-4">
+            <div className={`h-0.25 ${dm(dark)['divider-color']} mx-4`}>
 
             </div>
         </div>
     )
 }
 
-const LongerDivider : FC = () => {
+const LongerDivider : FC<DividerProps> = ({
+    dark
+} : DividerProps) => {
     return (
         <div className="h-0.25 w-full my-1">
-            <div className="h-0.25 bg-gray-600">
+            <div className={`h-0.25 ${dm(dark)['divider-color']}`}>
 
             </div>
         </div>
@@ -93,7 +101,7 @@ const Options = () => {
 
 const Buttons = () => {
     return (
-        <div className="text-gray-400 flex flex-row space-x-14">
+        <div className="flex flex-row space-x-14">
             <Comment cName={'h-7 w-7'}/>
             <Retweet cName={'h-7 w-7'} />
             <Like cName={'h-7 w-7'} />
@@ -103,11 +111,13 @@ const Buttons = () => {
 };
 
 interface TweetCommentProps {
-    replyingTo: string
+    replyingTo: string,
+    dark: boolean
 };
 
 const TweetComment : FC<TweetCommentProps>= ({
-    replyingTo
+    replyingTo,
+    dark
 } : TweetCommentProps) => {
 
     const getUserByIndex = (i : number) => {
@@ -165,12 +175,12 @@ const TweetComment : FC<TweetCommentProps>= ({
                 {/* Handle, @, Date, Options */}
                 <div className="flex flex-row items-center">
                     {/* Handle */}
-                    <div className="font-bold text-md text-white">
+                    <div className={`font-bold text-md ${dm(dark)['text-color-handle']}`}>
                         {getUserByIndex(0)}
                     </div>
 
                     {/* @ */}
-                    <div className="ml-1.5 text-gray-400">
+                    <div className={`ml-1.5 ${dm(dark)['text-color-at']}`}>
                         @{getUserByIndex(1)}
                     </div>
 
@@ -194,7 +204,7 @@ const TweetComment : FC<TweetCommentProps>= ({
                 </div>
 
                 {/* Tweet Comment */}
-                <div className="text-white break-words pr-4">
+                <div className={`${dm(dark)['text-color-content']} break-words pr-4`}>
                     {getCommentByIndex()}
                 </div>
 
@@ -233,7 +243,8 @@ const Twitter : FC<ThemeProps> = ({
     school,
     fraternity,
     year,
-    tags
+    tags,
+    dark
 } : ThemeProps) => {
 
     enum Popularity {
@@ -261,16 +272,16 @@ const Twitter : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col justify-start items-center h-96 w-96 bg-twitterblue shadow-md">
+            <div className={`flex flex-col justify-start items-center h-96 w-96 ${dm(dark)['bg']} shadow-md`}>
                 {/* People liked... */}
                 <div className="flex flex-row justify-center items-center my-2">
-                    <div className="text-gray-300 mr-1">
+                    <div className={`${dm(dark)['blank-liked-color']} mr-1`}>
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
                         </svg>
                     </div>
                     
-                    <div className="text-md text-gray-300">
+                    <div className={`text-md ${dm(dark)['blank-liked-color']}`}>
                         Zukoski and {Math.round(Math.random() * 10)} others liked
                     </div>
                 </div>
@@ -288,11 +299,11 @@ const Twitter : FC<ThemeProps> = ({
                         {/* Handle and @ */}
                         <div className="flex flex-col justify-center h-14">
                             {/* Handle */}
-                            <div className="font-bold text-white -mb-1">
+                            <div className={`font-bold ${dm(dark)['text-color-handle']} -mb-1`}>
                                 Anonymous {`Student`}
                             </div>
                             {/* @ */}
-                            <div className="text-gray-400 -mt-1">
+                            <div className={`${dm(dark)['text-color-at']} -mt-1`}>
                                 @{twitterAt}
                             </div>
                         </div>
@@ -306,7 +317,7 @@ const Twitter : FC<ThemeProps> = ({
 
                 {/* Tweet */}
                 <div className="flex justify-start flex-row w-full">
-                    <div className="flex flex-row flex-wrap m-4 text-gray-100 text-lg">
+                    <div className={`flex flex-row flex-wrap m-4 ${dm(dark)['text-color-content']} text-lg`}>
                         <AppleEmojifier content={confessionInput}/>
                     </div>
                 </div>
@@ -314,15 +325,15 @@ const Twitter : FC<ThemeProps> = ({
                 
 
                 {/* Timestamp, twitter for ________ */}
-                <div className="flex flex-row justify-start w-full items-center">
+                <div className={`${dm(dark)['text-color-sub']} flex flex-row justify-start w-full items-center`}>
                     {/* Timestamp */}
-                    <div className="text-gray-400 text-md ml-4">
+                    <div className={`text-md ml-4`}>
                         {`4:39 AM`}
                     </div>
 
                     <Dot />
 
-                    <div className="text-gray-400 text-md">
+                    <div className="text-md">
                         {`4/30/21`}
                     </div>
 
@@ -335,40 +346,71 @@ const Twitter : FC<ThemeProps> = ({
                     </div>
                 </div>
 
-                <Divider />
+                <Divider dark={dark}/>
 
                 {/* Retweets Quote Tweets Likes */}
-                <div className="flex flex-row justify-start w-full ml-8 space-x-2">
+                <div className={`${dm(dark)['text-color-sub']} flex flex-row justify-start w-full ml-8 space-x-2`}>
                     {/* Retweets */}
-                    <div className="text-gray-400">
-                        <span className="font-bold text-gray-100">{retweets}</span> Retweets
+                    <div>
+                        <span className={`font-bold ${dm(dark)['text-color-main-metrics']}`}>{retweets}</span> Retweets
                     </div>
 
                     {/* Quote Tweets */}
-                    <div className="text-gray-400">
-                        <span className="font-bold text-gray-100">{quoteTweets}</span> Quote Tweets
+                    <div>
+                        <span className={`font-bold ${dm(dark)['text-color-main-metrics']}`}>{quoteTweets}</span> Quote Tweets
                     </div>
 
                     {/* Likes */}
-                    <div className="text-gray-400">
-                        <span className="font-bold text-gray-100">{likes}</span> Likes
+                    <div>
+                        <span className={`font-bold ${dm(dark)['text-color-main-metrics']}`}>{likes}</span> Likes
                     </div>
                 </div>
 
-                <Divider />
+                <Divider dark={dark}/>
 
                 {/* Comment, RT, Like, Share button */}
-                <Buttons />
+                <div className={`${dm(dark)['icon-color']}`}>
+                    <Buttons />
+                </div>
 
                 {/* Need a wide divider */}
-                <LongerDivider />
+                <LongerDivider dark={dark}/>
 
                 {/* Comments */}
-                <TweetComment replyingTo={twitterAt}/>
+                <TweetComment replyingTo={twitterAt} dark={dark}/>
 
             </div>
         </div>
     )
+}
+
+const dm = (dark: boolean) => {
+    if (dark) return darkStyles;
+    return lightStyles;
+}
+
+const darkStyles = {
+    bg: 'bg-twitterblue',
+    'text-color-handle': 'text-white',
+    'text-color-main-metrics': 'text-gray-100',
+    'text-color-content': 'text-gray-100',
+    'text-color-at': 'text-gray-400',
+    'text-color-sub': 'text-gray-400',
+    'icon-color': 'text-gray-400',
+    'divider-color': 'bg-gray-600',
+    'blank-liked-color': 'text-gray-300'
+}
+
+const lightStyles = {
+    bg: 'bg-white',
+    'text-color-handle': 'text-black',
+    'text-color-main-metrics': 'text-black',
+    'text-color-content': 'text-black',
+    'text-color-at': 'text-gray-500',
+    'text-color-sub': 'text-gray-500',
+    'icon-color': 'text-gray-400',
+    'divider-color': 'bg-gray-400',
+    'blank-liked-color': 'text-gray-500'
 }
 
 export default Twitter;
