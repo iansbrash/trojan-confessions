@@ -261,6 +261,10 @@ const Dashboard : FC = () => {
         }
     }
 
+    const toggleEmojis = () => {
+        
+    }
+
     useEffect(() => {
 
         (async () : Promise<any> => {
@@ -321,11 +325,16 @@ const Dashboard : FC = () => {
 
                 {/* Logout Button */}
                 <div className="m-2 flex">
-                    <div className="justify-center flex items-center rounded-md shadow-md bg-red-400">
-                        <button className="m-2 text-white font-bold text-xl"
+                    <div className="justify-center flex flex-row items-center space-x-2">
+                        <button className="px-2 py-1 m-2 text-white font-bold text-xl rounded-md shadow-md bg-red-400"
                         onClick={() => logout()}>
                             Logout
                         </button>
+                        <button className="px-2 py-1 m-2 text-white font-bold text-xl rounded-md shadow-md bg-red-400"
+                        onClick={() => toggleEmojis()}>
+                            Toggle Emojis
+                        </button>
+
                     </div>
                 </div>
 
@@ -353,8 +362,8 @@ const Dashboard : FC = () => {
                     </div>
 
                     {/* ConfessionsFeed of uncomfirmed submissions */}
-                    <div className="flex-col justify-center items-center bg-gray100">
-                        <div className="ml-16 w-96 mb-4 bg-red-400 rounded-md shadow-md text-white text-center text-4xl font-bold">
+                    <div className="flex-col justify-center items-center bg-gray-100 space-y-4" >
+                        <div className="ml-16 w-96 mb-4 bg-red-400 rounded-md shadow-md font-bold text-white text-center text-4xl ">
                             Submissions
                         </div>
                         {

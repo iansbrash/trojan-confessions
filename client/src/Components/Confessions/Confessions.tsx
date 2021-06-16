@@ -206,52 +206,55 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
 
     return (
         <div className="my-3 flex justify-center items-center flex-col">
-            <div className="flex-wrap flex flex-row justify-start items-center">
+            <div className="flex-wrap flex flex-col justify-center items-start space-x-2">
                 {
                     contentFilter ? 'content' : null
                 }
-                <button className="flex flex-row justif-center items-center focus:outline-none m-2 px-2 py-1 font-bold text-2xl text-gray-700 bg-gray-200 rounded-md transform transition duration-400 ease-in-out shadow-md hover:shadow-lg hover:scale-105"
+                <button className="flex flex-row justify-center items-center focus:outline-none my-2 ml-2 px-2 py-1 font-bold text-2xl text-gray-700 bg-gray-200 rounded-md transform transition duration-400 ease-in-out shadow-md hover:shadow-lg hover:scale-105"
                 onClick={() => setAddFilterOn(!addFilterOn)}>
                     Add Filter
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                 </button>
-                <FilterMapper 
-                    tagHook={locationFilter}
-                    setTagHook={setLocationFilter}
-                    bgColor={'bg-red-800'}
-                    tagName={'location'}
-                />
-                <FilterMapper 
-                    tagHook={schoolFilter}
-                    setTagHook={setSchoolFilter}
-                    bgColor={'bg-red-700'}
-                    tagName={'school'}
+                <div className="space-x-2 transition-opacity duration-500 ease-in-out flex flex-row justify-start items-center">
+                    <FilterMapper 
+                        tagHook={locationFilter}
+                        setTagHook={setLocationFilter}
+                        bgColor={'bg-red-800'}
+                        tagName={'location'}
+                    />
+                    <FilterMapper 
+                        tagHook={schoolFilter}
+                        setTagHook={setSchoolFilter}
+                        bgColor={'bg-red-700'}
+                        tagName={'school'}
 
-                />
-                <FilterMapper 
-                    tagHook={fraternityFilter}
-                    setTagHook={setFraternityFilter}
-                    bgColor={'bg-red-600'}
-                    tagName={'fraternity'}
+                    />
+                    <FilterMapper 
+                        tagHook={fraternityFilter}
+                        setTagHook={setFraternityFilter}
+                        bgColor={'bg-red-600'}
+                        tagName={'fraternity'}
 
-                />
-                <FilterMapper 
-                    tagHook={yearFilter}
-                    setTagHook={setYearFilter}
-                    bgColor={'bg-red-500'}
-                    tagName={'year'}
+                    />
+                    <FilterMapper 
+                        tagHook={yearFilter}
+                        setTagHook={setYearFilter}
+                        bgColor={'bg-red-500'}
+                        tagName={'year'}
 
-                />
-                <FilterMapper 
-                    tagHook={tagFilter}
-                    setTagHook={setTagFilter}
-                    bgColor={'bg-red-400'}
-                    tagName={'tag'}
-                />
+                    />
+                    <FilterMapper 
+                        tagHook={tagFilter}
+                        setTagHook={setTagFilter}
+                        bgColor={'bg-red-400'}
+                        tagName={'tag'}
+                    />
+                </div>
+               
                 {/* Appears when we toggle 'Add Filter' */}
-                <div className={`transition-opacity duration-400 ease-in-out ${addFilterOn ? 'opacity-1' : 'opacity-0'} h-12 flex flex-row justify-start items-center`}>
+                <div className={`space-x-2 transition-opacity duration-500 ease-in-out ${addFilterOn ? 'opacity-1' : 'opacity-0'} h-12 flex flex-row justify-start items-center`}>
                     <FilterSelector 
                         filter={locationFilter}
                         setFilter={setLocationFilter}
@@ -304,6 +307,18 @@ const FilterSelector : FC<FilterSelectorProps> = ({
 
     const filterDisplayName = filterName.substring(0, 1).toUpperCase() + filterName.substring(1);
     const [selection, setSelection] = useState<string>(filterDisplayName);
+    const [datalist, setDatalist] = useState<string[]>([]);
+
+    useEffect(() => {
+        (async () => {
+            const res = await axios({
+                method: 'get',
+                url: `/api/signatures/${filterName}`
+            })
+
+            setDatalist(res.data);
+        })();
+    }, [])
 
     // this is because we can only select one filte right now
     if (filter.length !== 0) {
@@ -312,33 +327,28 @@ const FilterSelector : FC<FilterSelectorProps> = ({
 
 
     const handleChange = (e : any) => {
-        if (e.target.value === 'None'){
+        if (e.target.value === filterDisplayName){
             setFilter([]);
         }
         else {
             setFilter([e.target.value]);
         }
-        setSelection(e.target.value)
+        setSelection(filterDisplayName)
     }
-
-    // if (false) {
-    //     return (
-    //         <select value={selection} onChange={(e) => handleChange(e)} className={`${selection === 'None' ? 'text-gray-400' : ''} text-2xl mt-2 appearance-none bg-gray-200 focus:outline-none`}>
-    //             <option className="text-gray-400" value={`None`}>None</option>
-    //             {datalistArray.map(item => <option className="text-black" value={item}>{item}</option>)}
-    //         </select>
-    //     )
-    // }
 
     const datalistArray = ['one', 'two', 'three']
 
     return (
-        <div className={`flex flex-row justify-center items-center text-white font-bold rounded-md shadow-md px-2 py-1 ${bgColor}`}>
-            <select value={selection} onChange={(e) => handleChange(e)} className={`${bgColor} border-0 font-bold appearance-none focus:outline-none`}>
-                <option className="text-white" value={filterDisplayName}>{filterDisplayName}</option>
-                {datalistArray.map(item => <option className=" font-bold text-white" value={item}>{item}</option>)}
-            </select>
-            {/* {filterDisplayName} */}
+        <div className={`flex flex-row justify-center items-center text-white font-bold rounded-md shadow-md px-2 py-1 ${bgColor} relative`}>
+            <div className="absolute left-2 top-0 bottom-0 flex justify-center items-center">
+                <select value={selection} onChange={(e) => handleChange(e)} className={`bg-white bg-opacity-0 z-10 border-0 font-bold appearance-none focus:outline-none flex justify-center items-center flex-row`}>
+                    <option className={`${bgColor} text-white`} value={filterDisplayName}>{filterDisplayName}</option>
+                    {datalist.map(item => <option className={`${bgColor} font-bold text-white`} value={item}>{item}</option>)}
+                </select>
+            </div>
+            <div className="opacity-0">
+                {filterDisplayName}
+            </div>
         </div>
     )
 }
@@ -356,6 +366,11 @@ const FilterMapper : FC<FilterMapperProps> = ({
     bgColor,
     tagName
 } : FilterMapperProps) => {
+
+    if (tagHook.length === 0) {
+        return null;
+    } 
+
     return (
         <div className="flex flex-row space-x-4">
             {
@@ -567,7 +582,7 @@ const Confessions : FC = () => {
     return (
         <div className="w-screen">
             <HomeHeader />
-            <div className="mt-4 w-screen flex flex-col justify-center items-center">
+            <div className="mt-4 mx-3 flex-1 flex flex-col justify-center items-center">
                 {/* Actual confessions */}
                 <InfiniteScroll
                     pageStart={0}

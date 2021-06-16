@@ -46,6 +46,9 @@ const Home : FC = () => {
     // Submissions Complete and Form Reset
     const [submitted, setSubmitted] = useState<boolean>(false);
 
+    // dark mode
+    const [darkMode, setDarkMode] = useState<boolean>(false);
+
     useEffect(() => {
 
         // Identifiers
@@ -145,7 +148,23 @@ const Home : FC = () => {
 
                                     {/* BG Color is from below div */}
                                     <div className={`hidden mdlg:block w-full aspect-h-1 aspect-w-1 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
-                                        <div className="flex justify-center items-center  ">
+                                        <div className="flex justify-center items-center">
+                                            <button className="absolute top-2.5 right-2.5 focus:outline-none"
+                                            onClick={() => setDarkMode(!darkMode)}
+                                            >
+                                                <div className="w-8 h-8 bg-red-400 rounded-md shadow-md z-40 flex justify-center items-center text-white">
+                                                    {darkMode ? 
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                        </svg> 
+                                                        : 
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                                        </svg>
+                                                    }
+                                                </div>
+                                            </button>
+                                            
                                             <ThemeRenderer 
                                             theme={Themes[theme]}
                                             themeprops={{
@@ -156,7 +175,7 @@ const Home : FC = () => {
                                                 year: year,
                                                 tags: tags,
                                                 timestamp: new Date().toISOString(),
-                                                dark: false
+                                                dark: darkMode
                                             }}
                                             />
                                         </div>
@@ -164,7 +183,8 @@ const Home : FC = () => {
                                     
                                     {/* Mobile view since breakpoints with aspect-w/h is being dick */}
                                     <div className={`block mdlg:hidden w-full py-6 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
-                                        <div className="flex justify-center items-center  ">
+                                        <div className="flex justify-center items-center relative">
+                                            
                                             <ThemeRenderer 
                                             theme={Themes[theme]}
                                             themeprops={{

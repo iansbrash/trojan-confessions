@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, {
     FC,
     useState,
@@ -125,56 +126,10 @@ const AddIdentifiers : FC<AddIdentifiersProps> = ({
     const [fraternityTemp, setFraternityTemp] = useState<string>('');
     const [yearTemp, setYearTemp] = useState<string>('');
 
-
-    const LocationArray : string[] = [
-        'Lorenzo',
-        'Gateway',
-        'Shrine',
-        'Icon',
-        'Victory',
-        'West',
-        
-        // On Campus Housing Freshman
-        'Birnkrant',
-        'New North',
-        'McCarthy',
-        'Pardee',
-        'Fluor',
-
-        // On Campus Sophomores
-        'Village Housing'
-    ];
-
-    const SchoolArray : string[] = [
-        'Marshall',
-        'Viterbi',
-        'Annenberg',
-        'Dornsife',
-        'Roski',
-        'Architecture',
-        'Iovine and Young',
-        'SCA', // School of Cinematic Arts
-        'Kaufman', // Dance
-        'Davis',
-        'Keck',
-        'Thorton',
-        'Pharmacy',
-        'Price'
-    ];
-
-    const GreekLifeArray : string[] = [
-        'Sigma Nuts',
-        'Pike Spikes',
-        'Teeck'
-    ];
-
-    const GraduationYearArray : string[] = [
-        'Freshman',
-        'Sophomore',
-        'Junior',
-        'Senior',
-        'Alumnus'
-    ];
+    const [LocationArray, SetLocationArray] = useState<string[]>([]);
+    const [SchoolArray, SetSchoolArray] = useState<string[]>([]);
+    const [GreekLifeArray, SetGreekLifeArray] = useState<string[]>([]);
+    const [GraduationYearArray, SetGraduationYearArray] = useState<string[]>([]);
 
     const signatureAdded = () => {
         setLocation(locationTemp);
@@ -190,24 +145,64 @@ const AddIdentifiers : FC<AddIdentifiersProps> = ({
         return () => {
             
         }
-    }, [locationTemp, schoolTemp, fraternityTemp, yearTemp])
+    }, [locationTemp, schoolTemp, fraternityTemp, yearTemp]);
+
+    // loads datalist options from api
+    useEffect(() => {
+
+        (async () => {
+            const res = await axios({
+                method: 'get',
+                url: `/api/signatures/location`
+            })
+            
+            SetLocationArray(
+                res.data
+            )
+        })();
+
+        (async () => {
+            const res = await axios({
+                method: 'get',
+                url: `/api/signatures/school`
+            })
+            
+            SetSchoolArray(
+                res.data
+            )
+        })();
+
+        (async () => {
+            const res = await axios({
+                method: 'get',
+                url: `/api/signatures/fraternity`
+            })
+            
+            SetGreekLifeArray(
+                res.data
+            )
+        })();
+
+        (async () => {
+            const res = await axios({
+                method: 'get',
+                url: `/api/signatures/year`
+            })
+            
+            SetGraduationYearArray(
+                res.data
+            )
+        })();
+
+        return () => {
+
+        }
+    }, [])
 
 
 
     return (
         <div className="mb-4">
-            <div className="relative">
-                {/* <div className="absolute top-3 -right-2">
-                    <div className="flex flex-col justify-center content-center bg-red-400 rounded-md shadow-md">
-                        <button 
-                            className="focus:outline-none text-center font-bold text-xl text-white"
-                            onClick={() => signatureAdded()}    
-                        >
-                            <PlusSvg />
-                        </button>
-                    </div>
-                </div> */}
-            </div>
             <div className="font-bold text-4xl text-gray-700 mb-2">
                 Add a Signature
             </div>
