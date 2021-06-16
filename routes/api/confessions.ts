@@ -147,7 +147,8 @@ router.post('/', async (req, res) => {
         location,
         school,
         fraternity,
-        year
+        year,
+        dark
     } = req.headers
 
     const id_token = req.headers.id_token;
@@ -256,7 +257,8 @@ router.post('/', async (req, res) => {
                     fraternity,
                     year
                 },
-                key: newKey
+                key: newKey,
+                dark: dark
             });
 
             posterRef.push().set({

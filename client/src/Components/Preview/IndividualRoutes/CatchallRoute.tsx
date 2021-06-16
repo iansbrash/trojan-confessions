@@ -42,7 +42,7 @@ const CatchallRoute = ({
                     year: themeProps.year,
                     tags: themeProps.tags,
                     timestamp: themeProps.timestamp,
-                    dark: false
+                    dark: queryString.parse(search).dark === 'true'
                 }}
             />
         </RouteWrapper>

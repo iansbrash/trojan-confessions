@@ -127,6 +127,7 @@ const Home : FC = () => {
                                     theme={theme}
                                     setTheme={setTheme}
                                     setSubmitted={setSubmitted}
+                                    darkMode={darkMode}
                                 />
                             </div>
                         </div>

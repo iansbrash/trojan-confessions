@@ -22,7 +22,8 @@ interface AdminSubmissionProps {
     tags: string[],
     theme: string,
     timestamp: string
-    signature: SignatureProps
+    signature: SignatureProps,
+    dark: string
 }
 
 enum Themes {
@@ -39,7 +40,8 @@ const AdminSubmission : FC<AdminSubmissionProps> = ({
     tags,
     theme,
     timestamp,
-    signature
+    signature,
+    dark
 } : AdminSubmissionProps) => {
 
     // @ts-ignore
@@ -58,7 +60,7 @@ const AdminSubmission : FC<AdminSubmissionProps> = ({
                         year: signature.year,
                         tags: tags,
                         timestamp: timestamp,
-                        dark: false
+                        dark: dark === 'true'
                     }}
                 />
             </div>
@@ -181,7 +183,8 @@ const ApprovalBlock : FC<any> = ({
                 'school': subObj.signature.school,
                 'fraternity': subObj.signature.fraternity,
                 'year': subObj.signature.year,
-                'key': subObj.key
+                'key': subObj.key,
+                'dark': subObj.dark
             }
         });
     }
@@ -210,6 +213,7 @@ const ApprovalBlock : FC<any> = ({
                     theme={subObj.theme}
                     timestamp={subObj.timestamp}
                     signature={subObj.signature}
+                    dark={subObj.dark}
                 />
             </div>
             {
@@ -262,7 +266,7 @@ const Dashboard : FC = () => {
     }
 
     const toggleEmojis = () => {
-        
+
     }
 
     useEffect(() => {
@@ -281,6 +285,7 @@ const Dashboard : FC = () => {
             await axios(configSubmissions)
             .then(function (response) {
                 setSubmissions(response.data);
+                console.log(response.data)
             })
             .catch(function (error) {
                 console.log(error);
@@ -304,7 +309,9 @@ const Dashboard : FC = () => {
             await axios(configToPost)
             .then(function (response) {
                 setToPost(response.data);
+                console.log('topost response data')
                 console.log(response.data);
+
             })
             .catch(function (error) {
                 console.log(error);
@@ -354,6 +361,7 @@ const Dashboard : FC = () => {
                                         theme={subObj.theme}
                                         timestamp={subObj.timestamp}
                                         signature={subObj.signature}
+                                        dark={subObj.dark}
                                     />
                                     <div className="h-5"></div>
                                 </div>
@@ -380,11 +388,7 @@ const Dashboard : FC = () => {
                         }
                     </div>
                 </div>
-                
-
             </div>
-
-
 
             {/* Redirect on Logout */}
             {
@@ -397,9 +401,6 @@ const Dashboard : FC = () => {
                         pathname: "/admin/login" 
                     }} />
             }
-
-            
-
             {/* 
                     What to do
                 Need to establish some JWT shit for logging in

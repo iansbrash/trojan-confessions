@@ -184,7 +184,8 @@ interface SubmissionBoxProps {
     setTags: (x : string[]) => void,
     theme: Themes,
     setTheme: (x : Themes) => void,
-    setSubmitted: (s : boolean) => void
+    setSubmitted: (s : boolean) => void,
+    darkMode: boolean
 }
 
 enum Themes {
@@ -210,7 +211,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     setTags,
     theme,
     setTheme,
-    setSubmitted
+    setSubmitted,
+    darkMode
 } : SubmissionBoxProps) => {
 
     const inputSpan = useRef<HTMLTextAreaElement>(document.createElement('textarea'));
@@ -259,9 +261,9 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
 
+    const maxCharLength = 280;
 
     const writeUserData = async (submission : string, email : string) : Promise<any> =>{
-        const maxCharLength = 280;
 
         if (inputLength > maxCharLength){
             return;
@@ -287,7 +289,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                     'location': signature.location,
                     'school': signature.school,
                     'fraternity': signature.fraternity,
-                    'year': signature.year
+                    'year': signature.year,
+                    'dark': darkMode
                 }
             };
 

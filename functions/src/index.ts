@@ -215,7 +215,8 @@ const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, 
             tags,
             theme,
             timestamp,
-            signature
+            signature,
+            dark
         } = toPostArray[index];
 
         console.log(`
@@ -227,7 +228,7 @@ const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, 
         `)
 
         const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
-        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}`);
+        await page.goto(`${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}`);
 
         await page.waitForSelector('#b64');
         const submission = await page.$("#submission");
@@ -265,7 +266,8 @@ const getBase64Array = async (toPostArray : any) => {
             tags,
             theme,
             timestamp,
-            signature
+            signature,
+            dark
         } = toPostArray[i];
 
         console.log(`
@@ -279,7 +281,7 @@ const getBase64Array = async (toPostArray : any) => {
         const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
         // const tcUrl = 'http://localhost:3000'
 
-        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}
+        await page.goto(`${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}
         `);
         //&tags[]=one&tags[]=2
 

@@ -130,11 +130,11 @@ router.get('/submissions/', authenticateJWT, (req, res) => {
 
     let recentPostsRef = firebase.database().ref('submissions');
 
-    recentPostsRef.limitToLast(20).once('value', snapshot => {
+    recentPostsRef.limitToFirst(20).once('value', snapshot => {
         if (snapshot.exists()){
             console.log('snapshot exists in ConfFeed!');
 
-            const toSet : any[] = Object.values(snapshot.val()).reverse();
+            const toSet : any[] = Object.values(snapshot.val());
 
             return res.send(toSet);
         }
@@ -155,11 +155,11 @@ router.get('/toPost/', authenticateJWT, (req, res) => {
 
     let toPostRef = firebase.database().ref('toPost');
 
-    toPostRef.limitToLast(10).once('value', snapshot => {
+    toPostRef.limitToFirst(10).once('value', snapshot => {
         if (snapshot.exists()){
             console.log('snapshot exists in ConfFeed!');
 
-            const toSet : any[] = Object.values(snapshot.val()).reverse();
+            const toSet : any[] = Object.values(snapshot.val());
 
             return res.send(toSet);
         }
@@ -183,6 +183,7 @@ router.post('/approve/', authenticateJWT, (req, res) => {
         school,
         fraternity,
         year,
+        dark
     } = req.headers;
 
     // @ts-ignore
@@ -219,7 +220,8 @@ router.post('/approve/', authenticateJWT, (req, res) => {
             school,
             fraternity,
             year
-        }
+        },
+        dark: dark
     });
 
     toPostRef.push().set({
@@ -236,7 +238,8 @@ router.post('/approve/', authenticateJWT, (req, res) => {
             school,
             fraternity,
             year
-        }
+        },
+        dark: dark
     });
 
     console.log('about to try remove');
