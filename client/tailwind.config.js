@@ -41,6 +41,7 @@ module.exports = {
       },
       screens: {
         'mdlg': '900px',
+        'xs': '475px',
       },
       translate: {
         '102': '26rem',

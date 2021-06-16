@@ -3,6 +3,7 @@ import React, {
     useState
 } from 'react';
 import { Link } from 'react-router-dom';
+import Logo160 from '../../resources/images/logo/logo160x160.png';
 
 
 interface HeaderLinkProps {
@@ -125,10 +126,10 @@ const HomeHeader : FC = () => {
 
 const Logo : FC = () => {
     return (
-        <div className="h-10 flex">
-            <Link className="flex-1 bg-red-500 rounded-md shadow-md"
+        <div className="h-10 flex justify-center items-center">
+            <Link className="flex-1 flex justify-center items-center"
             to="/admin/login/">
-
+                <img className="w-10 h-10" src={Logo160}/>
             </Link>
         </div>
     )

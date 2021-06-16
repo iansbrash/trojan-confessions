@@ -118,9 +118,9 @@ const GmailLogin : FC<ActionsProps> = ({
                         disabled={renderProps.disabled}
                         >
                             <div className="flex flex-row h-6 justify-center content-center space-x-2">
-                                <div className="text-lg font-bold text-white">
+                                {/* <div className="text-lg font-bold text-white">
                                     Login With Google
-                                </div>
+                                </div> */}
                                 <img alt="" className="object-contain self-auto" src={WhiteGoogleLogo}/>
                             </div>
                         </button>
