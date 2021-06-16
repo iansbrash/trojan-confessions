@@ -182,7 +182,9 @@ interface FilterInterfaceProps {
     yearFilter: string[],
     setYearFilter: (y : string[]) => void,
     tagFilter: string[],
-    setTagFilter: (t : string[]) => void
+    setTagFilter: (t : string[]) => void,
+    addFilterOn: boolean,
+    setAddFilterOn: (f : boolean) => void
 }
 
 const FilterInterface : FC<FilterInterfaceProps> = ({
@@ -197,7 +199,9 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
     yearFilter,
     setYearFilter,
     tagFilter,
-    setTagFilter
+    setTagFilter,
+    addFilterOn,
+    setAddFilterOn
 } : FilterInterfaceProps) => {
 
     return (
@@ -206,7 +210,8 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
                 {
                     contentFilter ? 'content' : null
                 }
-                <button className="flex flex-row justif-center items-center focus:outline-none m-2 px-2 py-1 font-bold text-2xl text-gray-700 bg-gray-200 rounded-md transform transition duration-400 ease-in-out shadow-md hover:shadow-lg hover:scale-105 ">
+                <button className="flex flex-row justif-center items-center focus:outline-none m-2 px-2 py-1 font-bold text-2xl text-gray-700 bg-gray-200 rounded-md transform transition duration-400 ease-in-out shadow-md hover:shadow-lg hover:scale-105"
+                onClick={() => setAddFilterOn(!addFilterOn)}>
                     Add Filter
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-9 w-9" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -244,9 +249,96 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
                     setTagHook={setTagFilter}
                     bgColor={'bg-red-400'}
                     tagName={'tag'}
-
                 />
+                {/* Appears when we toggle 'Add Filter' */}
+                <div className={`transition-opacity duration-400 ease-in-out ${addFilterOn ? 'opacity-1' : 'opacity-0'} h-12 flex flex-row justify-start items-center`}>
+                    <FilterSelector 
+                        filter={locationFilter}
+                        setFilter={setLocationFilter}
+                        filterName={'location'}
+                        bgColor={'bg-red-800'}
+                    />
+                    <FilterSelector 
+                        filter={schoolFilter}
+                        setFilter={setSchoolFilter}
+                        filterName={'school'}
+                        bgColor={'bg-red-700'}
+                    />
+                    <FilterSelector 
+                        filter={fraternityFilter}
+                        setFilter={setFraternityFilter}
+                        filterName={'fraternity'}
+                        bgColor={'bg-red-600'}
+                    />
+                    <FilterSelector 
+                        filter={yearFilter}
+                        setFilter={setYearFilter}
+                        filterName={'year'}
+                        bgColor={'bg-red-500'}
+                    />
+                    <FilterSelector 
+                        filter={tagFilter}
+                        setFilter={setTagFilter}
+                        filterName={'tag'}
+                        bgColor={'bg-red-400'}
+                    />
+                </div>
             </div>
+        </div>
+    )
+}
+
+interface FilterSelectorProps {
+    filter: string[],
+    setFilter: (s : string[]) => void,
+    filterName: string,
+    bgColor: string
+}
+
+const FilterSelector : FC<FilterSelectorProps> = ({
+    filter,
+    setFilter,
+    filterName,
+    bgColor
+} : FilterSelectorProps) => {
+
+    const filterDisplayName = filterName.substring(0, 1).toUpperCase() + filterName.substring(1);
+    const [selection, setSelection] = useState<string>(filterDisplayName);
+
+    // this is because we can only select one filte right now
+    if (filter.length !== 0) {
+        return null;
+    }
+
+
+    const handleChange = (e : any) => {
+        if (e.target.value === 'None'){
+            setFilter([]);
+        }
+        else {
+            setFilter([e.target.value]);
+        }
+        setSelection(e.target.value)
+    }
+
+    // if (false) {
+    //     return (
+    //         <select value={selection} onChange={(e) => handleChange(e)} className={`${selection === 'None' ? 'text-gray-400' : ''} text-2xl mt-2 appearance-none bg-gray-200 focus:outline-none`}>
+    //             <option className="text-gray-400" value={`None`}>None</option>
+    //             {datalistArray.map(item => <option className="text-black" value={item}>{item}</option>)}
+    //         </select>
+    //     )
+    // }
+
+    const datalistArray = ['one', 'two', 'three']
+
+    return (
+        <div className={`flex flex-row justify-center items-center text-white font-bold rounded-md shadow-md px-2 py-1 ${bgColor}`}>
+            <select value={selection} onChange={(e) => handleChange(e)} className={`${bgColor} border-0 font-bold appearance-none focus:outline-none`}>
+                <option className="text-white" value={filterDisplayName}>{filterDisplayName}</option>
+                {datalistArray.map(item => <option className=" font-bold text-white" value={item}>{item}</option>)}
+            </select>
+            {/* {filterDisplayName} */}
         </div>
     )
 }
@@ -318,6 +410,8 @@ const TagDisplay : FC<TagDisplayProps> = ({
         })
     }
 
+    
+
     return (
         <button className="focus:outline-none"
         onClick={() => removeSelf()}
@@ -352,6 +446,8 @@ const Confessions : FC = () => {
     const [fraternityFilter, setFraternityFilter] = useState<string[]>([]);
     const [yearFilter, setYearFilter] = useState<string[]>([]);
     const [tagFilter, setTagFilter] = useState<string[]>([]);
+
+    const [addFilterOn, setAddFilterOn] = useState<boolean>(false);
 
 
     const wtf = {
@@ -471,17 +567,6 @@ const Confessions : FC = () => {
     return (
         <div className="w-screen">
             <HomeHeader />
-
-            {
-                loading ? 
-                // <div className="mt-10 w-screen flex justify-center items-center">
-                //     <LoadingIndicator size={20}/>
-                // </div>
-                null
-                
-                : null
-            }
-
             <div className="mt-4 w-screen flex flex-col justify-center items-center">
                 {/* Actual confessions */}
                 <InfiniteScroll
@@ -498,6 +583,7 @@ const Confessions : FC = () => {
                     className="w-full flex justify-center items-center flex-col"
                 >
                     <div className="max-w-4xl flex flex-col w-full m-4 justify-center items-center">
+
                         {/* Filter */}
                         <div className="w-full flex justify-start items-start">
                             <FilterInterface 
@@ -513,9 +599,10 @@ const Confessions : FC = () => {
                                 setYearFilter={setYearFilter}
                                 tagFilter={tagFilter}
                                 setTagFilter={setTagFilter}
+                                addFilterOn={addFilterOn}
+                                setAddFilterOn={setAddFilterOn}
                             />
                         </div>
-
                         {/* Confessions */}
                         <div className="w-full">
 

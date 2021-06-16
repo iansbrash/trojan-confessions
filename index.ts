@@ -1,9 +1,12 @@
 import express from "express";
 // import cors from "cors";
 
+// routes
 import confessions from './routes/api/confessions';
 import preview from './routes/api/preview';
 import admin from './routes/api/admin';
+import signatures from './routes/api/signatures';
+
 import firebase from "firebase";
 import path from 'path';
 
@@ -58,8 +61,6 @@ firebase.initializeApp(firebaseConfig);
 // enable in prod, can't use rn because localhost:3000/5000
 // app.use(cors());
 
-
-
 // router
 app.use('/api/confessions', confessions);
 
@@ -68,44 +69,24 @@ app.use('/api/preview', preview);
 
 // router 3
 app.use('/api/admin', admin);
+
+// router 4
+app.use('/api/signatures', signatures);
+
 // test
 if (process.env.NODE_ENV === "production") {
     console.log("IN PRODUCTION")
     app.use(express.static(path.join(__dirname, '..', 'client/build')));
 
     app.get('/*', (req, res) => {
-        console.log('FUCK THIS FUCKING HORSESHIT')
+        console.log('removed explative')
         res.sendFile(path.resolve(__dirname, '..', 'client', 'build', 'index.html'));
     })
 }
-// bruh
-
-// app.use(express.static(__dirname + '/client' + '/build'))
-
-// app.get('*', function (request, response){
-//   response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-// })
-
-// app.get('/*', (req, res) => {
-//     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
-//   })
-
-
-
-
 
 // was 3000
 // const port = 5000;
 const PORT = process.env.PORT || 5000;
-
-
-// app.get("/", (req, res) => {
-//     res.send("Hello world Fuck thjis!");
-// });
-
-// app.get("/api/", (req, res) => {
-//     res.send("Hello world!");
-// });
 
 app.listen(PORT, () => {
     console.log(`server started at http://localhost:${PORT}`);

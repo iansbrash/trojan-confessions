@@ -268,7 +268,6 @@ const Twitter : FC<ThemeProps> = ({
     const retweets = Math.round(((5 ** popularity) * Math.random() * 10));
     const quoteTweets = Math.round(((5 ** popularity) * Math.random() * 5));
 
-    
 
     return (
         <div className="flex justify-center items-center">

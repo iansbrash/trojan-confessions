@@ -36,22 +36,7 @@ const SignatureField : FC<SignatureFieldProps> = ({
             <div className="mt-2">
                 {svg}
             </div>
-            {/* <input 
-            list={placeholder}
-            placeholder={placeholder}
-            className="bg-gray-200 my-2 text-2xl z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 placeholder-gray-400 text-gray-700 relative rounded border-0 outline-none focus:outline-none w-full text-left"    
-            onChange={e => handleChange(e)}
-            >
-
-            </input>
-            <datalist id={placeholder}>
-                {datalistArray.map(dl => <option value={dl} />)}
-            </datalist> */}
             <select value={selection} onChange={(e) => handleChange(e)} className={`${selection === 'None' ? 'text-gray-400' : ''} text-2xl mt-2 appearance-none bg-gray-200 focus:outline-none`}>
-                {/* <option value="volvo">Volvo</option>
-                <option value="saab">Saab</option>
-                <option value="fiat">Fiat</option> */}
-                {/* <option value="audi">Audi</option> */}
                 <option className="text-gray-400" value={`None`}>None</option>
                 {datalistArray.map(item => <option className="text-black" value={item}>{item}</option>)}
             </select>
