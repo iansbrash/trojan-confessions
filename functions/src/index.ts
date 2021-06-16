@@ -171,7 +171,7 @@ const makeLatelySocialPost = async (
     }
     catch (e) {
         console.error("error making latelysocial post")
-        console.error(e);
+        // console.error(e);
     }
 
     // make sure that res.data !=== 'error'
@@ -372,6 +372,8 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
 
     console.log('now closing brwoser')
 
+    let pages = await browser.pages();
+    await Promise.all(pages.map((page : any) =>page.close()));
     await browser.close();
 
     console.log(latelysocialUploadArray);

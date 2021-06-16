@@ -115,7 +115,8 @@ const puppeteerScreenshotAndSaveFile = async (toPostArray , browser , index ) =>
             tags,
             theme,
             timestamp,
-            signature
+            signature,
+            dark
         } = toPostArray[index];
 
         console.log(`
@@ -126,10 +127,10 @@ const puppeteerScreenshotAndSaveFile = async (toPostArray , browser , index ) =>
             timestamp: ${timestamp}
         `)
 
-        // const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
-        const tcUrl = 'http://localhost:3000'
+        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        // const tcUrl = 'http://localhost:3000'
         
-        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}`);
+        await page.goto(`${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}`);
 
         await page.waitForSelector('#b64');
         const submission = await page.$("#submission");
@@ -189,6 +190,7 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray) => {
 
         // push to array which we use to upload to insta
         latelysocialUploadArray.push(
+            // `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
             `https://dymwzetew9d5u.cloudfront.net/user182278/${'nah'}`
         );
     }
@@ -208,6 +210,8 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray) => {
 
     console.log('now closing brwoser')
 
+    let pages = await browser.pages();
+    await Promise.all(pages.map(page =>page.close()));
     await browser.close();
 
     console.log(latelysocialUploadArray);
@@ -252,6 +256,7 @@ const makeLatelySocialPost = async (imageUrlArray, caption) => {
 
     try {
         const res = await axios(config);
+        console.log(res);
     }
     catch (e) {
         console.error("error making latelysocial post")
@@ -261,7 +266,6 @@ const makeLatelySocialPost = async (imageUrlArray, caption) => {
     // make sure that res.data !=== 'error'
     // and that it === 'success'
 
-    console.log(res);
     return;
 }
 
@@ -302,7 +306,8 @@ const getBase64Array = async (toPostArray) => {
             tags,
             theme,
             timestamp,
-            signature
+            signature,
+            dark
         } = toPostArray[i]
 
         console.log(`
@@ -313,10 +318,10 @@ const getBase64Array = async (toPostArray) => {
             timestamp: ${timestamp}
         `);
 
-        // const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
-        const tcUrl = 'http://localhost:3000'
+        const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
+        // const tcUrl = 'http://localhost:3000'
 
-        await page.goto(`${tcUrl}/preview/${theme}?confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
+        await page.goto(`${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc, curr) => acc + "&tags[]=" + curr)}
         `);
         //&tags[]=one&tags[]=2
 
@@ -451,34 +456,37 @@ const testToPostArray = [
             school: "Price",
             fraternity: "SigNu",
             year: "Junior"
-        }
+        },
+        dark: true
     },
-    {
-        content: "test to post array 3👩‍🦼👩‍🦼🚶‍♀️🧘‍♀️🏌️‍♂️🏌️‍♂️🤽‍♂️🏌️‍♂️123123123123123",
-        hashedId: "1234",
-        tags: "in",
-        theme: "zoom",
-        timestamp: "ok",
-        signature: {
-            location: "ok",
-            school: "will",
-            fraternity: "asd",
-            year: "haha"
-        }
-    },
-    {
-        content: "this s👱‍♀️👷‍♀️👩‍💼👨‍💼👩‍✈️👩‍💼👩‍💼👨‍🎤hit better fuek en work",
-        hashedId: "122222223",
-        tags: "what",
-        theme: "tinder",
-        timestamp: "aaaaaa",
-        signature: {
-            location: "Gateaaaaaaway",
-            school: "Pricaaaae",
-            fraternity: "SigaaaaNu",
-            year: "Junaaaaaaaaaior"
-        }
-    }
+    // {
+    //     content: "test to post array 3👩‍🦼👩‍🦼🚶‍♀️🧘‍♀️🏌️‍♂️🏌️‍♂️🤽‍♂️🏌️‍♂️123123123123123",
+    //     hashedId: "1234",
+    //     tags: "in",
+    //     theme: "zoom",
+    //     timestamp: "ok",
+    //     signature: {
+    //         location: "ok",
+    //         school: "will",
+    //         fraternity: "asd",
+    //         year: "haha"
+    //     },
+    //     dark: false
+    // },
+    // {
+    //     content: "this s👱‍♀️👷‍♀️👩‍💼👨‍💼👩‍✈️👩‍💼👩‍💼👨‍🎤hit better fuek en work",
+    //     hashedId: "122222223",
+    //     tags: "what",
+    //     theme: "tinder",
+    //     timestamp: "aaaaaa",
+    //     signature: {
+    //         location: "Gateaaaaaaway",
+    //         school: "Pricaaaae",
+    //         fraternity: "SigaaaaNu",
+    //         year: "Junaaaaaaaaaior"
+    //     },
+    //     dark: false
+    // }
 ];
 
 (async () => {
@@ -490,6 +498,7 @@ const testToPostArray = [
     const caption = 'full stack';
 
     const latelysocialUploadArray = await uploadToLatelySocialDatabaseViaScreenshot(testToPostArray);
+    console.log(latelysocialUploadArray)
     return;
     await makeLatelySocialPost(latelysocialUploadArray, caption);
 })();

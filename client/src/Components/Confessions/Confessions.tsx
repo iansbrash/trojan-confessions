@@ -279,12 +279,12 @@ const FilterInterface : FC<FilterInterfaceProps> = ({
                         filterName={'year'}
                         bgColor={'bg-red-500'}
                     />
-                    <FilterSelector 
+                    {/* <FilterSelector 
                         filter={tagFilter}
                         setFilter={setTagFilter}
                         filterName={'tag'}
                         bgColor={'bg-red-400'}
-                    />
+                    /> */}
                 </div>
             </div>
         </div>
