@@ -21,6 +21,7 @@ enum Themes {
     twitter = "twitter",
     snapchat = "snapchat",
     notes = "notes",
+    instagram = "instagram",
 }
 
 const Home : FC = () => {
@@ -185,20 +186,37 @@ const Home : FC = () => {
                                     {/* Mobile view since breakpoints with aspect-w/h is being dick */}
                                     <div className={`block mdlg:hidden w-full py-0 xs:py-6 transform -translate-y-6 absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg shadow-md`}>
                                         <div className="transform scale-75 xs:scale-100 flex justify-center items-center relative">
+                                            <div className="relative">
+                                                <button className="absolute -top-4 -right-4 focus:outline-none"
+                                                onClick={() => setDarkMode(!darkMode)}
+                                                >
+                                                    <div className="w-8 h-8 bg-red-400 rounded-md shadow-md z-40 flex justify-center items-center text-white">
+                                                        {darkMode ? 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                                                            </svg> 
+                                                            : 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                                                            </svg>
+                                                        }
+                                                    </div>
+                                                </button>
+                                                <ThemeRenderer 
+                                                theme={Themes[theme]}
+                                                themeprops={{
+                                                    confessionInput: confessionInput,
+                                                    location: location,
+                                                    school: school,
+                                                    fraternity: fraternity,
+                                                    year: year,
+                                                    tags: tags,
+                                                    timestamp: new Date().toISOString(),
+                                                    dark: darkMode
+                                                }}
+                                                />
+                                            </div>
                                             
-                                            <ThemeRenderer 
-                                            theme={Themes[theme]}
-                                            themeprops={{
-                                                confessionInput: confessionInput,
-                                                location: location,
-                                                school: school,
-                                                fraternity: fraternity,
-                                                year: year,
-                                                tags: tags,
-                                                timestamp: new Date().toISOString(),
-                                                dark: false
-                                            }}
-                                            />
                                         </div>
                                     </div>
                                 </div>

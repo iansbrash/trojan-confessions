@@ -236,6 +236,7 @@ enum Themes {
     twitter = "twitter",
     snapchat = "snapchat",
     notes = "notes",
+    instagram = "instagram",
 }
 
 const SubmissionBox : FC<SubmissionBoxProps> = ({
@@ -283,7 +284,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
             Themes.tinder,
             Themes.twitter,
             Themes.snapchat,
-            Themes.notes
+            Themes.notes,
+            Themes.instagram,
         ]
 
         console.log(`themesIndex before setting: ${themesIndex}`)

@@ -14,10 +14,24 @@ const InstaText : FC<InstaTextProps> = ({
     text,
     needsCorner
 } : InstaTextProps) => {
+
+
+    if (text === '' || !text) return null;
+
     return (
-        <div className="relative w-full flex justify-end mr-2">
-            <div className="z-30 leading-5 items-center flex flex-row flex-wrap relative max-w-3/4 bg-purple-500 rounded-3xl px-4 py-2 text-white text-md">
-                <AppleEmojifier content={text}/>
+        <div className="relative w-full flex flex-row justify-end mr-2">
+            <div className="w-28">
+
+            </div>
+            <div className="w-full flex flex-row justify-end">
+                <div className="z-30">
+                    <div className="bg-purple-500 rounded-3xl pl-4 pr-1 py-2">
+                        <div className="leading-5 break-all  items-start flex flex-row flex-wrap text-white text-md">
+                            <AppleEmojifier content={text}/>
+                        </div>
+                    </div>
+
+                </div>
             </div>
             {
                 needsCorner ? 

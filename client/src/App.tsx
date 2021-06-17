@@ -155,7 +155,7 @@ function App() {
           {/* / */}
           <Route path="/">
             <Helmet>
-              <style>{'html {overflow: scroll;overflow-x: hidden;}::-webkit-scrollbar {width: 0;  background: transparent; }::-webkit-scrollbar-thumb {background: #FF0000;}'}</style>
+              {/* <style>{'html {overflow: scroll;overflow-x: hidden;}::-webkit-scrollbar {width: 0;  background: transparent; }::-webkit-scrollbar-thumb {background: #FF0000;}'}</style> */}
               <style>{'body { background-color: #F3F4F6;'}</style>
             </Helmet>
             <Home />
