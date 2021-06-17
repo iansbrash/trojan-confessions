@@ -8,18 +8,32 @@ import axios from 'axios';
 
 
 interface TagProps {
-    tag: string
+    tag: string,
+    setTags: (s : string[]) => void
 }
 
 const Tag : FC<TagProps> = ({
-    tag
+    tag,
+    setTags
 } : TagProps) => {
+
+    const onClick = () => {
+        // @ts-ignore
+        setTags((tags : string[]) => tags.filter(t => t !== tag))
+    }
+
     return (
-        <div className="px-2 rounded-md bg-red-800 shadow-md">
-            <div className="text-xl text-white">
-                {`#${tag}`}
+        <button className="focus:outline-none"
+        onClick={() => onClick()}>
+            <div className="px-2 rounded-md bg-red-800 shadow-md flex flex-row justify-center items-center text-white">
+                <div className="text-xl text-white">
+                    {`#${tag}`}
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
+                </svg>
             </div>
-        </div>
+        </button>
     )
 }
 
@@ -54,7 +68,7 @@ const TagErrorPopup : FC<TagErrorPopupProps> = ({
     
 
     return (
-        <div className={`transform-opacity duration-500 ease-in-out ${tagError !== TagErrors.None ? 'opacity-1' : 'opacity-0'} z-10 absolute left-0 bottom-10`}>
+        <div className={`${tagError !== TagErrors.None ? 'pointer-events-auto' : 'pointer-events-none'} transform-opacity duration-500 ease-in-out ${tagError !== TagErrors.None ? 'opacity-1' : 'opacity-0'} z-10 absolute left-0 bottom-10`}>
             <div className={`relative m-2 p-2 bg-red-500 rounded-md shadow-md`}>
                 <div className="z-0 absolute left-6 -bottom-2 flex justify-center">
                     <div className="transform rotate-45 bg-red-500 h-4 w-4">
@@ -144,7 +158,7 @@ const AddTags : FC<AddTagsProps> = ({
     }
     
     return (
-        <div className="relative self-center">
+        <div className="relative">
             <input 
                 ref={inputRef}
                 onChange={(e) => HandleChange(e)}
@@ -358,7 +372,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                             onInput={e => auto_grow(e.currentTarget)}
                             contentEditable={true}
                             // placeholder="I left my camera on in my 300 person lecture while I..."
-                            placeholder="I accidentally emailed my professor that..."
+                            placeholder="I accidentally emailed..."
                             className="bg-gray-200 min-h-0 resize-none overflow-hidden z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
                         />
                     </div>
@@ -372,13 +386,13 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 </div>
 
                 {/* Tags */}
-                <div className="flex flex-row justify-between space-x-2">
+                <div className="flex flex-col justify-start items-start space-y-2">
                     <AddTags 
                         hashtags={tags}
                         setHashtags={setTags}
                     />
                     <div className="flex flex-wrap space-x-2">
-                        {tags.map(tag => <Tag tag={tag}/>)}
+                        {tags.map(tag => <Tag tag={tag} setTags={setTags}/>)}
                     </div>
                 </div>
 

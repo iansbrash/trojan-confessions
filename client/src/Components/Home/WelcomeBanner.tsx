@@ -9,7 +9,7 @@ const WelcomeBanner : FC = () => {
             <div className="text-left font-bold text-4xl sm:text-5xl text-gray-700">
                 Welcome to
             </div>
-            <div className="sm:-my-6 -my-5 text-left font-bold text-3xl xs:text-4xl sm:text-5xl text-gray-800 flex flex-row items-center">
+            <div className="sm:-my-6 -my-5 text-left font-bold text-3xl xsmm:text-4xl sm:text-5xl text-gray-800 flex flex-row items-center">
                 Trojan Confessions {/**✌️ */} <img src={Logo160} className="hidden xs:block sm:w-14 sm:h-14 w-10 h-10"/>
             </div>
         </div>

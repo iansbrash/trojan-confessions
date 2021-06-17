@@ -138,7 +138,7 @@ const Home : FC = () => {
                     <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
 
                         {/* Left side */}
-                        <div className={`mdlg:w-1/2 w-full transform duration-500 ease-in-out ${previewDropped ? 'translate-y-104' : 'translate-y-0'} flex flex-col items-center`}>
+                        <div className={`mdlg:w-1/2 w-full transform duration-500 ease-in-out ${previewDropped ? 'translate-y-101 xs:translate-y-104 ' : 'translate-y-0'} flex flex-col items-center`}>
                             
                             {/* This div enforces the margin-right-3 for the gap in the middle */}
                             <div className="flex flex-col mdlg:items-start flex-1 mdlg:mr-3 items-center">
@@ -183,8 +183,8 @@ const Home : FC = () => {
                                     </div>
                                     
                                     {/* Mobile view since breakpoints with aspect-w/h is being dick */}
-                                    <div className={`block mdlg:hidden w-full py-6 transform -translate-y-6  absolute duration-500 ease-in-out  bottom-0  bg-gray-200 rounded-lg shadow-md`}>
-                                        <div className="flex justify-center items-center relative">
+                                    <div className={`block mdlg:hidden w-full py-0 xs:py-6 transform -translate-y-6 absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg shadow-md`}>
+                                        <div className="transform scale-75 xs:scale-100 flex justify-center items-center relative">
                                             
                                             <ThemeRenderer 
                                             theme={Themes[theme]}
@@ -205,7 +205,7 @@ const Home : FC = () => {
                                 
                                 {/* Add Identifiers + HowItWorks */}
                                 <div className={`transform duration-500 ease-in-out ${signedDropped ? 'translate-y-72' : 'translate-y-0'} flex flex-1 flex-col  h-12 items-start`}>
-                                    <div className={`${email.includes('@usc.edu') ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
+                                    <div className={`${signedDropped ? 'pointer-events-auto' : 'pointer-events-none'} w-full relative transform duration-500 ease-in-out ${signedDropped ? 'opacity-1' : 'opacity-0'}`}>
                                         <div className={`transform -translate-y-6 w-full absolute duration-500 ease-in-out bottom-0 bg-gray-200 rounded-lg px-5 shadow-md`}>
                                             <AddIdentifiers 
                                                 setLocation={setLocation}

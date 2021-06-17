@@ -42,8 +42,10 @@ module.exports = {
       screens: {
         'mdlg': '900px',
         'xs': '475px',
+        'xsmm': {'min': '475px', 'max': '639px', },
       },
       translate: {
+        '101': '25.5rem',
         '102': '26rem',
         '103': '27.8rem',
         '104': '28.75rem',
