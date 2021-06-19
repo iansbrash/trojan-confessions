@@ -55,12 +55,20 @@ const RouteWrapper : FC<RouteWrapperProps> = ({
         
         (async () => {
             await setTimeout(() => {
-                onImagesLoaded(document.getElementsByTagName("body")[0], function() {
+                if (document.getElementsByTagName('img').length === 0) {
                     htmlToImage.toPng(document.getElementById('submission')!)
                     .then(function (dataUrl) {
                         setb64(dataUrl);
                     });
-                });
+                }
+                else {
+                    onImagesLoaded(document.getElementsByTagName("body")[0], function() {
+                        htmlToImage.toPng(document.getElementById('submission')!)
+                        .then(function (dataUrl) {
+                            setb64(dataUrl);
+                        });
+                    });
+                }
             }, 1000)
         })();
 

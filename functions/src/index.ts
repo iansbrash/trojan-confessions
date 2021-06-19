@@ -58,7 +58,12 @@ import {
 // var latelysocialAccountId = constants.latelysocialAccountId;
 
 // returns a req object... or the only important parts
-const getLatelySocialHome = async () => {
+
+interface CookieObject {
+    [key: string]: string
+}
+
+const getLatelySocialHome = async () : Promise<CookieObject> => {
 
     console.log(`Starting getLatelySocialHome`);
 
@@ -74,14 +79,14 @@ const getLatelySocialHome = async () => {
         console.log(res.headers['set-cookie']);
     }
     catch (e) {
-        throw console.error(e);
+        throw "Error getting LatelySocial homepage"
     }
 
     const token = res.headers["set-cookie"][0].substring(6, 6 + 32);
     const general_sessions = res.headers["set-cookie"][1].substring(17, 17 + 32);
 
-    console.log(token);
-    console.log(general_sessions);
+    // console.log(token);
+    // console.log(general_sessions);
 
     const cookies = {
         token,
@@ -91,7 +96,7 @@ const getLatelySocialHome = async () => {
     return cookies;
 }
 
-const loginLatelySocial = async () => {
+const loginLatelySocial = async () : Promise<CookieObject> => {
 
     const cookies = await getLatelySocialHome();
 
@@ -114,25 +119,29 @@ const loginLatelySocial = async () => {
         data : data
     };
 
-    const res = await axios(config);
+    try {
+        const res = await axios(config);
+        console.log(res.headers["set-cookie"])
 
-    console.log(res.headers["set-cookie"])
+        const mid = res.headers["set-cookie"][1].substring(4, 4 + 222);
+        console.log(mid);
 
-    const mid = res.headers["set-cookie"][1].substring(4, 4 + 222);
-    console.log(mid);
+        const cookies2 = {
+            token: cookies.token,
+            general_sessions: cookies.general_sessions,
+            mid
+        }
 
-    const cookies2 = {
-        token: cookies.token,
-        general_sessions: cookies.general_sessions,
-        mid
+        return cookies2;
     }
-
-    return cookies2;
+    catch (err) {
+        throw "Error logging in to LatelySocial"
+    }
 }
 
 const makeLatelySocialPost = async (
     imageUrlArray : string[], 
-    caption : string) => {
+    caption : string) : Promise<undefined> => {
 
     // cookies contains:
     // token, general_sessions, mid
@@ -170,10 +179,9 @@ const makeLatelySocialPost = async (
         await axios(config);
     }
     catch (e) {
-        console.error("error making latelysocial post")
+        throw "Error making LatelySocial post"
         // console.error(e);
     }
-
     // make sure that res.data !=== 'error'
     // and that it === 'success'
 
@@ -197,8 +205,10 @@ const makeLatelySocialPost = async (
  *      }
  * }
  */
-const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, index : number) => {
-    const tempFilePath = path.join(os.tmpdir(), 'out.png');
+const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, index : number) : Promise<undefined> => {
+
+    const tempFilePath = path.join(__dirname, os.tmpdir(), 'out.png');
+    console.log(`__dirname:  ${__dirname}`)
 
     // const browser = await puppeteer.launch({
     //     args: ['--no-sandbox']
@@ -211,32 +221,39 @@ const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, 
     // for (let i = 0; i < toPostArray.length; i++){
         const {
             content,
-            hashedId,
+            // hashedId,
             tags,
             theme,
-            timestamp,
+            // timestamp,
             signature,
             dark
         } = toPostArray[index];
 
-        console.log(`
-            content: ${content}, 
-            hashedId: ${hashedId},
-            tags: ${tags},
-            theme: ${theme},
-            timestamp: ${timestamp}
-        `)
+        // console.log(`
+        //     content: ${content}, 
+        //     hashedId: ${hashedId},
+        //     tags: ${tags},
+        //     theme: ${theme},
+        //     timestamp: ${timestamp}
+        // `)
 
         const tcUrl = 'https://trojan-confessions-heroku.herokuapp.com';
-        await page.goto(`${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}`);
+        const toGoTourl = `${tcUrl}/preview/${theme}?dark=${dark}&confessionInput=${content}&location=${signature.location}&school=${signature.school}&fraternity=${signature.fraternity}&year=${signature.year}${tags.split(',').reduce((acc : any, curr : any) => acc + "&tags[]=" + curr)}`;
+        console.log(toGoTourl)
+        await page.goto(toGoTourl);
 
         await page.waitForSelector('#b64');
         const submission = await page.$("#submission");
-
-        await submission.screenshot({path: tempFilePath});
+        try {
+            await submission.screenshot({path: tempFilePath});
+        }
+        catch(err) {
+            console.error(err);
+            throw "Could not screenshot to temp"
+        }
     // }
 
-
+        return;
 
 }
 
@@ -311,7 +328,7 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
         args: ['--no-sandbox']
     });
 
-    const tempFilePath = path.join(os.tmpdir(), 'out.png');
+    const tempFilePath = path.join(__dirname, os.tmpdir(), 'out.png');
 
     for (let i = 0; i < toPostArray.length; i++){
 
@@ -323,8 +340,8 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
             await puppeteerScreenshotAndSaveFile(toPostArray, browser, i);
         }
         catch (e) {
-            console.error('error writing to out.png')
-            console.error(e);
+            console.log(e);
+            throw `Error writing to ${path.join(os.tmpdir(), 'out.png')}`;
         }
         
     
@@ -349,12 +366,17 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
         };
     
         // upload image
-        const res = await axios(config);
+        try {
+            const res = await axios(config);
 
-        // push to array which we use to upload to insta
-        latelysocialUploadArray.push(
-            `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
-        );
+            // push to array which we use to upload to insta
+            latelysocialUploadArray.push(
+                `https://dymwzetew9d5u.cloudfront.net/user182278/${res.data.link}`
+            );
+        }
+        catch (err) {
+            console.log(`Error uploading image #${i} to LatelySocial database`)
+        }
     }
 
     // then delete out.png
@@ -367,7 +389,7 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
     }
     catch (e) {
         console.error(`error deleting ${tempFilePath}`)
-        console.error(e);
+        // console.error(e);
     }
 
     console.log('now closing brwoser')
@@ -376,7 +398,7 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
     await Promise.all(pages.map((page : any) =>page.close()));
     await browser.close();
 
-    console.log(latelysocialUploadArray);
+    // console.log(latelysocialUploadArray);
 
     // then return the array
     return latelysocialUploadArray;
@@ -399,7 +421,7 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
         }
         catch (e) {
             console.error('error writing to out.png')
-            console.error(e);
+            // console.error(e);
         }
         
     
@@ -462,9 +484,9 @@ export const onToPostCreate3 = functions.runWith({
 ).onCreate((snapshot, context) => {
     // const postId = context.params.postId;
     // console.log(`new postId: ${postId}`);
-    console.log('shit is getting trigged 3');
+    console.log(`onToPostCreate3 is getting executed`);
 
-    console.log(snapshot.val());
+    // console.log(snapshot.val());
 
 
     if (snapshot.exists()){
