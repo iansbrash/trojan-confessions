@@ -9,6 +9,8 @@ import themes from './resources/themes';
 // lets us use process.env variables
 require('dotenv').config();
 
+import funhash from './resources/hash';
+
 
 const { OAuth2Client } = require('google-auth-library');
 
@@ -23,6 +25,7 @@ import {
 } from './signatures';
 
 import { GoogleAuth, GoogleAuthOptions } from 'google-auth-library';
+import { nextTick } from 'node:process';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
@@ -145,7 +148,7 @@ function decodeURIComponentSafe(s : string) {
 }
 
 // Adding a new submission
-router.post('/', async (req : express.Request, res : express.Response) => {
+router.post('/', async (req : express.Request, res : express.Response, next : express.NextFunction) => {
     const { 
         // timestamp, Probably don't want this 
         // -- we can calculate server-side instead
@@ -225,7 +228,6 @@ router.post('/', async (req : express.Request, res : express.Response) => {
     }
 
     const subRef = firebase.database().ref('submissions');
-    const posterRef = firebase.database().ref('recentPosters');
 
     // need to find way to hash emails for
     // security
@@ -233,6 +235,12 @@ router.post('/', async (req : express.Request, res : express.Response) => {
     // cuz the @ messes it up
     // use JWT to auth in request
 
+// usc email
+//"105157534195143583292"
+//"105157534195143583292"
+//"107309920700098275368"
+
+// personal email
 
     // Firebase AUTH shit. Gonna leave it be for now
     // try { 
@@ -249,6 +257,8 @@ router.post('/', async (req : express.Request, res : express.Response) => {
 
     const client = new OAuth2Client(CLIENT_ID);
 
+    let gPayload : any;
+
     async function verify() {
         const ticket = await client.verifyIdToken({
             idToken: id_token,
@@ -258,6 +268,12 @@ router.post('/', async (req : express.Request, res : express.Response) => {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
+
+        // console.log('payload')
+        // console.log(payload)
+
+        gPayload = payload;
+
         const userid = payload['sub'];
         // If request specified a G Suite domain:
         // const domain = payload['hd'];
@@ -275,32 +291,46 @@ router.post('/', async (req : express.Request, res : express.Response) => {
 
     if (isError) {
         console.log('Got an error, gonna sendStatus404')
-        return res.sendStatus(404)
+        return res.status(400).send("invalid google session")
     };
 
 
-    const userName = Date.now();
+    // const userName = Date.now();
+    const hashedId = funhash(gPayload.sub) + gPayload.sub.substring(2, 6);
+    const posterRef = firebase.database().ref('recentPosters');
 
-    posterRef.orderByChild("hashedId").equalTo(userName).once("value",snapshot => {
-        if (snapshot.exists()){
+    posterRef.orderByChild("hashedId").equalTo(hashedId).once("value", snapshot => {
+        console.log(`snapshot.exists(): ${snapshot.exists()}`)
+
+        if (snapshot.exists() as Boolean){
             const userData = snapshot.val();
             console.log("exists!", userData);
 
             // 400 rate limit
-            res.statusCode = 429;
-            return res.send('Rate Limited: Please Wait Between Submissions');
+            // res.statusCode = 429;
+            console.log('about to send 429')
+            return res.status(429).end('Rate Limited: Please Wait Between Submissions');
+            // next();
         }
-        else {
 
-            const hashedId = new Date().toISOString();
+        console.log(`snapshot.exists(): ${snapshot.exists()}`)
 
+        if (!snapshot.exists() as Boolean) {
+
+            // if (true) {
+            //     return next();
+            // }
             const newKey = subRef.push().key;
-
+        
+            const timestamp = new Date().toISOString();
+    
+            console.log(`hashedId: ${hashedId}`)
+    
             
             subRef.child(newKey).set({
                 content: decodeURIComponentSafe(content),
-                timestamp: new Date().toISOString(),
-
+                timestamp: timestamp,
+    
                 // to change
                 // hashedId : userName,
                 hashedId: hashedid,
@@ -315,19 +345,19 @@ router.post('/', async (req : express.Request, res : express.Response) => {
                 key: newKey,
                 dark: dark
             });
-
+    
             posterRef.push().set({
-
+    
                 // to change
-                hashedId: hashedId
+                hashedId: hashedId,
+                timestamp: timestamp
             });
-
-            return res.status(200).send('post yes')
+    
+            console.log('about to send 200')
+            return res.status(200).end('Successfully submitted content')
+            // next();
         }
     }); 
-    
-
-    return res.status(200);
 });
 
 async function onSignIn(id_token : any) {
