@@ -11,7 +11,7 @@ const generateSignature = ({
     fraternity,
     year
 } : GenSigProps) => {
-    return `-Anonymous ${year === '' ? 'Student' : year} ${location === '' ? '' : `at ${location}`} ${school === '' ? '' : `studying at ${school}`} ${fraternity === '' ? '' : `in ${fraternity}`}`
+    return `-Anonymous ${year === '' ? 'Student' : year}${location === '' ? '' : ` at ${location}`}${school === '' ? '' : ` studying at ${school}`}${fraternity === '' ? '' : ` in ${fraternity}`}`
 }
 
 export default generateSignature;

@@ -21,9 +21,9 @@ const Text : FC<TextProps> = ({
     return (
         <>
             {content === '' ? null : 
-                <div className="flex flex-row flex-wrap leading-6 mr-4 break-words max-w-xs relative rounded-xl text-white text-xl bg-blue-400 py-1 px-2 mb-0.5">
+                <div className="justify-start flex-none flex flex-row flex-wrap leading-6 mr-4 break-none max-w-xs relative rounded-3xl text-white text-xl bg-blue-400 py-2 px-4 mb-0.5">
                     
-                    <AppleEmojifier content={content}/>
+                    <AppleEmojifier content={content}/> 
 
                     {
                         hasTail ? 
@@ -57,11 +57,18 @@ const IMessage : FC<ThemeProps> = ({
 
     return (
         <div className="flex justify-center items-center">
-            <div className={`flex flex-col justify-center items-end h-96 w-96 ${dm(dark)['bg']} shadow-md`}>
-                <Text content={confessionInput} hasTail={false} dark={dark}/>
-                <Text content={
-                    generateSignature({location, school, fraternity, year})
-                } hasTail={true} dark={dark}/>
+            <div className={`h-96 w-96 ${dm(dark)['bg']} shadow-md flex justify-end items-center`}>
+                <div className="flex flex-shrink flex-col justify-center items-end">
+                    <Text content={confessionInput} hasTail={false} dark={dark}/>
+                    <Text content={
+                        generateSignature({location, school, fraternity, year})
+                    } hasTail={true} dark={dark}/>
+                    {/* Delivered */}
+                    <div className="text-gray-400 font-medium text-xss mr-4">
+                        Delivered
+                    </div>
+                </div>
+                
             </div>
         </div>
     )

@@ -136,7 +136,7 @@ const Home : FC = () => {
 
                     {/* Everything Else */}
                     {/* We do the email.includes check because the invisible submission box fucks with some stuff */}
-                    <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-36'}`}>
+                    <div className={`w-full ${email.includes('@usc.edu') ? 'z-10' : 'z-30'} flex flex-row transform duration-500 ease-in-out ${email.includes('@usc.edu') ? 'translate-y-0' : '-translate-y-52'}`}>
 
                         {/* Left side */}
                         <div className={`mdlg:w-1/2 w-full transform duration-500 ease-in-out ${previewDropped ? 'translate-y-101 xs:translate-y-104 ' : 'translate-y-0'} flex flex-col items-center`}>

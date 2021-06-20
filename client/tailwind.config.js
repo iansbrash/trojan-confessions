@@ -14,7 +14,8 @@ module.exports = {
   ],
   theme: {
     fontSize: {
-     'xss': '.625rem',
+     'xxs': '.625rem',
+     'xss': '.7rem',
      'xs': '.75rem',
      'sm': '.875rem',
      'tiny': '.875rem',
@@ -35,6 +36,7 @@ module.exports = {
         '1/4': '25%',
         '1/2': '50%',
         '3/4': '75%',
+        'imessage': '19rem'
       },
       transitionProperty: {
         'height': 'height'

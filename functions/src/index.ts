@@ -207,7 +207,7 @@ const makeLatelySocialPost = async (
  */
 const puppeteerScreenshotAndSaveFile = async (toPostArray : any, browser : any, index : number) : Promise<undefined> => {
 
-    const tempFilePath = path.join(__dirname, os.tmpdir(), 'out.png');
+    const tempFilePath = path.join(os.tmpdir(), 'out.png');
     console.log(`__dirname:  ${__dirname}`)
 
     // const browser = await puppeteer.launch({
@@ -328,7 +328,7 @@ const uploadToLatelySocialDatabaseViaScreenshot = async (toPostArray : any) => {
         args: ['--no-sandbox']
     });
 
-    const tempFilePath = path.join(__dirname, os.tmpdir(), 'out.png');
+    const tempFilePath = path.join(os.tmpdir(), 'out.png');
 
     for (let i = 0; i < toPostArray.length; i++){
 
@@ -478,7 +478,7 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
 
 export const onToPostCreate3 = functions.runWith({
     timeoutSeconds: 140,
-    memory: '1GB'
+    memory: '2GB'
 }).database.ref(
     '/toPost/{toPostId}'
 ).onCreate((snapshot, context) => {

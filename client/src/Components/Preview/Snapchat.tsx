@@ -100,7 +100,7 @@ const Snapchat : FC<ThemeProps> = ({
                     </div>
 
                     {/* Today */}
-                    <div className="text-gray-500 text-xss font-medium">
+                    <div className="text-gray-500 text-xxs font-medium">
                         TODAY
                     </div>
 

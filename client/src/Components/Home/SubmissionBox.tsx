@@ -303,7 +303,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
     }
 
 
-    const maxCharLength = 280;
+    const maxCharLength = 200;
 
     const writeUserData = async (submission : string, email : string) : Promise<any> =>{
 
@@ -353,7 +353,7 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
         element.style.height = "5px";
         element.style.height = (element.scrollHeight)+"px";
 
-        // updates the X/280 counter
+        // updates the X/maxCharLength counter
         // we have to do this because emojis are represented by 2 unicode surrogate pairs
         setInputLength(Array.from(inputSpan.current.value).length)
 
@@ -368,14 +368,16 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                 <div className="flex flex-1 flex-row space-x-4">
                     <div className="relative flex-1 flex">
                         <textarea 
-                            maxLength={280}
+                            style={{"wordBreak": "break-word"}}
+                            wrap={'soft'}
+                            maxLength={maxCharLength}
                             id="editable"
                             ref={inputSpan}
                             onInput={e => auto_grow(e.currentTarget)}
                             contentEditable={true}
                             // placeholder="I left my camera on in my 300 person lecture while I..."
                             placeholder="I accidentally emailed..."
-                            className="bg-gray-200 min-h-0 resize-none overflow-hidden z-10 leading-6 break-all whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
+                            className="bg-gray-200 min-h-0 resize-none overflow-hidden z-10 leading-6 whitespace-normal break-text text-2xl flex-1 px-3 py-3 placeholder-gray-400 text-gray-700 relative rounded text-sm border-0 outline-none focus:outline-none w-full text-left"
                         />
                     </div>
                 </div>
@@ -450,9 +452,9 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                             </button>
                         </div>
                     </div>
-                    <div className={`flex flex-col justify-center content-center px-2 h-8 transition-colors duration-500 ease-in-out ${inputLength === 280 ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
+                    <div className={`flex flex-col justify-center content-center px-2 h-8 transition-colors duration-500 ease-in-out ${inputLength === maxCharLength ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
                         <div className={`text-center font-bold text-xl text-white`}>
-                            {`${inputLength}/280`}
+                            {`${inputLength}/${maxCharLength}`}
                         </div>
                     </div>
                     <div className={`font-bold text-md `}></div>
