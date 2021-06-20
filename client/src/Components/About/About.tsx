@@ -109,7 +109,7 @@ const About = () => {
                 
                 <QnA 
                     q={'Who runs this site?'}
-                    a={'I\'m a computer science student at USC. If you really wanted to know who made this website it would probably be pretty easy to find out'}
+                    a={'I\'m a computer science student at USC'}
                 />
 
                 <QnA 

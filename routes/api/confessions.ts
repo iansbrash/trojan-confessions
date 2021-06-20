@@ -4,6 +4,8 @@ import express from 'express';
 const router = express.Router();
 import cors from "cors";
 
+import themes from './resources/themes';
+
 // lets us use process.env variables
 require('dotenv').config();
 
@@ -12,6 +14,14 @@ const { OAuth2Client } = require('google-auth-library');
 
 // Firebase App (the core Firebase SDK) is always required and must be listed first
 import firebase from "firebase";
+
+import {
+    LocationArray,
+    SchoolArray,
+    GreekLifeArray,
+    GraduationYearArray
+} from './signatures';
+
 import { GoogleAuth, GoogleAuthOptions } from 'google-auth-library';
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
@@ -135,39 +145,84 @@ function decodeURIComponentSafe(s : string) {
 }
 
 // Adding a new submission
-router.post('/', async (req, res) => {
+router.post('/', async (req : express.Request, res : express.Response) => {
     const { 
         // timestamp, Probably don't want this 
         // -- we can calculate server-side instead
         hashedid,
         tags,
-        theme,
         // signature
         //auth ? JWT ?
         location,
         school,
         fraternity,
         year,
-        dark
-    } = req.headers
+        dark,
+    } = req.headers;
 
-    const id_token = req.headers.id_token;
-
-    // @ts-ignore
-    const content : string = req.headers.content;
-
-    // console.log(signature);
-
-    // how are we going to make sure this POST request
-    // is from a USC email ?
+    const theme : string = req.headers.theme as string;
+    const id_token : string = req.headers.id_token as string;
+    const content : string = req.headers.content as string;
 
     console.log('========================');
     console.log(`in POST(/api/confessions/)`);
     console.log(`content: ${content}`);
     console.log(`decoded content: ${decodeURIComponentSafe(content)}`);
     console.log(`hashedid: ${hashedid}`);
-    // console.log(`id_token: ${id_token}`);
     console.log('========================');
+
+    let sanitizeError = '';
+
+    // First we sanatize the parameters (make sure under 200 characters, valid signature, etc)
+    if (content.length > 200) {
+        return res.status(400).send("Content length is over 200")
+    }
+
+    // Validate location, school, fraternity, year, theme
+    let mapArr : string[] = [location, school as string, fraternity as string, year as string, theme];
+    let mapArr2 : string[] = ['location', 'school', 'fraternity', 'year', 'theme'];
+    [
+        LocationArray, SchoolArray, GreekLifeArray, GraduationYearArray, themes
+    ].every((arr : string[], index : number) => {
+        if (!arr.includes(mapArr[index]) && mapArr[index] !== '') {
+            sanitizeError = `${mapArr2[index]} "${mapArr[index]}" is not valid`;
+            return false;
+        }
+        return true;
+    })
+
+    if (sanitizeError !== '') return res.status(400).send(sanitizeError);
+
+    mapArr = undefined;
+    mapArr2 = undefined;
+
+    // validate dark
+    if (!['true', 'false'].includes(dark as string)) {
+        return res.status(400).send("dark needs to be true or false");
+    }
+
+    // validate tags
+    // tags are formatted in a single string like tag1,tag2,tag3
+    (tags as string).split(',').every(tag =>  {
+        if (tag === '') {
+            sanitizeError = "tags cannot be empty";
+            return false;
+        }
+        else if (!tag.match(/^[a-z0-9]+$/i)){
+            sanitizeError = "tags need to be non alphanumeric";
+            return false;
+        }
+        
+        return true;
+    }) 
+
+    // check for tag errors
+    if (sanitizeError !== '') return res.status(400).send(sanitizeError);
+
+    // use set constructor to find duplicates
+    if (new Set((tags as string).split(',')).size !== (tags as string).length ) {
+        return res.status(400).send("tags cannot have duplicates")
+    }
 
     const subRef = firebase.database().ref('submissions');
     const posterRef = firebase.database().ref('recentPosters');

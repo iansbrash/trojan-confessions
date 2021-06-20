@@ -143,7 +143,6 @@ const Tinder : FC<ThemeProps> = ({
 
     const [textHeight, setTextHeight] = useState<number>(0);
 
-
     useEffect(() => {
         if (document.getElementById('text')){
             const height : number = document.getElementById('text')!.clientHeight;

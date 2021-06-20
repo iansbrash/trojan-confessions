@@ -45,6 +45,7 @@ module.exports = {
         'mdlg': '900px',
         'xs': '475px',
         'xsmm': {'min': '475px', 'max': '639px', },
+        'xxs': '350px'
       },
       translate: {
         '101': '25.5rem',

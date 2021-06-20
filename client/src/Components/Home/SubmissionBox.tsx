@@ -453,8 +453,8 @@ const SubmissionBox : FC<SubmissionBoxProps> = ({
                         </div>
                     </div>
                     <div className={`flex flex-col justify-center content-center px-2 h-8 transition-colors duration-500 ease-in-out ${inputLength === maxCharLength ? 'bg-red-900' : 'bg-red-400'} bg-red-400 rounded-md shadow-md`}>
-                        <div className={`text-center font-bold text-xl text-white`}>
-                            {`${inputLength}/${maxCharLength}`}
+                        <div className={`text-center font-bold text-xl text-white flex flex-row`}>
+                            {`${inputLength}`}<span className="hidden xxs:block">{`/${maxCharLength}`}</span>
                         </div>
                     </div>
                     <div className={`font-bold text-md `}></div>

@@ -95,13 +95,17 @@ const Delete = () => {
 const ApprovalBlock : FC<any> = ({
     subObj,
     submissions,
-    setSubmissions
+    setSubmissions,
+    toPost,
+    setToPost
 } : any) => {
 
     const [cookies, setCookie] = useCookies(['jwt_token']);
     const [edit, setEdit] = useState<boolean>(false);
     const [currentContent, setCurrentContent] = useState<string>(subObj.content);
     const [editingCurrentContent, setEditingCurrentContent] = useState<string>(subObj.content)
+
+    const disabled = toPost.length === 10;
 
 
     const toggleEdit = () => {
@@ -114,7 +118,6 @@ const ApprovalBlock : FC<any> = ({
 
         const newSub = submissions.filter(
             (obj : any) => {
-                // console.log(`obj.key: ${obj.key}, subObj.key: ${subObj.key}`)
                 return obj.key !== subObj.key;
             }
         )
@@ -125,7 +128,7 @@ const ApprovalBlock : FC<any> = ({
 
         console.log('gets here!!')
         
-        axios({
+        await axios({
             method: 'delete',
             url: '/api/admin/submissions/',
             headers: {
@@ -158,8 +161,16 @@ const ApprovalBlock : FC<any> = ({
 
         const newSub = submissions.filter(
             (obj : any) => {
-                // console.log(`obj.key: ${obj.key}, subObj.key: ${subObj.key}`)
-                return obj.key !== subObj.key;
+                if (subObj.key === obj.key) {
+
+                    console.log(`found ket o delete`)
+                    const newToPost = [...toPost, subObj];
+                    console.log(newToPost)
+
+                    setToPost(newToPost)
+                    return false;
+                }
+                return true;
             }
         )
 
@@ -193,7 +204,8 @@ const ApprovalBlock : FC<any> = ({
         <div className="flex flex-col">
             <div className="flex flex-row h-96">
                 <div className="h-full w-12 mr-4 flex flex-col space-y-4">
-                    <button className="text-white flex justify-center items-center bg-red-400 w-12 h-12 rounded-md shadow-md"
+                    <button className={`text-white flex justify-center items-center ${disabled ? 'bg-gray-400' : 'bg-red-400'}  w-12 h-12 rounded-md shadow-md`}
+                    disabled={disabled}
                     onClick={() => approveSubmission()}>
                         <Check />
                     </button>
@@ -349,7 +361,7 @@ const Dashboard : FC = () => {
                     {/* toPost Feed */}
                     <div className="flex flex-col">
                         <div className="w-96 mb-4 bg-red-400 rounded-md shadow-md text-white text-center text-4xl font-bold">
-                            toPost
+                            toPost {` (${toPost.length})`}
                         </div>
                         {
                             toPost.map((subObj : any) =>
@@ -372,7 +384,7 @@ const Dashboard : FC = () => {
                     {/* ConfessionsFeed of uncomfirmed submissions */}
                     <div className="flex-col justify-center items-center bg-gray-100 space-y-4" >
                         <div className="ml-16 w-96 mb-4 bg-red-400 rounded-md shadow-md font-bold text-white text-center text-4xl ">
-                            Submissions
+                            Submissions {` (${submissions.length})`}
                         </div>
                         {
                             submissions.map((subObj : any) =>
@@ -381,6 +393,8 @@ const Dashboard : FC = () => {
                                         subObj={subObj}
                                         submissions={submissions}
                                         setSubmissions={setSubmissions}
+                                        toPost={toPost}
+                                        setToPost={setToPost}
                                     />
                                     {/* <div className="h-5"></div> */}
                                 </div>

@@ -477,7 +477,7 @@ const uploadToLatelySocialDatabase = async (base64Array : string[]) => {
 
 
 export const onToPostCreate3 = functions.runWith({
-    timeoutSeconds: 140,
+    timeoutSeconds: 210,
     memory: '2GB'
 }).database.ref(
     '/toPost/{toPostId}'
