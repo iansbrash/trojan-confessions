@@ -206,24 +206,26 @@ router.post('/', async (req : express.Request, res : express.Response, next : ex
 
     // validate tags
     // tags are formatted in a single string like tag1,tag2,tag3
-    (tags as string).split(',').every(tag =>  {
-        if (tag === '') {
-            sanitizeError = "tags cannot be empty";
-            return false;
-        }
-        else if (!tag.match(/^[a-z0-9]+$/i)){
-            sanitizeError = "tags need to be non alphanumeric";
-            return false;
-        }
-        
-        return true;
-    }) 
+    if (tags as string !== ''){
+        (tags as string).split(',').every(tag =>  {
+            if (tag === '') {
+                sanitizeError = "tags cannot be empty";
+                return false;
+            }
+            else if (!tag.match(/^[a-z0-9]+$/i)){
+                sanitizeError = "tags need to be non alphanumeric";
+                return false;
+            }
+            
+            return true;
+        }) 
+    }
 
     // check for tag errors
     if (sanitizeError !== '') return res.status(400).send(sanitizeError);
 
     // use set constructor to find duplicates
-    if (new Set((tags as string).split(',')).size !== (tags as string).length ) {
+    if (new Set((tags as string).split(',')).size !== ((tags as string).split(',')).length ) {
         return res.status(400).send("tags cannot have duplicates")
     }
 
@@ -299,65 +301,65 @@ router.post('/', async (req : express.Request, res : express.Response, next : ex
     const hashedId = funhash(gPayload.sub) + gPayload.sub.substring(2, 6);
     const posterRef = firebase.database().ref('recentPosters');
 
-    posterRef.orderByChild("hashedId").equalTo(hashedId).once("value", snapshot => {
+    let toRetStatus : string;
+    let toRetNumber : number;
+    let snapExists = false;
+
+    await posterRef.orderByChild("hashedId").equalTo(hashedId).once("value", snapshot => {
         console.log(`snapshot.exists(): ${snapshot.exists()}`)
 
         if (snapshot.exists() as Boolean){
+            snapExists = true;
             const userData = snapshot.val();
             console.log("exists!", userData);
 
-            // 400 rate limit
-            // res.statusCode = 429;
-            console.log('about to send 429')
-            return res.status(429).end('Rate Limited: Please Wait Between Submissions');
-            // next();
-        }
-
-        console.log(`snapshot.exists(): ${snapshot.exists()}`)
-
-        if (!snapshot.exists() as Boolean) {
-
-            // if (true) {
-            //     return next();
-            // }
-            const newKey = subRef.push().key;
-        
-            const timestamp = new Date().toISOString();
-    
-            console.log(`hashedId: ${hashedId}`)
-    
-            
-            subRef.child(newKey).set({
-                content: decodeURIComponentSafe(content),
-                timestamp: timestamp,
-    
-                // to change
-                // hashedId : userName,
-                hashedId: hashedid,
-                tags: tags,
-                theme: theme,
-                signature: {
-                    location,
-                    school,
-                    fraternity,
-                    year
-                },
-                key: newKey,
-                dark: dark
-            });
-    
-            posterRef.push().set({
-    
-                // to change
-                hashedId: hashedId,
-                timestamp: timestamp
-            });
-    
-            console.log('about to send 200')
-            return res.status(200).end('Successfully submitted content')
-            // next();
+            toRetStatus = 'Rate Limited: Please Wait Between Submissions';
+            toRetNumber = 429;
         }
     }); 
+
+    if (snapExists){
+        return res.status(toRetNumber).end(toRetStatus)
+    }
+
+    const newKey = subRef.push().key;
+    const timestamp = new Date().toISOString();
+    console.log(`hashedId: ${hashedId}`)
+    subRef.child(newKey).set({
+        content: decodeURIComponentSafe(content),
+        timestamp: timestamp,
+
+        // to change
+        // hashedId : userName,
+        hashedId: hashedid,
+        tags: tags,
+        theme: theme,
+        signature: {
+            location,
+            school,
+            fraternity,
+            year
+        },
+        key: newKey,
+        dark: dark
+    });
+
+    posterRef.push().set({
+
+        // to change
+        hashedId: hashedId,
+        timestamp: timestamp
+    });
+
+    toRetStatus = 'Successfully submitted content';
+    toRetNumber = 200;
+
+    // console.log('about to send 200')
+    // return res.status(200).end('Successfully submitted content')
+    // next();
+
+    return res.status(toRetNumber).end(toRetStatus)
+
 });
 
 async function onSignIn(id_token : any) {
